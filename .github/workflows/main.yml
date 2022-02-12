@@ -18,10 +18,7 @@ jobs:
           # that's what will get formatted (i.e. the most recent commit)
           fetch-depth: 2
       # format the latest commit
-      - uses: purduesigbots/clang-format-action@1
-        # use one of clang-format's supported styles or leave this out to use the style in your .clang-format file
-        with:
-          style: file
+      - run: clang-format-12 -i $(find . -iname '*.cpp' -or -iname '*.c' -or -iname '*.h' -and -not -iname 'doctest.h')
       # commit the changes (if there are any)
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4.1.2
