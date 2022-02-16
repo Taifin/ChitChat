@@ -28,9 +28,9 @@ public:
     /// Default c-tor, please call it while testing locally.
 
     explicit chitchat_database(const std::string &dbname,
-                      const std::string &host,
-                      const std::string &port,
-                      const std::string &user);
+                               const std::string &host,
+                               const std::string &port,
+                               const std::string &user);
     /// C-tor to create full connection string (for remote connections).
 
     init_return_code initialize_and_connect() noexcept;
@@ -41,8 +41,8 @@ public:
     user_return_code create_user(const std::string &username,
                                  const std::string &password);
     /// USER_DUPLICATE is returned if user already exists, USER_SUCCESS if
-    /// creation is successful, USER_FAILURE otherwise. May throw pqxx::failure
-    /// if existence check throws.
+    /// creation is successful, USER_FAILURE otherwise (or if some of the check
+    /// throws).
 
     auth_return_code authenticate(const std::string &username,
                                   const std::string &provided_password);
