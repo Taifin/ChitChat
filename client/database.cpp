@@ -22,16 +22,16 @@ void chitchat_database::debug_create_db() {
     pqxx::connection conn("dbname=postgres");
     pqxx::nontransaction creator(conn);
     creator.exec(
-        R"(SELECT 'CREATE DATABASE " + name + "' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname='" + name + "');)");
+        "CREATE DATABASE ChitChat");
     creator.commit();
 }
 
 void chitchat_database::debug_create_table() {
-    pqxx::connection conn("dbname=ChitChat");
+    pqxx::connection conn("dbname=chitchat");
     pqxx::work w(conn);
     w.exec(
-        "CREATE TABLE IF NOT EXISTS users (Uname VARCHAR(30), "
-        "Upassword VARCHAR(30));");  // TODO: avatar and visited rooms
+        "CREATE TABLE IF NOT EXISTS users (uname VARCHAR(30), "
+        "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
     w.commit();
 }
 bool chitchat_database::create_user(User *new_user) {
