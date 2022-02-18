@@ -54,9 +54,15 @@ public:
     /// Accepts parametrized query and variadic number of argument to pass them
     /// to query.
 
+    static bool authorize(const std::string &username,
+                          const std::string &given_password);
+    /// Checks if user's password stored in database matches given_password. If
+    /// no such user found, no_user_found is thrown.
+
     static User get_user_data(User *user);
     /// Returns object of User class with fields initialized with data from
-    /// user's filed from database.
+    /// user's filed from database. If no user in records, no_user_found is
+    /// thrown.
 
     static pqxx::result execute_protected(const std::string &connection_params,
                                           const std::string &query);
