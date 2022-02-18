@@ -18,8 +18,8 @@ struct no_user_found : database_error {
 
 struct chitchat_database {
 private:
-    static std::string params;
-    static pqxx::connection users_connection;
+    inline static std::string params;
+    inline static pqxx::connection users_connection;
 
 public:
     static void local_connection(const std::string &dbname = "chitchat");

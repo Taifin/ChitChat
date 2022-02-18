@@ -73,9 +73,15 @@ pqxx::result chitchat_database::execute_protected(
 }
 bool chitchat_database::authorize(const std::string &username,
                                   const std::string &given_password) {
-    auto exists = execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;", username)[0][0].as<bool>();
+    auto exists =
+        execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
+                       username)[0][0]
+            .as<bool>();
     if (exists) {
-        auto stored_password = execute_params("SELECT upassword FROM users WHERE uname=$1;", username)[0][0].as<std::string>();
+        auto stored_password =
+            execute_params("SELECT upassword FROM users WHERE uname=$1;",
+                           username)[0][0]
+                .as<std::string>();
         return given_password == stored_password;
     } else {
         throw no_user_found("Cannot find user to authorize.");
