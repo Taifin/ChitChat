@@ -2,53 +2,61 @@
 #define CHITCHAT_DATABASE_H
 
 #include <iostream>
-#include <pqxx/pqxx>
 #include <string>
+#include "../entities/user.h"
+#include "pqxx/pqxx"
 
 namespace db {
 
-enum class init_return_code { INIT_SUCCESS, INIT_FAILURE };
-enum class user_return_code { USER_SUCCESS, USER_DUPLICATE, USER_FAILURE };
-enum class auth_return_code { AUTH_SUCCESS, AUTH_DENIED, AUTH_FAILURE };
+struct database_error : std::runtime_error {
+    explicit database_error(const std::string &msg) : std::runtime_error(msg){};
+};
+
+struct no_user_found : database_error {
+    explicit no_user_found(const std::string &msg) : database_error(msg){};
+};
 
 struct chitchat_database {
 private:
-    std::string name;
-    std::string params;
-    pqxx::connection users_connection;
-
-    static void create_db();
-
-    void create_table();
-
-    void connect_and_prepare();
+    static std::string params;
+    static pqxx::connection users_connection;
 
 public:
-    explicit chitchat_database(const std::string &dbname = "chitchat");
-    /// Default c-tor, please call it while testing locally.
+    static void local_connection(const std::string &dbname = "chitchat");
+    /// Default connector.
 
-    explicit chitchat_database(const std::string &dbname,
-                               const std::string &host,
-                               const std::string &port,
-                               const std::string &user);
-    /// C-tor to create full connection string (for remote connections).
+    static void connection(const std::string &dbname,
+                           const std::string &host,
+                           const std::string &port,
+                           const std::string &user);
+    /// Connector to establish full remote connection.
 
-    init_return_code initialize_and_connect() noexcept;
-    /// Call this method to initialize database, prepare connection and ensure
-    /// all the databases/tables exists. All pqxx-exceptions are handled, their
-    /// what() outputted into cerr.
+    static void debug_create_db();
+    /// Use this method if you need to create database "ChitChat" locally (and
+    /// ensure that your default postgres user in $PGUSER has all rights).
 
-    user_return_code create_user(const std::string &username,
-                                 const std::string &password);
-    /// USER_DUPLICATE is returned if user already exists, USER_SUCCESS if
-    /// creation is successful, USER_FAILURE otherwise (or if some of the check
-    /// throws).
+    static void debug_create_table();
+    /// Use this method if you need to create table "users" in "ChitChat"
+    /// database locally (and ensure that your default postgres user in $PGUSER
+    /// has all rights).
 
-    auth_return_code authenticate(const std::string &username,
-                                  const std::string &provided_password);
-    /// AUTH_SUCCESS returned if provided_password matches username's password
-    /// in the database, AUTH_DENIED otherwise. If database exception is thrown,
-    /// AUTH_FAILURE is returned.
+    static bool create_user(User *new_user);
+    /// true if user is created, false if duplicate
+
+    template <typename... Args>
+    static pqxx::result execute_params(const std::string &params_query,
+                                       Args... args) {
+        pqxx::work work(users_connection);
+        auto result = work.exec_params(params_query, args...);
+        work.commit();
+        return result;
+    };
+    /// Accepts parametrized query and variadic number of argument to pass them
+    /// to query.
+
+    static User get_user_data(User *user);
+    /// Returns object of User class with fields initialized with data from
+    /// user's filed from database.
 
     static pqxx::result execute_protected(const std::string &connection_params,
                                           const std::string &query);

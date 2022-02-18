@@ -2,108 +2,59 @@
 
 namespace db {
 // TODO: connection pool
+// (there's no default connection pool functionality in libpqxx?)
 
-chitchat_database::chitchat_database(const std::string &dbname) : name(dbname) {
+void chitchat_database::local_connection(const std::string &dbname) {
     params = "dbname=" + dbname;
+    users_connection = pqxx::connection(params);
 }
 
-chitchat_database::chitchat_database(const std::string &dbname,
-                                     const std::string &host,
-                                     const std::string &port,
-                                     const std::string &user) {
+void chitchat_database::connection(const std::string &dbname,
+                                   const std::string &host,
+                                   const std::string &port,
+                                   const std::string &user) {
     params = "dbname=" + dbname + " host=" + host + " port=" + port +
              " user=" + user;
+    users_connection = pqxx::connection(params);
 }
 
-void chitchat_database::create_db() {
+void chitchat_database::debug_create_db() {
     pqxx::connection conn("dbname=postgres");
     pqxx::nontransaction creator(conn);
     creator.exec(
         R"(SELECT 'CREATE DATABASE " + name + "' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname='" + name + "');)");
-    creator.commit();  // if throws, will throw into initialize_and_connect(),
-                       // abort on destruction
+    creator.commit();
 }
 
-void chitchat_database::create_table() {
-    pqxx::connection conn("dbname= " + name);
+void chitchat_database::debug_create_table() {
+    pqxx::connection conn("dbname=ChitChat");
     pqxx::work w(conn);
     w.exec(
         "CREATE TABLE IF NOT EXISTS users (Uname VARCHAR(30), "
-        "Upassword VARCHAR(30));");  // TODO: avatar
-    w.commit();  // if throws, will throw into initialize_and_connect(), abort
-                 // on destruction
+        "Upassword VARCHAR(30));");  // TODO: avatar and visited rooms
+    w.commit();
 }
-
-void chitchat_database::connect_and_prepare() {
-    users_connection = pqxx::connection(params);
-    users_connection.prepare("check_user",
-                             "SELECT * FROM users WHERE 'Uname' = $1;");
-    users_connection.prepare(
-        "create_user", "INSERT INTO users (Uname, Upassword) VALUES ($1, $2);");
-    users_connection.prepare("get_password",
-                             "SELECT (Upassword) FROM users WHERE Uname=$1");
-}
-
-init_return_code chitchat_database::initialize_and_connect() noexcept {
-    try {
-        create_db();
-        create_table();
-        connect_and_prepare();
-        return init_return_code::INIT_SUCCESS;
-    } catch (pqxx::failure &error) {
-        std::cerr << error.what() << std::endl;
-        return init_return_code::INIT_FAILURE;
-    }
-}
-
-user_return_code chitchat_database::create_user(const std::string &username,
-                                                const std::string &password) {
-    pqxx::work w(users_connection);
-    bool exists;
-    try {
-        exists = w.exec("SELECT count(1) > 0 FROM users WHERE Uname='" +
-                        username + "';")[0][0]
-                     .as<bool>();
-        w.commit();
-    } catch (pqxx::failure &error) {
-        w.abort();
-        std::cerr << error.what() << std::endl;
-        return user_return_code::USER_FAILURE;
-    }
-    pqxx::work w2(users_connection);  // w2 is used due to abortion in try-catch
-                                      // block, otherwise abort of committed
-                                      // transaction is called
+bool chitchat_database::create_user(User *new_user) {
+    bool exists =
+        execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
+                       new_user->username)[0][0]
+            .as<bool>();
     if (!exists) {
-        try {
-            w2.exec_prepared("create_user", username, password);
-            w2.commit();
-            return user_return_code::USER_SUCCESS;
-        } catch (pqxx::failure &error) {
-            w2.abort();
-            std::cerr << error.what() << std::endl;
-            return user_return_code::USER_FAILURE;
-        }
+        execute_params("INSERT INTO users (uname, upassword) VALUES ($1, $2);",
+                       new_user->username, new_user->password);
+        return true;
     } else {
-        return user_return_code::USER_DUPLICATE;
+        return false;
     }
 }
 
-auth_return_code chitchat_database::authenticate(
-    const std::string &username,
-    const std::string &provided_password) {
-    pqxx::work w(users_connection);
-    std::string password;
-    try {
-        password =
-            w.exec_prepared("get_password", username)[0][0].as<std::string>();
-        w.commit();
-    } catch (pqxx::failure &error) {
-        w.abort();
-        std::cerr << error.what() << std::endl;
-        return auth_return_code::AUTH_FAILURE;
-    }
-    return (password == provided_password ? auth_return_code::AUTH_SUCCESS
-                                          : auth_return_code::AUTH_DENIED);
+User chitchat_database::get_user_data(User *user) {
+    auto raw_user_data =
+        execute_params("SELECT 1 FROM users WHERE uname=$1;", user->username);
+    if (raw_user_data.empty())
+        throw no_user_found("No information returned");
+    return User(raw_user_data[0]["uname"].as<std::string>(),
+                raw_user_data[0]["upassword"].as<std::string>());
 }
 
 pqxx::result chitchat_database::execute_protected(
@@ -120,5 +71,4 @@ pqxx::result chitchat_database::execute_protected(
         std::cerr << error.what() << std::endl;
     }
 }
-
 }  // namespace db
