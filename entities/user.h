@@ -2,7 +2,6 @@
 #define CHITCHAT_USER_H
 
 #include <utility>
-
 #include "string"
 #include "vector"
 
@@ -12,7 +11,8 @@ struct User {
     // TODO: list of visited rooms
     // TODO: avatar
 
-    explicit User(std::string  uname, std::string  upwd) : username(std::move(uname)), password(std::move(upwd)) {};
+    explicit User(std::string uname, std::string upwd)
+        : username(std::move(uname)), password(std::move(upwd)){};
 };
 
 #endif  // CHITCHAT_USER_H

@@ -21,8 +21,7 @@ void chitchat_database::connection(const std::string &dbname,
 void chitchat_database::debug_create_db() {
     pqxx::connection conn("dbname=postgres");
     pqxx::nontransaction creator(conn);
-    creator.exec(
-        "CREATE DATABASE ChitChat");
+    creator.exec("CREATE DATABASE ChitChat");
     creator.commit();
 }
 
