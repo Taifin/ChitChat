@@ -5,11 +5,12 @@
 #include "login.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class main_window; }
+namespace Ui {
+class main_window;
+}
 QT_END_NAMESPACE
 
-class main_window : public QMainWindow
-{
+class main_window : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -25,4 +26,4 @@ private:
     Ui::main_window *ui;
     login login_m;
 };
-#endif // MAIN_WINDOW_H
+#endif  // MAIN_WINDOW_H

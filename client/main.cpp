@@ -1,10 +1,8 @@
-#include "main_window.h"
-#include "database.h"
-
 #include <QApplication>
+#include "database.h"
+#include "main_window.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     db::chitchat_database::local_connection();
     db::chitchat_database::debug_create_table();
 
