@@ -10,29 +10,58 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "entities/user.h"
+#include <queue>
+#include "user.h"
 
 namespace sv {
-struct server : public QObject {
+struct sender {
+    QHostAddress address;
+    int port;
+};
+
+class controller : public QObject {
     Q_OBJECT
 private:
-    std::map<std::string, User> server_users;
+    enum class e_commands{
+        LOGIN, REGISTER, CONNECT, GREET
+    };
+    std::map<std::string, e_commands> commands{
+        {"login", e_commands::LOGIN},
+        {"register", e_commands::REGISTER},
+        {"connect", e_commands::CONNECT},
+        {"hello", e_commands::GREET}
+    };
 
-    static std::pair<std::string, User> create_user(
-        const std::string &user_data,
-        const QHostAddress &address,
-        int port);
+    std::queue<std::pair<std::string, sv::sender>> queries;
+
+//    std::map<std::string, User> server_users;
+//    static std::pair<std::string, User> create_user(
+//        const std::string &user_data,
+//        const QHostAddress &address,
+//        int port);
 
 public:
-    explicit server(const QHostAddress &host = QHostAddress::LocalHost,
+    explicit controller(const QHostAddress &host = QHostAddress::LocalHost,
                     qint16 port = 7755,
                     QObject *parent = nullptr);
 
-    bool connect_user(const std::string &user_data,
-                      const QHostAddress &address,
-                      int port);
+    std::vector<std::string> parse(const std::string &data);
 
-    virtual ~server(){};
+    void process();
+
+    void login_placeholder() {};
+
+    void register_placeholder() {};
+
+    void connect_placeholder() {};
+
+    void greet(std::vector<std::string> &data, const sv::sender& to);
+
+//    bool connect_user(const std::string &user_data,
+//                      const QHostAddress &address,
+//                      int port);
+
+    virtual ~controller(){};
 
 signals:
 
