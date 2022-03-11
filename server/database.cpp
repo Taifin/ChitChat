@@ -1,8 +1,6 @@
 #include "database.h"
 
 namespace db {
-// TODO: connection pool
-// (there's no default connection pool functionality in libpqxx?)
 
 void chitchat_database::local_connection(const std::string &dbname) {
     params = "dbname=" + dbname;
@@ -86,4 +84,4 @@ bool chitchat_database::authorize(const std::string &username,
         throw no_user_found("Cannot find user to authorize.");
     }
 }
-}  // namespace db
+} // namespace db
