@@ -15,11 +15,11 @@ struct client {
 
 class udp_socket : public QObject {
     Q_OBJECT
-private:
-    QUdpSocket *socket;
 
 protected:
     std::queue<std::pair<std::string, client>> queries;
+
+    QUdpSocket *socket;
 
 public:
     explicit udp_socket(const QHostAddress &host,
