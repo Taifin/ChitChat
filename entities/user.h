@@ -7,20 +7,19 @@
 
 struct User {
     const std::string username;
+    // TODO: separate username and login
     const std::string password;
-    const std::string address;
-    const int port;
+
+    // TODO: move to client?
+//    const std::string address;
+//    const int port;
     // TODO: list of visited rooms
     // TODO: avatar
 
     explicit User(std::string uname,
-                  std::string upwd,
-                  std::string uip,
-                  int uport)
+                  std::string upwd)
         : username(std::move(uname)),
-          password(std::move(upwd)),
-          address(std::move(uip)),
-          port(uport){};
+          password(std::move(upwd)) {};
 };
 
 #endif  // CHITCHAT_USER_H

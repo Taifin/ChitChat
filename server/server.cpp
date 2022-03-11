@@ -1,52 +1,14 @@
 #include "server.h"
-
-// Нажимаем Connect
-// На сервер отправляется сигнал (?), что нужно законнектить пользователя
-// Должно быть состояние: сколько пользователей уже есть и какие они (мапа?)
-//
+#include "model.h"
 
 namespace sv {
 
-//std::pair<std::string, User> controller::create_user(const std::string &user_data,
-//                                                 const QHostAddress &address,
-//                                                 int port) {
-//    std::istringstream raw_user(user_data);
-//    std::string fake;
-//    std::getline(raw_user, fake, ';');
-//    std::vector<std::string> real_user_data(2);
-//    for (int i = 0; i < 2; i++) {
-//        std::getline(raw_user, real_user_data[i], ';');
-//    }
-//    return {real_user_data[0], User(real_user_data[0], real_user_data[1],
-//                                    address.toString().toStdString(), port)};
-//}
-
-//bool controller::connect_user(const std::string &user_data,
-//                          const QHostAddress &address,
-//                          int port) {
-//    auto new_user = create_user(user_data, address, port);
-//    QByteArray data;
-//    if (!server_users.insert(new_user).second) {
-//        data.append("User exists\n");
-//        server_socket->writeDatagram(
-//            data, QHostAddress(new_user.second.address.data()),
-//            new_user.second.port);
-//        return false;
-//    } else {
-//        data.append("User inserted successfully\n");
-//        server_socket->writeDatagram(
-//            data, QHostAddress(new_user.second.address.data()),
-//            new_user.second.port);
-//        return true;
-//    }
-//}
-
-// TODO: connect reading and processing
 controller::controller(const QHostAddress &host, qint16 port, QObject *parent)
     : QObject(parent) {
     server_socket = new QUdpSocket(this);
     server_socket->bind(host, port);
-    qDebug() << "Server running at: " << host << " and port is: " << port;
+    qDebug() << "Server running at:" << host.toString()
+             << "and port is:" << port;
     readPendingDatagrams();
     connect(server_socket, &QUdpSocket::readyRead, this,
             &controller::readPendingDatagrams);
@@ -57,11 +19,13 @@ void controller::readPendingDatagrams() {
     while (server_socket->hasPendingDatagrams()) {
         qDebug() << "Reading...";
         datagram = server_socket->receiveDatagram();
-        qDebug() << "Received new message from" << datagram.senderAddress()
-                 << "at" << datagram.senderPort();
-        queries.push({datagram.data().toStdString(), {datagram.senderAddress(), datagram.senderPort()}});
+        qDebug() << "Received new message from"
+                 << datagram.senderAddress().toString() << "at"
+                 << datagram.senderPort();
+        queries.push({datagram.data().toStdString(),
+                      {datagram.senderAddress(), datagram.senderPort()}});
     }
-    process(); // TODO
+    process();  // TODO
 }
 
 std::vector<std::string> controller::parse(const std::string &data) {
@@ -71,15 +35,13 @@ std::vector<std::string> controller::parse(const std::string &data) {
     while (std::getline(raw_query, token, ',')) {
         parsed.push_back(token);
     }
+    parsed.back().pop_back(); // removing leading '\n'
     return parsed;
 }
 
-void controller::greet(std::vector<std::string> &data, const sv::sender& to) {
+void controller::greet(std::vector<std::string> &data, const sv::sender &to) {
     assert(data.size() == 2);
-    QByteArray to_send;
-    std::string msg = "Hello, " + data[1] + ", I'm Server God!";
-    to_send.append(msg.c_str());
-    server_socket->writeDatagram(to_send, to.address, to.port);
+    send_datagram("Hello, " + data[1] + ", I'm Server God!\n", to);
 }
 
 void controller::process() {
@@ -87,20 +49,39 @@ void controller::process() {
         auto query = queries.front();
         queries.pop();
         auto data = parse(query.first);
-        switch (commands.at(data[0])) { // TODO: catch out_of_range
-            case e_commands::LOGIN:
-                login_placeholder();
-                break;
-            case e_commands::REGISTER:
-                register_placeholder();
-                break;
-            case e_commands::CONNECT:
-                connect_placeholder();
-                break;
-            case e_commands::GREET:
-                greet(data, query.second);
-                break;
+        try {
+            switch (commands.at(data[0])) {
+                case e_commands::LOGIN:
+                    login_placeholder();
+                    break;
+                case e_commands::REGISTER:
+                    register_placeholder();
+                    break;
+                case e_commands::CONNECT:
+                    connect_user(data, query.second);
+                    break;
+                case e_commands::GREET:
+                    greet(data, query.second);
+                    break;
+            }
+        } catch (std::out_of_range &e) {
+            std::string unknown_cmd("Unknown token " + data[0] + "\n");
+            server_socket->writeDatagram(
+                unknown_cmd.c_str(), query.second.address, query.second.port);
         }
     }
+}
+void controller::connect_user(std::vector<std::string> &data, const sv::sender &to) {
+    assert(data.size() == 3);
+    User new_user{data[1], data[2]};
+    if (md::model::connect_user(new_user)) {
+        send_datagram("connected," + data[1] + "\n", to);
+    } else {
+        send_datagram("exists," + data[1] + "\n", to);
+    }
+}
+void controller::send_datagram(const std::string &msg, const sv::sender &to) {
+    QByteArray data(msg.c_str());
+    server_socket->writeDatagram(data, to.address, to.port);
 }
 }  // namespace sv
