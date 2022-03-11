@@ -1,10 +1,7 @@
 #ifndef CHITCHAT_SERVER_H
 #define CHITCHAT_SERVER_H
 
-#include <QCoreApplication>
-#include <QNetworkDatagram>
-#include <QObject>
-#include <QUdpSocket>
+#include "socket.h"
 #include <iostream>
 #include <map>
 #include <queue>
@@ -20,7 +17,7 @@ struct sender {
     int port;
 };
 
-class controller : public QObject {
+class controller : network::udp_socket {
     Q_OBJECT
 private:
     enum class e_commands { LOGIN, REGISTER, CONNECT, GREET };
@@ -30,36 +27,24 @@ private:
         {"connect", e_commands::CONNECT},
         {"hello", e_commands::GREET}};
 
-    std::queue<std::pair<std::string, sv::sender>> queries;
-
 public:
-    explicit controller(const QHostAddress &host = QHostAddress::LocalHost,
-                        qint16 port = 7755,
-                        QObject *parent = nullptr);
+    explicit controller(const QHostAddress &host1,
+                        quint16 port1,
+                        QObject *parent1);
 
     std::vector<std::string> parse(const std::string &data);
 
-    void process();
+    void process() override;
 
     void login_placeholder(){};
 
     void register_placeholder(){};
 
-    void connect_user(std::vector<std::string> &data, const sv::sender &to);
+    void connect_user(std::vector<std::string> &data, const network::client &to);
 
-    void greet(std::vector<std::string> &data, const sv::sender &to);
-
-    void send_datagram(const std::string &msg, const sv::sender &to);
+    void greet(std::vector<std::string> &data, const network::client &to);
 
     virtual ~controller(){};
-
-signals:
-
-public slots:
-    void readPendingDatagrams();
-
-private:
-    QUdpSocket *server_socket;
 };
 }  // namespace sv
 #endif
