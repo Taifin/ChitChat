@@ -5,7 +5,7 @@
 #include "client_socket.h"
 #include "socket.h"
 
-client_socket socket(QHostAddress::Any, 60000, nullptr);
+client_socket socket(QHostAddress::Any, 60000, "", nullptr);
 network::client server{QHostAddress("194.169.163.120"), 1235};
 
 int main(int argc, char *argv[])

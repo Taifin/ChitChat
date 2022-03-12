@@ -12,6 +12,7 @@ class client_socket : public network::udp_socket
 public:
     client_socket(const QHostAddress &host,
                   quint16 port,
+                  const std::string &type,
                   QObject *parent);
 
     void process();
@@ -32,7 +33,7 @@ signals:
     //void run_error();
 
 private:
-    QUdpSocket socket;
+
 };
 
 #endif // CLIENT_SOCKET_H
