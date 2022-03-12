@@ -1,4 +1,5 @@
 #include "socket.h"
+#include "iostream"
 
 namespace network {
 udp_socket::udp_socket(const QHostAddress &host,
@@ -21,13 +22,14 @@ std::vector<std::string> udp_socket::parse(const std::string &data) {
     if (parsed.back().back() == '\n') {
         parsed.back().pop_back();  // removing leading '\n'
     }
+    std::cout << parsed[0] << std::endl;
     return parsed;
 }
 
 void udp_socket::send_datagram(const std::string &data, const client &to) {
     QByteArray datagram(data.c_str());
-    socket->writeDatagram(datagram, to.address, 60000);
-    socket->waitForReadyRead();
+    socket->writeDatagram(datagram, to.address, to.port);
+    socket->waitForReadyRead(500);
 }
 
 void udp_socket::readPendingDatagrams() {
