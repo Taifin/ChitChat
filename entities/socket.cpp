@@ -13,7 +13,7 @@ udp_socket::udp_socket(const QHostAddress &host,
 
 void udp_socket::send_datagram(const std::string &data, const client &to) {
     QByteArray datagram(data.c_str());
-    socket->writeDatagram(datagram, to.address, to.port);
+    socket->writeDatagram(datagram, to.address, 60000);
     socket->waitForReadyRead();
 }
 
