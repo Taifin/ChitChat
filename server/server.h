@@ -37,12 +37,10 @@ public:
                         quint16 port1,
                         QObject *parent1 = nullptr);
 
-    static std::vector<std::string> parse(const std::string &data);
-
     void process() override;
 
     void authorize_user(std::vector<std::string> &data,
-                        const network::client &to) noexcept;
+                        const network::client &to);
     /// Calls to database's authorize(), exceptions are handled.
     /// Use it to authorize user on login screen.
 

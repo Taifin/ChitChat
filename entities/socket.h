@@ -6,6 +6,9 @@
 #include <QObject>
 #include <QUdpSocket>
 #include <queue>
+#include <vector>
+#include <string>
+#include <sstream>
 
 namespace network {
 struct client {
@@ -25,6 +28,8 @@ public:
     explicit udp_socket(const QHostAddress &host,
                         quint16 port,
                         QObject *parent = nullptr);
+
+    static std::vector<std::string> parse(const std::string &data);
 
     void send_datagram(const std::string &data, const client &to);
     /// Sends "msg" to client.

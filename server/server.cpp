@@ -9,17 +9,6 @@ controller::controller(const QHostAddress &host1,
     : udp_socket(host1, port1, parent1) {
 }
 
-std::vector<std::string> controller::parse(const std::string &data) {
-    std::vector<std::string> parsed;
-    std::istringstream raw_query(data);
-    std::string token;
-    while (std::getline(raw_query, token, ',')) {
-        parsed.push_back(token);
-    }
-    parsed.back().pop_back();  // removing leading '\n'
-    return parsed;
-}
-
 void controller::process() {
     while (!queries.empty()) {
         auto query = queries.front();
