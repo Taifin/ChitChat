@@ -35,6 +35,7 @@ private:
 public:
     explicit controller(const QHostAddress &host1,
                         quint16 port1,
+                        const std::string &type1 = "server",
                         QObject *parent1 = nullptr);
 
     void process() override;

@@ -5,8 +5,9 @@ namespace sv {
 
 controller::controller(const QHostAddress &host1,
                        quint16 port1,
+                       const std::string &type1,
                        QObject *parent1)
-    : udp_socket(host1, port1, parent1) {
+    : udp_socket(host1, port1, type1, parent1) {
 }
 
 void controller::process() {
