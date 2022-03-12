@@ -21,6 +21,8 @@ public:
 private slots:
     void show_after_auth();
 
+    void on_enter_the_room_button_clicked();
+
 private:
     Ui::main_window *ui;
     login login_m;

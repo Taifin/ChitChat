@@ -8,6 +8,8 @@ main_window::main_window(QWidget *parent)
     connect(&login_m, SIGNAL(show_main_window()), this, SLOT(show_after_auth()));
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->greetings->setText("Hello, ");  //TODO::
 }
 
 void main_window::start(){
@@ -22,3 +24,9 @@ main_window::~main_window()
 {
     delete ui;
 }
+
+void main_window::on_enter_the_room_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
