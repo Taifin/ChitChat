@@ -4,7 +4,8 @@
 namespace network {
 udp_socket::udp_socket(const QHostAddress &host,
                        quint16 port,
-                       QObject *parent) {
+                       const std::string &type,
+                       QObject *parent) : type(type) {
     socket = new QUdpSocket(this);
     socket->bind(host, port);
     qDebug() << "Server is running at:" << host << "and port is:" << port;
@@ -28,7 +29,7 @@ std::vector<std::string> udp_socket::parse(const std::string &data) {
 
 void udp_socket::send_datagram(const std::string &data, const client &to) {
     QByteArray datagram(data.c_str());
-    socket->writeDatagram(datagram, to.address, to.port);
+    socket->writeDatagram(datagram, to.address, (type == "server") ? 60000 : to.port);
     socket->waitForReadyRead(500);
 }
 
