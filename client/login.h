@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "registration.h"
+#include "client_socket.h"
+
 
 namespace Ui {
 class login;
@@ -14,6 +16,7 @@ class login : public QDialog
 
 public:
     explicit login(QWidget *parent = nullptr);
+
     ~login();
 
 signals:
@@ -28,6 +31,14 @@ private slots:
     void on_create_new_account_button_clicked();
 
     void show_login_window();
+
+    void successful_login();
+
+    void wrong_password();
+
+    void no_user();
+
+    void error();
 
 private:
     Ui::login *ui;
