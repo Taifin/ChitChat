@@ -40,8 +40,7 @@ void registration::on_confirm_button_clicked()
         ui->information_label->setText("Passwords don't match");
     }
     else{
-        socket.send_datagram("regist," + login + "," + password, server);
-        socket.process();
+        socket.send_datagram("register," + login + "," + password, server);
     }
 }
 

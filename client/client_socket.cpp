@@ -8,13 +8,15 @@ client_socket::client_socket(const QHostAddress &host,
 }
 
 void client_socket::process(){
-    std::string status = queries.front().first;
+    std::vector<std::string> data = parse(queries.front().first);
+    std::string status = data[0];
     network::client current_client = queries.front().second;
+    queries.pop();
     qDebug() << status.c_str();
     qDebug() << queries.size();
 
     //case for login
-    if (status == "alowed"){
+    if (status == "allowed"){
         emit run_successful_login();
     }
     if (status == "denied"){
@@ -30,9 +32,10 @@ void client_socket::process(){
     if (status == "created"){
         emit run_successful_registration();
     }
-    if (status == "exist"){
+    if (status == "exists"){
         emit run_duplicate();
     }
+
 }
 
 
