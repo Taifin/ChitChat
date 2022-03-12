@@ -27,7 +27,7 @@ protected:
 public:
     explicit udp_socket(const QHostAddress &host,
                         quint16 port,
-                        const std::string &type = "server",
+                        const std::string &type,
                         QObject *parent = nullptr);
 
     static std::vector<std::string> parse(const std::string &data);
