@@ -1,5 +1,10 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsRectItem>
+#include <QApplication>
+#include "sprite.h"
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent)
@@ -8,8 +13,6 @@ main_window::main_window(QWidget *parent)
     connect(&login_m, SIGNAL(show_main_window()), this, SLOT(show_after_auth()));
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->greetings->setText("Hello, ");  //TODO::
 }
 
 void main_window::start(){
@@ -25,8 +28,18 @@ main_window::~main_window()
     delete ui;
 }
 
-void main_window::on_enter_the_room_button_clicked()
+
+void main_window::on_connect_button_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1);
+    QGraphicsScene *scene = new QGraphicsScene();
+    sprite *sprite_current_user = new sprite();
+    sprite_current_user->setRect(0,0,30,30);
+
+    scene->addItem(sprite_current_user);
+    sprite_current_user->setFlag(QGraphicsItem::ItemIsFocusable);
+    sprite_current_user->setFocus();
+
+    QGraphicsView *view = ui->room_view;
+    view->setScene(scene);
 }
 

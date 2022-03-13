@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>817</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,58 +14,84 @@
    <string>main_window</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QStackedWidget" name="stackedWidget">
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-30</y>
-      <width>801</width>
-      <height>601</height>
+      <y>0</y>
+      <width>821</width>
+      <height>551</height>
      </rect>
     </property>
-    <widget class="QWidget" name="profile">
-     <widget class="QLabel" name="greetings">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>60</y>
-        <width>151</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="enter_the_room_button">
-      <property name="geometry">
-       <rect>
-        <x>490</x>
-        <y>270</y>
-        <width>231</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Enter The Room</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="room">
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>300</x>
-        <y>170</y>
-        <width>271</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Комнаты нет, но вы держитесь</string>
-      </property>
-     </widget>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QGraphicsView" name="room_view"/>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPushButton" name="connect_button">
+         <property name="text">
+          <string>connect</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+         <property name="default">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Hello, User
+Я в своем познании настолько преисполнился,
+ что я как будто бы уже
+
+сто триллионов миллиардов лет
+ проживаю на триллионах и
+
+триллионах таких же планет, как эта Земля,
+ мне этот мир абсолютно
+
+понятен, и я здесь ищу только одного - покоя,
+ умиротворения и
+
+вот этой гармонии, от слияния
+ с бесконечно вечным, от созерцания
+
+великого фрактального подобия </string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -73,7 +99,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>817</width>
      <height>22</height>
     </rect>
    </property>
