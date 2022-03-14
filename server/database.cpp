@@ -31,26 +31,26 @@ void chitchat_database::debug_create_table() {
         "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
     w.commit();
 }
-bool chitchat_database::create_user(User *new_user) {
+bool chitchat_database::create_user(user *new_user) {
     bool exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
-                       new_user->username)[0][0]
+                       new_user->name())[0][0]
             .as<bool>();
     if (!exists) {
         execute_params("INSERT INTO users (uname, upassword) VALUES ($1, $2);",
-                       new_user->username, new_user->password);
+                       new_user->name(), new_user->pwd());
         return true;
     } else {
         return false;
     }
 }
 
-User chitchat_database::get_user_data(User *user) {
+user chitchat_database::get_user_data(user *user_) {
     auto raw_user_data =
-        execute_params("SELECT 1 FROM users WHERE uname=$1;", user->username);
+        execute_params("SELECT 1 FROM users WHERE uname=$1;", user_->name());
     if (raw_user_data.empty())
         throw no_user_found("No information returned");
-    return User(raw_user_data[0]["uname"].as<std::string>(),
+    return user(raw_user_data[0]["uname"].as<std::string>(),
                 raw_user_data[0]["upassword"].as<std::string>());
 }
 
