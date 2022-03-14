@@ -5,9 +5,8 @@ namespace sv {
 
 controller::controller(const QHostAddress &host1,
                        quint16 port1,
-                       const std::string &type1,
                        QObject *parent1)
-    : udp_socket(host1, port1, type1, parent1) {
+    : udp_socket(host1, port1, parent1) {
 }
 
 void controller::process() {
@@ -29,11 +28,15 @@ void controller::process() {
                 case e_commands::GREET:
                     greet(data, query.second);
                     break;
+                case e_commands::MOVE:
+                    update_layout(data, query.second);
+                    break;
+                case e_commands::GET:
+                    translate_users_data(data, query.second);
+                    break;
             }
         } catch (std::out_of_range &e) {
-            std::string unknown_cmd("Unknown token " + data[0] + "\n");
-            socket->writeDatagram(unknown_cmd.c_str(), query.second.address,
-                                  query.second.port);
+            send_datagram("Unknown command " + data[0] + "\n", query.second);
         }
     }
 }
@@ -58,22 +61,22 @@ void controller::register_user(std::vector<std::string> &data,
                                const network::client &to) {
     // TODO: complete user class
     assert(data.size() == 3);
-    User new_user(data[1], data[2]);
+    user new_user(data[1], data[2]);
     if (db::chitchat_database::create_user(&new_user)) {
         send_datagram("created," + data[1] + "\n", to);
     } else {
-        send_datagram("exists," + data[1] + "\n", to);
+        send_datagram("rexists," + data[1] + "\n", to);
     }
 }
 
 void controller::connect_user(std::vector<std::string> &data,
                               const network::client &to) {
     assert(data.size() == 3);
-    User new_user{data[1], data[2]};
+    server_user new_user{data[1], data[2], to};
     if (md::model::connect_user(new_user)) {
         send_datagram("connected," + data[1] + "\n", to);
     } else {
-        send_datagram("exists," + data[1] + "\n", to);
+        send_datagram("cexists," + data[1] + "\n", to);
     }
 }
 
@@ -81,6 +84,27 @@ void controller::greet(std::vector<std::string> &data,
                        const network::client &to) {
     assert(data.size() == 2);
     send_datagram("Hello, " + data[1] + ", I'm Server God!\n", to);
+}
+
+void controller::update_layout(std::vector<std::string> &data,
+                               const network::client &to) {
+    assert(data.size() == 4);
+    md::model::update_coords(data[1], std::stoi(data[2]), std::stoi(data[3]));
+    for (const auto& u : md::model::get_users()) {
+        send_datagram(data[1] + "," + data[2] + "," + data[3] + "\n",
+                      u.client);  // TODO: лажа
+    }
+}
+
+void controller::translate_users_data(std::vector<std::string> &data,
+                                      const network::client &to) {
+    std::string all_users;
+    for (auto u : md::model::get_users()) {
+        all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," + std::to_string(u.get_coords().y) + ",";
+    }
+    all_users.pop_back();
+    all_users += "\n";
+    send_datagram(all_users, to);
 }
 
 }  // namespace sv
