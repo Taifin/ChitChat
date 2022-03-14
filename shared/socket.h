@@ -21,13 +21,11 @@ class udp_socket : public QObject {
 
 protected:
     std::queue<std::pair<std::string, client>> queries;
-    std::string type;
     QUdpSocket *socket;
 
 public:
     explicit udp_socket(const QHostAddress &host,
                         quint16 port,
-                        const std::string &type,
                         QObject *parent = nullptr);
 
     static std::vector<std::string> parse(const std::string &data);
