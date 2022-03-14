@@ -18,7 +18,7 @@ public:
     void process();
 
 signals:
-    void run_successful_login();
+    void run_successful_login(std::string name);
 
     void run_wrong_password();
 
@@ -30,8 +30,13 @@ signals:
 
     void run_duplicate();
 
-    //void run_error();
+    void run_already_connected();
 
+    void run_connect_with_room();
+
+    void run_move(std::string username, int x, int y);
+
+    void run_get();
 };
 
 #endif // CLIENT_SOCKET_H

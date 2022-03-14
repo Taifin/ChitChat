@@ -32,7 +32,7 @@ private slots:
 
     void show_login_window();
 
-    void successful_login();
+    void successful_login(std::string name);
 
     void wrong_password();
 

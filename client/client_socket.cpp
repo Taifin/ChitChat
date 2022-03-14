@@ -13,11 +13,11 @@ void client_socket::process(){
     network::client current_client = queries.front().second;
     queries.pop();
     qDebug() << status.c_str();
-    qDebug() << queries.size();
 
     //case for login
     if (status == "allowed"){
-        emit run_successful_login();
+        qDebug() << data[1].c_str();
+        emit run_successful_login(data[1]);
     }
     if (status == "denied"){
         emit run_wrong_password();
@@ -32,10 +32,17 @@ void client_socket::process(){
     if (status == "created"){
         emit run_successful_registration();
     }
-    if (status == "exists"){
+    if (status == "rexists"){
         emit run_duplicate();
     }
-
+    //case for connection
+    if (status == "connected"){
+        emit run_connect_with_room();
+    }
+    if (status == "exists"){
+    //if (status == "cexists"){
+        emit run_already_connected();
+    }
 }
 
 

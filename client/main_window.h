@@ -23,6 +23,10 @@ private slots:
 
     void on_connect_button_clicked();
 
+    void already_connected();
+
+    void connect_with_room();
+
 private:
     Ui::main_window *ui;
     login login_m;

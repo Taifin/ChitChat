@@ -6,6 +6,7 @@
 
 extern client_socket socket;
 extern network::client server;
+extern user current_user;
 
 login::login(QWidget *parent) :
     QDialog(parent),
@@ -13,7 +14,7 @@ login::login(QWidget *parent) :
 {
     connect(&registration_m, SIGNAL(show_login_window_again()), this, SLOT(show_login_window()));
 
-    connect(&socket, SIGNAL(run_successful_login()), this, SLOT(successful_login()));
+    connect(&socket, SIGNAL(run_successful_login(std::string)), this, SLOT(successful_login(std::string)));
     connect(&socket, SIGNAL(run_wrong_password()), this, SLOT(wrong_password()));
     connect(&socket, SIGNAL(run_no_user()), this, SLOT(no_user()));
     connect(&socket, SIGNAL(run_error()), this, SLOT(error()));
@@ -57,7 +58,8 @@ void login::show_login_window(){
     this->show();
 }
 
-void login::successful_login(){
+void login::successful_login(std::string name){
+    current_user.set_name(name);
     this->hide();
     emit show_main_window();
 }
