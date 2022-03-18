@@ -22,6 +22,7 @@ std::vector<std::string> udp_socket::parse(const std::string &data) {
     if (parsed.back().back() == '\n') {
         parsed.back().pop_back();
     }
+    qDebug() << "Parsed:" << parsed[0].c_str();
     return parsed;
 }
 
