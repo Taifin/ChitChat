@@ -94,21 +94,20 @@ void controller::update_layout(std::vector<std::string> &data,
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {
-        send_datagram("get," + data[1] + "," + data[2] + "," + data[3] + "\n",
+        send_datagram("move," + data[1] + "," + data[2] + "," + data[3] + "\n",
                       u.client);
     }
 }
 
 void controller::translate_users_data(std::vector<std::string> &data,
                                       const network::client &to) {
-    std::string all_users = "move,";
+    std::string all_users = "get,";
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
                      std::to_string(u.get_coords().y) + ",";
     }
     if (all_users.back() == ',') all_users.pop_back();
     if (!all_users.empty()) all_users += "\n";
-    else all_users = "none";
     send_datagram(all_users, to);
 }
 
