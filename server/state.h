@@ -17,6 +17,6 @@ public:
     static void update_coords(const std::string &username, int x, int y);
 
     static std::vector<server_user> get_users();
-}
+};
 }
 #endif  // CHITCHAT_STATE_H
