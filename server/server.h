@@ -12,26 +12,28 @@
 #include "socket.h"
 #include "user.h"
 
-/// +----------+----------------------------+------------------------------------------------------------------------------------------+
-/// | command  |           format           |                                          return                                          |
-/// +----------+----------------------------+------------------------------------------------------------------------------------------+
-/// | login    | login,username,password    | ok: allowed,username; bad: denied,username; no_user_found: none,username; error: dberror |
-/// | register | register,username,password | ok: created,username; duplicate: rexists,username                                        |
-/// | connect  | connect,username,password  | ok: connected,username; duplicate: cexists,username                                      |
-/// | greet    | hello,username             | Hello, username, I'm Server God!                                                         |
-/// | move     | move,username,x,y          | username,x,y                                                                             |
-/// | get      | get                        | username1,x,y,username2,x,y,username3,x,y                                                |
-/// +----------+----------------------------+------------------------------------------------------------------------------------------+
+/// +------------+-----------------------------+------------------------------------------------------------------------------------------+
+/// | command    |           format            |                                          return                                          |
+/// +------------+-----------------------------+------------------------------------------------------------------------------------------+
+/// | login      | login,username,password     | ok: allowed,username; bad: denied,username; no_user_found: none,username; error: dberror |
+/// | register   | register,username,password  | ok: created,username; duplicate: rexists,username                                        |
+/// | connect    | connect,username,password   | ok: connected,username; duplicate: cexists,username                                      |
+/// | greet      | hello,username              | Hello, username, I'm Server God!                                                         |
+/// | move       | move,username,x,y           | move,username,x,y                                                                        |
+/// | get        | get                         | get,username1,x,y,username2,x,y,username3,x,y                                            |
+/// | disconnect | disconnect,username,pwd,x,y | disconnected                                                                             |
+/// +------------+-----------------------------+------------------------------------------------------------------------------------------+
 
 namespace sv {
 class controller : network::udp_socket {
     Q_OBJECT
 private:
-    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, GET };
+    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, GET, DISCONNECT };
     std::map<std::string, e_commands> commands{
         {"login", e_commands::LOGIN},     {"register", e_commands::REGISTER},
         {"connect", e_commands::CONNECT}, {"hello", e_commands::GREET},
-        {"move", e_commands::MOVE},       {"get", e_commands::GET}};
+        {"move", e_commands::MOVE},       {"get", e_commands::GET},
+        {"disconnect", e_commands::DISCONNECT}};
 
 public:
     explicit controller(const QHostAddress &host1,
@@ -60,6 +62,9 @@ public:
 
     void update_layout(std::vector<std::string> &data,
                        const network::client &to);
+
+    void disconnect(std::vector<std::string> &data,
+                    const network::client &to);
 
     void greet(std::vector<std::string> &data, const network::client &to);
     /// Debugging: sends message in return.

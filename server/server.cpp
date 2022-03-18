@@ -34,6 +34,9 @@ void controller::process() {
                 case e_commands::GET:
                     translate_users_data(data, query.second);
                     break;
+                case e_commands::DISCONNECT:
+                    disconnect(data, query.second);
+                    break;
             }
         } catch (std::out_of_range &e) {
             send_datagram("Unknown command " + data[0] + "\n", query.second);
@@ -91,20 +94,25 @@ void controller::update_layout(std::vector<std::string> &data,
     assert(data.size() == 4);
     md::model::update_coords(data[1], std::stoi(data[2]), std::stoi(data[3]));
     for (const auto& u : md::model::get_users()) {
-        send_datagram(data[1] + "," + data[2] + "," + data[3] + "\n",
+        send_datagram("get," + data[1] + "," + data[2] + "," + data[3] + "\n",
                       u.client);  // TODO: лажа
     }
 }
 
 void controller::translate_users_data(std::vector<std::string> &data,
                                       const network::client &to) {
-    std::string all_users;
+    std::string all_users = "move,";
     for (auto u : md::model::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," + std::to_string(u.get_coords().y) + ",";
     }
     all_users.pop_back();
     all_users += "\n";
     send_datagram(all_users, to);
+}
+
+void controller::disconnect(std::vector<std::string> &data,
+                            const network::client &to) {
+    md::model::disconnect_user(server_user(data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
 }
 
 }  // namespace sv

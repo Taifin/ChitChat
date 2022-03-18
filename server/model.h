@@ -12,6 +12,8 @@ private:
 public:
     static bool connect_user(const server_user & new_user);
 
+    static void disconnect_user(const server_user & disc_user);
+
     static void update_coords(const std::string &username, int x, int y);
 
     static std::vector<server_user> get_users();

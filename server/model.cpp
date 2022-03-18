@@ -10,6 +10,7 @@ bool md::model::connect_user(const server_user & new_user) {
         return false;
     }
 }
+
 void md::model::update_coords(const std::string &username, int x, int y) {
     connected_users.at(username).set_coords(x, y);
 }
@@ -19,4 +20,8 @@ std::vector<server_user> md::model::get_users() {
         users.push_back(u.second);
     }
     return users;
+}
+
+void md::model::disconnect_user(const server_user &disc_user) {
+    connected_users.erase(disc_user.name());
 }
