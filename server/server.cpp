@@ -91,8 +91,9 @@ void controller::greet(std::vector<std::string> &data,
 void controller::update_layout(std::vector<std::string> &data,
                                const network::client &to) {
     assert(data.size() == 4);
-    model::state::update_coords(data[1], std::stoi(data[2]), std::stoi(data[3]));
-    for (const auto& u : model::state::get_users()) {
+    model::state::update_coords(data[1], std::stoi(data[2]),
+                                std::stoi(data[3]));
+    for (const auto &u : model::state::get_users()) {
         send_datagram("get," + data[1] + "," + data[2] + "," + data[3] + "\n",
                       u.client);
     }
@@ -101,8 +102,9 @@ void controller::update_layout(std::vector<std::string> &data,
 void controller::translate_users_data(std::vector<std::string> &data,
                                       const network::client &to) {
     std::string all_users = "move,";
-    for (auto u : model::state::get_users()) {
-        all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," + std::to_string(u.get_coords().y) + ",";
+    for (const auto &u : model::state::get_users()) {
+        all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
+                     std::to_string(u.get_coords().y) + ",";
     }
     all_users.pop_back();
     all_users += "\n";
@@ -111,7 +113,10 @@ void controller::translate_users_data(std::vector<std::string> &data,
 
 void controller::disconnect(std::vector<std::string> &data,
                             const network::client &to) {
-    model::state::disconnect_user(server_user(data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
+    assert(data.size() == 5);
+    model::state::disconnect_user(server_user(
+        data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
+    send_datagram("disconnected," + data[1], to);
 }
 
 }  // namespace sv

@@ -63,7 +63,7 @@ public:
     void update_layout(std::vector<std::string> &data,
                        const network::client &to);
 
-    static void disconnect(std::vector<std::string> &data,
+    void disconnect(std::vector<std::string> &data,
                     const network::client &to);
 
     void greet(std::vector<std::string> &data, const network::client &to);
