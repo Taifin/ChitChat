@@ -3,10 +3,10 @@
 
 #include <iostream>
 #include <string>
-#include "user.h"
 #include "pqxx/pqxx"
+#include "user.h"
 
-namespace db {
+namespace model {
 
 struct database_error : std::runtime_error {
     explicit database_error(const std::string &msg) : std::runtime_error(msg){};
@@ -16,7 +16,7 @@ struct no_user_found : database_error {
     explicit no_user_found(const std::string &msg) : database_error(msg){};
 };
 
-struct chitchat_database {
+struct database {
 private:
     inline static std::string params;
     inline static pqxx::connection users_connection;
@@ -71,6 +71,5 @@ public:
     /// https://www.postgresql.org/docs/10/libpq-connect.html#LIBPQ-CONNSTRING),
     /// exceptions are handled.
 };
-}  // namespace db
-
+}  // namespace model
 #endif  // CHITCHAT_DATABASE_H

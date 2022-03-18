@@ -1,13 +1,13 @@
 #include "database.h"
 
-namespace db {
+namespace model {
 
-void chitchat_database::local_connection(const std::string &dbname) {
+void database::local_connection(const std::string &dbname) {
     params = "dbname=" + dbname;
     users_connection = pqxx::connection(params);
 }
 
-void chitchat_database::connection(const std::string &dbname,
+void database::connection(const std::string &dbname,
                                    const std::string &host,
                                    const std::string &port,
                                    const std::string &user) {
@@ -16,14 +16,14 @@ void chitchat_database::connection(const std::string &dbname,
     users_connection = pqxx::connection(params);
 }
 
-void chitchat_database::debug_create_db() {
+void database::debug_create_db() {
     pqxx::connection conn("dbname=postgres");
     pqxx::nontransaction creator(conn);
     creator.exec("CREATE DATABASE ChitChat");
     creator.commit();
 }
 
-void chitchat_database::debug_create_table() {
+void database::debug_create_table() {
     pqxx::connection conn("dbname=chitchat");
     pqxx::work w(conn);
     w.exec(
@@ -31,7 +31,7 @@ void chitchat_database::debug_create_table() {
         "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
     w.commit();
 }
-bool chitchat_database::create_user(user *new_user) {
+bool database::create_user(user *new_user) {
     bool exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
                        new_user->name())[0][0]
@@ -45,7 +45,7 @@ bool chitchat_database::create_user(user *new_user) {
     }
 }
 
-user chitchat_database::get_user_data(user *user_) {
+user database::get_user_data(user *user_) {
     auto raw_user_data =
         execute_params("SELECT 1 FROM users WHERE uname=$1;", user_->name());
     if (raw_user_data.empty())
@@ -54,7 +54,7 @@ user chitchat_database::get_user_data(user *user_) {
                 raw_user_data[0]["upassword"].as<std::string>());
 }
 
-pqxx::result chitchat_database::execute_protected(
+pqxx::result database::execute_protected(
     const std::string &connection_params,
     const std::string &query) {
     pqxx::connection conn(connection_params);
@@ -68,7 +68,7 @@ pqxx::result chitchat_database::execute_protected(
         std::cerr << error.what() << std::endl;
     }
 }
-bool chitchat_database::authorize(const std::string &username,
+bool database::authorize(const std::string &username,
                                   const std::string &given_password) {
     auto exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
@@ -84,4 +84,4 @@ bool chitchat_database::authorize(const std::string &username,
         throw no_user_found("Cannot find user to authorize.");
     }
 }
-} // namespace db
+}

@@ -11,7 +11,7 @@ public:
 
     explicit server_user(std::string uname,
                          std::string upwd,
-                         const network::client& cli,
+                         const network::client& cli, // NOLINT
                          int x = 0,
                          int y = 0)
         : user(std::move(uname), std::move(upwd), x, y), client(cli) {

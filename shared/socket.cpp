@@ -20,7 +20,7 @@ std::vector<std::string> udp_socket::parse(const std::string &data) {
         parsed.push_back(token);
     }
     if (parsed.back().back() == '\n') {
-        parsed.back().pop_back();  // removing leading '\n'
+        parsed.back().pop_back();
     }
     return parsed;
 }

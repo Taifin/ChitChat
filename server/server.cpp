@@ -1,5 +1,5 @@
 #include "server.h"
-#include "model.h"
+#include "state.h"
 
 namespace sv {
 
@@ -48,24 +48,23 @@ void controller::authorize_user(std::vector<std::string> &data,
                                 const network::client &to) {
     assert(data.size() == 3);
     try {
-        if (db::chitchat_database::authorize(data[1], data[2])) {
+        if (model::database::authorize(data[1], data[2])) {
             send_datagram("allowed," + data[1] + "\n", to);
         } else {
             send_datagram("denied," + data[1] + "\n", to);
         }
-    } catch (db::no_user_found &) {
+    } catch (model::no_user_found &) {
         send_datagram("none," + data[1] + "\n", to);
-    } catch (db::database_error &) {
+    } catch (model::database_error &) {
         send_datagram("dberror\n", to);
     }
 }
 
 void controller::register_user(std::vector<std::string> &data,
                                const network::client &to) {
-    // TODO: complete user class
     assert(data.size() == 3);
     user new_user(data[1], data[2]);
-    if (db::chitchat_database::create_user(&new_user)) {
+    if (model::database::create_user(&new_user)) {
         send_datagram("created," + data[1] + "\n", to);
     } else {
         send_datagram("rexists," + data[1] + "\n", to);
@@ -76,7 +75,7 @@ void controller::connect_user(std::vector<std::string> &data,
                               const network::client &to) {
     assert(data.size() == 3);
     server_user new_user{data[1], data[2], to};
-    if (md::model::connect_user(new_user)) {
+    if (model::state::connect_user(new_user)) {
         send_datagram("connected," + data[1] + "\n", to);
     } else {
         send_datagram("cexists," + data[1] + "\n", to);
@@ -92,17 +91,17 @@ void controller::greet(std::vector<std::string> &data,
 void controller::update_layout(std::vector<std::string> &data,
                                const network::client &to) {
     assert(data.size() == 4);
-    md::model::update_coords(data[1], std::stoi(data[2]), std::stoi(data[3]));
-    for (const auto& u : md::model::get_users()) {
+    model::state::update_coords(data[1], std::stoi(data[2]), std::stoi(data[3]));
+    for (const auto& u : model::state::get_users()) {
         send_datagram("get," + data[1] + "," + data[2] + "," + data[3] + "\n",
-                      u.client);  // TODO: лажа
+                      u.client);
     }
 }
 
 void controller::translate_users_data(std::vector<std::string> &data,
                                       const network::client &to) {
     std::string all_users = "move,";
-    for (auto u : md::model::get_users()) {
+    for (auto u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," + std::to_string(u.get_coords().y) + ",";
     }
     all_users.pop_back();
@@ -112,7 +111,7 @@ void controller::translate_users_data(std::vector<std::string> &data,
 
 void controller::disconnect(std::vector<std::string> &data,
                             const network::client &to) {
-    md::model::disconnect_user(server_user(data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
+    model::state::disconnect_user(server_user(data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
 }
 
 }  // namespace sv

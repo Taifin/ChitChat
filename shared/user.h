@@ -16,9 +16,6 @@ class user {
     const std::string password;
     point coords;
 
-    // TODO: move to client?
-    //    const std::string address;
-    //    const int port;
     // TODO: list of visited rooms
     // TODO: avatar
 public:
@@ -35,8 +32,16 @@ public:
         return password;
     }
 
-    point get_coords() {
+    [[nodiscard]] point get_coords() const {
         return coords;
+    }
+
+    [[nodiscard]] int get_x() const {
+        return coords.x;
+    }
+
+    [[nodiscard]] int get_y() const {
+        return coords.y;
     }
 
     void set_coords(int x, int y) {
