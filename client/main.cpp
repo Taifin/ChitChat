@@ -1,5 +1,4 @@
 #include "main_window.h"
-#include "database.h"
 
 #include <QApplication>
 #include "client_socket.h"
