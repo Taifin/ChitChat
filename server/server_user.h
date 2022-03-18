@@ -17,16 +17,6 @@ public:
         : user(std::move(uname), std::move(upwd), x, y), client(cli) {
     }
 
-    explicit server_user(const ChitChat::user &other,
-                         const network::client& cli) :
-          user(other), client(cli) {
-    }
-
-    explicit server_user(ChitChat::user &&other,
-                         const network::client& cli) :
-          user(other), client(cli) {
-    }
-
     bool operator==(const server_user &other) {
         return this->name() == other.name();
     }
