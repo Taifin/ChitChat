@@ -99,10 +99,12 @@ void controller::update_layout(std::vector<std::string> &data,
 void controller::translate_users_data(std::vector<std::string> &data,
                                       const network::client &to) {
     std::string all_users = "connected,";
+    // TODO
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
                      std::to_string(u.get_coords().y) + ",";
     }
+    if (all_users.back() == ',') all_users.pop_back();
     if (!all_users.empty()) all_users += "\n";
     send_datagram(all_users, to);
 }
