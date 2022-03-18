@@ -32,11 +32,13 @@ signals:
 
     void run_already_connected();
 
-    void run_connect_with_room();
+    void run_connect_with_room(std::vector<std::string> data);
 
     void run_move(std::string username, int x, int y);
 
     void run_get();
+
+    //void run_initialize_users_in_the_room(std::vector<std::string> data);
 };
 
 #endif // CLIENT_SOCKET_H

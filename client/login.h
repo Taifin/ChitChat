@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "registration.h"
 #include "client_socket.h"
+#include <QObject>
 
 
 namespace Ui {

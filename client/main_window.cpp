@@ -6,21 +6,30 @@
 #include <QApplication>
 #include "sprite.h"
 #include <map>
-#include "user.h"
+#include "client_user.h"
+#include <memory>
+#include <chrono>
+#include <thread>
 
 extern client_socket socket;
 extern network::client server;
-extern user current_user;
+extern client_user current_user;
+extern std::map<std::string, client_user> users_in_the_room;
 
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::main_window)
 {
+    scene = new QGraphicsScene();
+    //sprite_current_user = new sprite();
+
     connect(&login_m, SIGNAL(show_main_window()), this, SLOT(show_after_auth()));
 
     connect(&socket, SIGNAL(run_already_connected()), this, SLOT(already_connected()));
-    connect(&socket, SIGNAL(run_connect_with_room()), this, SLOT(connect_with_room()));
+    connect(&socket, SIGNAL(run_connect_with_room(std::vector<std::string>)), this, SLOT(connect_with_room(std::vector<std::string>)));
+
+    //connect(&socket, SIGNAL(run_initialize_users_in_the_room(std::vector<std::string>)), this, SLOT(initialize_users_in_the_room(std::vector<std::string>)));
 
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
@@ -36,9 +45,9 @@ void main_window::show_after_auth(){
 
 main_window::~main_window()
 {
+    delete scene;
     delete ui;
 }
-
 
 void main_window::on_connect_button_clicked()
 {
@@ -50,36 +59,43 @@ void main_window::already_connected()
     ui->statusbar->showMessage("Wait dude, you're already in the room");
 }
 
-void main_window::connect_with_room()
+void main_window::connect_with_room(std::vector<std::string> data)
 {
-    QGraphicsScene *scene = new QGraphicsScene();
-    sprite *sprite_current_user = new sprite();
-    sprite_current_user->setRect(0,0,30,30);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+/*
+    for (int i = 1; i < data.size(); i += 3){
+        client_user u(data[i+1], data[i+2]);
+        users_in_the_room.emplace(data[i], u);
+    }*/
 
-
-
- /*   //играюсь:Р
-
-    std::map<std::string, sprite*> aboba;
-    sprite *kek = new sprite();
-    kek->setRect(30,30,30,30);
-    aboba["kek"] = kek;
-
-
-    for (auto &x : aboba){
-        scene->addItem(x.second);
+    current_user.user_sprite->setRect(0,0,30,30);
+    current_user.user_sprite->name_display->setPlainText(QString(current_user.name().c_str()));
+    current_user.user_sprite->name_display->setPos(0, -20);
+/*
+    for (auto &x : users_in_the_room){
+        qDebug() << x.first.c_str();
+        scene->addItem(x.second.user_sprite);
+        //scene->addItem(x.second.user_sprite->name_display);
     }
 
-*/
-    scene->addItem(sprite_current_user);
-    sprite_current_user->setFlag(QGraphicsItem::ItemIsFocusable);
-    sprite_current_user->setFocus();
+    //scene->addItem(users_in_the_room["1234"].user_sprite);
+
+    for (auto &x : users_in_the_room){
+        scene->addItem(x.second.user_sprite);
+        //scene->addItem(x.second.user_sprite->name_display);
+    }
+    */
+
+    scene->addItem(current_user.user_sprite);
+    scene->addItem(current_user.user_sprite->name_display);
+    current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
+    current_user.user_sprite->setFocus();
 
     QGraphicsView *view = ui->room_view;
     view->setScene(scene);
 
-
 }
+
 
 
 

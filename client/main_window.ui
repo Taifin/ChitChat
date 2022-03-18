@@ -23,7 +23,7 @@
       <x>0</x>
       <y>0</y>
       <width>821</width>
-      <height>551</height>
+      <height>561</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -52,6 +52,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QPushButton" name="connect_button">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>connect</string>
          </property>
@@ -69,23 +75,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Hello, User
-Я в своем познании настолько преисполнился,
- что я как будто бы уже
-
-сто триллионов миллиардов лет
- проживаю на триллионах и
-
-триллионах таких же планет, как эта Земля,
- мне этот мир абсолютно
-
-понятен, и я здесь ищу только одного - покоя,
- умиротворения и
-
-вот этой гармонии, от слияния
- с бесконечно вечным, от созерцания
-
-великого фрактального подобия </string>
+          <string/>
          </property>
         </widget>
        </item>

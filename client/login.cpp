@@ -46,6 +46,7 @@ void login::on_log_in_button_clicked()
     password = ui->password_line_edit->text().toStdString();
 
     socket.send_datagram("login," + login + "," + password, server);
+    //successful_login(login); //TODO
 }
 
 void login::on_create_new_account_button_clicked()
