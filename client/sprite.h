@@ -6,8 +6,9 @@
 
 enum class directions {UP, DOWN, LEFT, RIGHT};
 
-class sprite : public QGraphicsRectItem
+class sprite : public QObject, public QGraphicsRectItem
 {
+    Q_OBJECT
 
 public:
     sprite();

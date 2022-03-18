@@ -62,24 +62,32 @@ void main_window::already_connected()
 void main_window::connect_with_room(std::vector<std::string> data)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-    for (auto x : data){
-        qDebug() <<"***"<< x.c_str();
-    }
-
+/*
     for (int i = 1; i < data.size(); i += 3){
         client_user u(data[i+1], data[i+2]);
-        users_in_the_room.try_emplace(data[i], u);
-    }
+        users_in_the_room.emplace(data[i], u);
+    }*/
 
     current_user.user_sprite->setRect(0,0,30,30);
+    current_user.user_sprite->name_display->setPlainText(QString(current_user.name().c_str()));
+    current_user.user_sprite->name_display->setPos(0, -20);
+/*
+    for (auto &x : users_in_the_room){
+        qDebug() << x.first.c_str();
+        scene->addItem(x.second.user_sprite);
+        //scene->addItem(x.second.user_sprite->name_display);
+    }
+
+    //scene->addItem(users_in_the_room["1234"].user_sprite);
 
     for (auto &x : users_in_the_room){
         scene->addItem(x.second.user_sprite);
         //scene->addItem(x.second.user_sprite->name_display);
     }
+    */
 
     scene->addItem(current_user.user_sprite);
+    scene->addItem(current_user.user_sprite->name_display);
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
     current_user.user_sprite->setFocus();
 
