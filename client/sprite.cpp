@@ -3,6 +3,12 @@
 
 int STEP_SIZE = 5;
 
+sprite::sprite()
+{
+     //name_display->setPlainText(QString("a"));
+     //name_display->setPlainText(QString("aa"));
+}
+
 void sprite::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()){
@@ -19,6 +25,11 @@ void sprite::keyPressEvent(QKeyEvent *event)
             change_position(STEP_SIZE, this, directions::RIGHT);
             break;
     }
+}
+
+sprite::~sprite()
+{
+    delete name_display;
 }
 
 void change_position(int step_size, sprite *walker, directions dir)
@@ -39,3 +50,4 @@ void change_position(int step_size, sprite *walker, directions dir)
     }
 
 }
+

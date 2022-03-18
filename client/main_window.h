@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "login.h"
+#include <QGraphicsScene>
+#include "sprite.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class main_window; }
@@ -25,10 +27,14 @@ private slots:
 
     void already_connected();
 
-    void connect_with_room();
+    void connect_with_room(std::vector<std::string> data);
+
+    //void initialize_users_in_the_room(std::vector<std::string> data);
 
 private:
     Ui::main_window *ui;
     login login_m;
+    QGraphicsScene *scene;
+    //sprite *sprite_current_user;
 };
 #endif // MAIN_WINDOW_H

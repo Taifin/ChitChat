@@ -12,11 +12,13 @@ void client_socket::process(){
     std::string status = data[0];
     network::client current_client = queries.front().second;
     queries.pop();
+    for (auto d : data) {
+        qDebug() << d.c_str();
+    }
     qDebug() << status.c_str();
 
     //case for login
     if (status == "allowed"){
-        qDebug() << data[1].c_str();
         emit run_successful_login(data[1]);
     }
     if (status == "denied"){
@@ -35,14 +37,18 @@ void client_socket::process(){
     if (status == "rexists"){
         emit run_duplicate();
     }
-    //case for connection
     if (status == "connected"){
-        emit run_connect_with_room();
+        emit run_connect_with_room(data);
     }
-    if (status == "exists"){
-    //if (status == "cexists"){
+    if (status == "cexists"){
         emit run_already_connected();
     }
+    /*
+    if (status == "get"){
+        qDebug()<<"gaga";
+        emit run_initialize_users_in_the_room(data);
+    }
+    */
 }
 
 
