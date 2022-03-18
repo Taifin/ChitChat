@@ -32,6 +32,7 @@ void udp_socket::send_datagram(const std::string &data, const client &to) {
     socket->waitForReadyRead(500);
 }
 
+// TODO: listen on different thread
 void udp_socket::readPendingDatagrams() {
     QNetworkDatagram datagram;
     while (socket->hasPendingDatagrams()) {

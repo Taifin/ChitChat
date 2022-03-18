@@ -20,7 +20,6 @@
 /// | connect    | connect,username,password   | ok: connected,username; duplicate: cexists,username                                      |
 /// | greet      | hello,username              | Hello, username, I'm Server God!                                                         |
 /// | move       | move,username,x,y           | move,username,x,y                                                                        |
-/// | get        | get                         | get,username1,x,y,username2,x,y,username3,x,y                                            |
 /// | disconnect | disconnect,username,pwd,x,y | disconnected                                                                             |
 /// +------------+-----------------------------+------------------------------------------------------------------------------------------+
 

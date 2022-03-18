@@ -31,9 +31,6 @@ void controller::process() {
                 case e_commands::MOVE:
                     update_layout(data, query.second);
                     break;
-                case e_commands::GET:
-                    translate_users_data(data, query.second);
-                    break;
                 case e_commands::DISCONNECT:
                     disconnect(data, query.second);
                     break;
@@ -65,7 +62,7 @@ void controller::register_user(std::vector<std::string> &data,
     assert(data.size() == 3);
     user new_user(data[1], data[2]);
     if (model::database::create_user(&new_user)) {
-        send_datagram("created," + data[1] + "\n", to);
+        translate_users_data(data, to);
     } else {
         send_datagram("rexists," + data[1] + "\n", to);
     }
