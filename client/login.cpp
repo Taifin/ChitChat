@@ -1,8 +1,8 @@
 #include "login.h"
 #include "ui_login.h"
-#include "database.h"
 #include "main_window.h"
 #include "client_socket.h"
+#include "user.h"
 
 extern client_socket socket;
 extern network::client server;
