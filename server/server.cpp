@@ -62,7 +62,7 @@ void controller::register_user(std::vector<std::string> &data,
     assert(data.size() == 3);
     user new_user(data[1], data[2]);
     if (model::database::create_user(&new_user)) {
-        translate_users_data(data, to);
+        send_datagram("created," + data[1] + "\n", to)
     } else {
         send_datagram("rexists," + data[1] + "\n", to);
     }
@@ -73,7 +73,7 @@ void controller::connect_user(std::vector<std::string> &data,
     assert(data.size() == 3);
     server_user new_user{data[1], data[2], to};
     if (model::state::connect_user(new_user)) {
-        send_datagram("connected," + data[1] + "\n", to);
+        translate_users_data(data, to);
     } else {
         send_datagram("cexists," + data[1] + "\n", to);
     }
@@ -98,7 +98,7 @@ void controller::update_layout(std::vector<std::string> &data,
 
 void controller::translate_users_data(std::vector<std::string> &data,
                                       const network::client &to) {
-    std::string all_users = "get,";
+    std::string all_users = "connected,";
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
                      std::to_string(u.get_coords().y) + ",";
