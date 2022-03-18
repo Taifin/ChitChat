@@ -62,7 +62,7 @@ void controller::register_user(std::vector<std::string> &data,
     assert(data.size() == 3);
     user new_user(data[1], data[2]);
     if (model::database::create_user(&new_user)) {
-        send_datagram("created," + data[1] + "\n", to)
+        send_datagram("created," + data[1] + "\n", to);
     } else {
         send_datagram("rexists," + data[1] + "\n", to);
     }
