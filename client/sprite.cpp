@@ -1,9 +1,14 @@
 #include "sprite.h"
+#include "client_socket.h"
 #include <QKeyEvent>
 
 int STEP_SIZE = 5;
 
-sprite::sprite()
+extern network::client server;
+extern client_socket socket;
+
+
+sprite::sprite(std::string name) : name(name)
 {
      //name_display->setPlainText(QString("a"));
      //name_display->setPlainText(QString("aa"));
@@ -34,21 +39,27 @@ sprite::~sprite()
 
 void change_position(int step_size, sprite *walker, directions dir)
 {
+    int x = walker->x();
+    int y = walker->y();
     switch (dir){
         case directions::UP:
-            walker->setPos(walker->x(), walker->y()-step_size);
+            socket.send_datagram("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y-step_size), server);
+            walker->setPos(x, y-step_size);
             walker->name_display->setPos(walker->name_display->x(), walker->name_display->y()-step_size);
             break;
         case directions::DOWN:
-            walker->setPos(walker->x(), walker->y()+step_size);
+            socket.send_datagram("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y+step_size), server);
+            walker->setPos(x, y+step_size);
             walker->name_display->setPos(walker->name_display->x(), walker->name_display->y()+step_size);
             break;
         case directions::RIGHT:
-            walker->setPos(walker->x()+step_size, walker->y());
+            socket.send_datagram("move," + walker->name + "," + std::to_string(x+step_size) + "," + std::to_string(y), server);
+            walker->setPos(x+step_size, y);
             walker->name_display->setPos(walker->name_display->x()+step_size, walker->name_display->y());
             break;
         case directions::LEFT:
-            walker->setPos(walker->x()-step_size, walker->y());
+            socket.send_datagram("move," + walker->name + "," + std::to_string(x-step_size) + "," + std::to_string(y), server);
+            walker->setPos(x-step_size, y);
             walker->name_display->setPos(walker->name_display->x()-step_size, walker->name_display->y());
             break;
     }

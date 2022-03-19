@@ -29,7 +29,7 @@ private slots:
 
     void connect_with_room(std::vector<std::string> data);
 
-    //void initialize_users_in_the_room(std::vector<std::string> data);
+    void change_position(std::string name, int x, int y);
 
 private:
     Ui::main_window *ui;

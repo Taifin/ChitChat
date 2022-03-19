@@ -22,14 +22,12 @@ main_window::main_window(QWidget *parent)
     , ui(new Ui::main_window)
 {
     scene = new QGraphicsScene();
-    //sprite_current_user = new sprite();
 
     connect(&login_m, SIGNAL(show_main_window()), this, SLOT(show_after_auth()));
 
     connect(&socket, SIGNAL(run_already_connected()), this, SLOT(already_connected()));
     connect(&socket, SIGNAL(run_connect_with_room(std::vector<std::string>)), this, SLOT(connect_with_room(std::vector<std::string>)));
-
-    //connect(&socket, SIGNAL(run_initialize_users_in_the_room(std::vector<std::string>)), this, SLOT(initialize_users_in_the_room(std::vector<std::string>)));
+    connect(&socket, SIGNAL(run_change_position(std::string, int, int)), this, SLOT(change_position(std::string, int, int)));
 
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
@@ -62,29 +60,24 @@ void main_window::already_connected()
 void main_window::connect_with_room(std::vector<std::string> data)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-/*
+
+    scene->setSceneRect(-250, -250, 500, 500);
+
     for (int i = 1; i < data.size(); i += 3){
-        client_user u(data[i+1], data[i+2]);
-        users_in_the_room.emplace(data[i], u);
-    }*/
+        if (data[i] != current_user.name()){
+        client_user u(data[i], "psw", stoi(data[i+1]), stoi(data[i+2]));
+        users_in_the_room[data[i]] = u;
+        users_in_the_room[data[i]].user_sprite->setRect(stoi(data[i+1]),stoi(data[i+2]),30,30);
+        users_in_the_room[data[i]].user_sprite->name_display->setPlainText(QString(users_in_the_room[data[i]].name().c_str()));
+        users_in_the_room[data[i]].user_sprite->name_display->setPos(stoi(data[i+1]), stoi(data[i+2])-20);
+        scene->addItem(users_in_the_room[data[i]].user_sprite);
+        scene->addItem(users_in_the_room[data[i]].user_sprite->name_display);
+        }
+    }
 
     current_user.user_sprite->setRect(0,0,30,30);
     current_user.user_sprite->name_display->setPlainText(QString(current_user.name().c_str()));
     current_user.user_sprite->name_display->setPos(0, -20);
-/*
-    for (auto &x : users_in_the_room){
-        qDebug() << x.first.c_str();
-        scene->addItem(x.second.user_sprite);
-        //scene->addItem(x.second.user_sprite->name_display);
-    }
-
-    //scene->addItem(users_in_the_room["1234"].user_sprite);
-
-    for (auto &x : users_in_the_room){
-        scene->addItem(x.second.user_sprite);
-        //scene->addItem(x.second.user_sprite->name_display);
-    }
-    */
 
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
@@ -93,9 +86,13 @@ void main_window::connect_with_room(std::vector<std::string> data)
 
     QGraphicsView *view = ui->room_view;
     view->setScene(scene);
-
 }
 
+void main_window::change_position(std::string name, int x, int y)
+{
+    users_in_the_room[name].user_sprite->setPos(x, y);
+    users_in_the_room[name].user_sprite->name_display->setPos(x, y-20);
+}
 
 
 

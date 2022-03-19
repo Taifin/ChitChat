@@ -38,6 +38,8 @@ signals:
 
     void run_get();
 
+    void run_change_position(std::string, int, int);
+
     //void run_initialize_users_in_the_room(std::vector<std::string> data);
 };
 

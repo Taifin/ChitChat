@@ -11,8 +11,10 @@ class sprite : public QObject, public QGraphicsRectItem
     Q_OBJECT
 
 public:
-    sprite();
+    sprite(std::string name);
     void keyPressEvent(QKeyEvent *event);
+
+    std::string name;
 
     ~sprite();
 
