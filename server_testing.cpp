@@ -1,10 +1,20 @@
 #include "server.h"
+#include <thread>
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
     model::database::local_connection();
-    sv::controller aboba(QHostAddress::LocalHost, 1234);
+    network::queries_keeper* keeper = new network::queries_keeper;
+    network::udp_socket receiver(QHostAddress::Any, 60000, keeper);
+    network::udp_socket sender(QHostAddress::Any, 0, keeper);
+    sv::server_processor processor(keeper, sender);
+    std::thread t([&processor](){
+       while (true) {
+           processor.wait_next_query();
+       }
+    });
+    t.detach();
 
     return a.exec();
 }

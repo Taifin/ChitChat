@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include "database.h"
-//#include "server_query.pb.h"
 #include "socket.h"
 #include "user.h"
 
@@ -17,58 +16,48 @@
 /// +------------+-----------------------------+------------------------------------------------------------------------------------------+
 /// | login      | login,username,password     | ok: allowed,username; bad: denied,username; no_user_found: none,username; error: dberror |
 /// | register   | register,username,password  | ok: created,username; duplicate: rexists,username                                        |
-/// | connect    | connect,username,password   | ok: connected,username; duplicate: cexists,username                                      |
+/// | connect    | connect,username,password   | ok: connected,user1,x1,y1,user2,x2,y2...; duplicate: cexists,username                    |
 /// | greet      | hello,username              | Hello, username, I'm Server God!                                                         |
 /// | move       | move,username,x,y           | move,username,x,y                                                                        |
 /// | disconnect | disconnect,username,pwd,x,y | disconnected                                                                             |
 /// +------------+-----------------------------+------------------------------------------------------------------------------------------+
 
 namespace sv {
-class controller : network::udp_socket {
-    Q_OBJECT
+
+class server_processor : public network::query_processor {
 private:
-    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, GET, DISCONNECT };
+    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
     std::map<std::string, e_commands> commands{
         {"login", e_commands::LOGIN},     {"register", e_commands::REGISTER},
         {"connect", e_commands::CONNECT}, {"hello", e_commands::GREET},
-        {"move", e_commands::MOVE},       {"get", e_commands::GET},
-        {"disconnect", e_commands::DISCONNECT}};
-
+        {"move", e_commands::MOVE}, {"disconnect", e_commands::DISCONNECT}};
 public:
-    explicit controller(const QHostAddress &host1,
-                        quint16 port1,
-                        QObject *parent1 = nullptr);
-
     void process() override;
 
-    void authorize_user(std::vector<std::string> &data,
-                        const network::client &to);
+    void authorize_user();
     /// Calls to database's authorize(), exceptions are handled.
     /// Use it to authorize user on login screen.
 
-    void register_user(std::vector<std::string> &data,
-                       const network::client &to);
+    void register_user();
     /// Calls to database's create_user().
     /// Use it to make new user in database.
 
-    void connect_user(std::vector<std::string> &data,
-                      const network::client &to);
+    void connect_user();
     /// Calls to model's connect_user().
     /// Use it to connect user to the room (in future).
 
-    void translate_users_data(std::vector<std::string> &data,
-                              const network::client &to);
+    void translate_users_data();
 
-    void update_layout(std::vector<std::string> &data,
-                       const network::client &to);
+    void update_layout();
 
-    void disconnect(std::vector<std::string> &data,
-                    const network::client &to);
+    void disconnect();
 
-    void greet(std::vector<std::string> &data, const network::client &to);
+    void greet();
     /// Debugging: sends message in return.
 
-    virtual ~controller(){};
+    server_processor(network::queries_keeper *pKeeper,
+                     network::udp_socket &socket);
 };
+
 }  // namespace sv
 #endif
