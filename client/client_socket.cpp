@@ -43,12 +43,12 @@ void client_socket::process(){
     if (status == "cexists"){
         emit run_already_connected();
     }
-    /*
-    if (status == "get"){
-        qDebug()<<"gaga";
-        emit run_initialize_users_in_the_room(data);
+    if (status == "move") {
+
     }
-    */
+    if (status == "disconnected") {
+
+    }
 }
 
 

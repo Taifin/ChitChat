@@ -8,7 +8,7 @@ udp_socket::udp_socket(const QHostAddress &host,
                        QObject *parent) : type(type) {
     socket = new QUdpSocket(this);
     socket->bind(host, port);
-    qDebug() << "Server is running at:" << host << "and port is:" << port;
+    qDebug() << "Server is running at:" << socket->localAddress().toString() << "and port is:" << socket->localPort();
     connect(socket, &QUdpSocket::readyRead, this,
             &udp_socket::readPendingDatagrams);
 }

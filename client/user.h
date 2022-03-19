@@ -20,10 +20,10 @@ class user {
     // TODO: list of visited rooms
     // TODO: avatar
 public:
-    explicit user(std::string uname, std::string upwd)
+    explicit user(std::string uname, std::string upwd, int x = 0, int y = 0)
         : username(std::move(uname)),
           password(std::move(upwd)),
-          x(0), y(0){};
+          x(y), y(x){};
 
     [[nodiscard]] const std::string& name() const {
         return username;

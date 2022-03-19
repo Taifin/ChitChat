@@ -8,8 +8,10 @@ class client_user : public user
 {
 
 public:
+    client_user();
     client_user(std::string uname, std::string upwd);
-    sprite *user_sprite = new sprite;
+    client_user(std::string uname, std::string upwd, int x, int y);
+    sprite *user_sprite = new sprite(this->name());
     ~client_user();
 private:
 
