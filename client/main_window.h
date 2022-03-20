@@ -7,11 +7,12 @@
 #include "sprite.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class main_window; }
+namespace Ui {
+class main_window;
+}
 QT_END_NAMESPACE
 
-class main_window : public QMainWindow
-{
+class main_window : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -37,4 +38,4 @@ private:
     QGraphicsScene *scene;
     //sprite *sprite_current_user;
 };
-#endif // MAIN_WINDOW_H
+#endif  // MAIN_WINDOW_H

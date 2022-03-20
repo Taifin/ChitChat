@@ -1,16 +1,14 @@
 #include "registration.h"
-#include "ui_registration.h"
 #include "database.h"
+#include "ui_registration.h"
 #include "user.h"
 #include "client_socket.h"
 
 extern client_socket socket;
 extern network::client server;
 
-registration::registration(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::registration)
-{
+registration::registration(QWidget *parent)
+    : QDialog(parent), ui(new Ui::registration) {
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
 
@@ -18,13 +16,11 @@ registration::registration(QWidget *parent) :
     connect(&socket, SIGNAL(run_duplicate()), this, SLOT(duplicate()));
 }
 
-registration::~registration()
-{
+registration::~registration() {
     delete ui;
 }
 
-void registration::on_back_button_clicked()
-{
+void registration::on_back_button_clicked() {
     this->hide();
     emit show_login_window_again();
 }
@@ -34,9 +30,9 @@ void registration::on_confirm_button_clicked()
     std::string login, password, confirm_password;
     login = (ui->name_line_edit->text()).toStdString();
     password = ui->password_line_edit->text().toStdString();
-    confirm_password = ui-> confirm_line_edit->text().toStdString();
+    confirm_password = ui->confirm_line_edit->text().toStdString();
 
-    if (password != confirm_password){
+    if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
     }
     else{
@@ -57,10 +53,8 @@ void registration::on_show_password_check_stateChanged(int arg1)
     if (arg1){
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Normal);
         ui->confirm_line_edit->QLineEdit::setEchoMode(QLineEdit::Normal);
-    }
-    else{
+    } else {
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Password);
         ui->confirm_line_edit->QLineEdit::setEchoMode(QLineEdit::Password);
     }
 }
-
