@@ -6,8 +6,8 @@ int main(int argc, char *argv[]) {
 
     model::database::local_connection();
     network::queries_keeper* keeper = new network::queries_keeper;
-    network::udp_socket receiver(QHostAddress::Any, 60000, keeper);
-    network::udp_socket sender(QHostAddress::Any, 0, keeper);
+    sv::server_socket receiver(QHostAddress::Any, 60000, keeper);
+    sv::server_socket sender(QHostAddress::Any, 0, keeper);
     sv::server_processor processor(keeper, sender);
     std::thread t([&processor](){
        while (true) {

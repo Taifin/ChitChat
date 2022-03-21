@@ -41,7 +41,6 @@ std::vector<std::string> query_processor::parse(const std::string &raw_data) {
 void udp_socket::send_datagram(const std::string &data, const client &to) {
     QByteArray datagram(data.c_str());
     socket->writeDatagram(datagram, to.address, to.port);
-    socket->waitForReadyRead(500);
 }
 
 void udp_socket::readPendingDatagrams() {
@@ -53,7 +52,7 @@ void udp_socket::readPendingDatagrams() {
                  << datagram.senderPort();
         std::unique_lock lock(keeper->queries_mutex);
         keeper->queries.push({datagram.data().toStdString(),
-                      {datagram.senderAddress(), 60000}});
+                              configure_address(datagram.senderAddress())});
     }
     keeper->query_available.notify_one();
 }

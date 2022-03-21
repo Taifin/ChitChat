@@ -40,6 +40,8 @@ public:
     void send_datagram(const std::string &data, const client &to);
     /// Sends "msg" to client.
 
+    virtual client configure_address(const QHostAddress &address) = 0;
+
 signals:
 
 public slots:

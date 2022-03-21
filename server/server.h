@@ -24,6 +24,18 @@
 
 namespace sv {
 
+class server_socket : public network::udp_socket {
+    network::client configure_address(const QHostAddress &address) override;
+
+public:
+    explicit server_socket(const QHostAddress &host,
+                           quint16 port,
+                           network::queries_keeper* keeper1,
+                           QObject *parent = nullptr) : network::udp_socket(host, port, keeper1) {
+
+    }
+};
+
 class server_processor : public network::query_processor {
 private:
     enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };

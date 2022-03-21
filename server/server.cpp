@@ -115,4 +115,7 @@ server_processor::server_processor(network::queries_keeper *pKeeper,
     : query_processor(pKeeper, socket) {
 }
 
+network::client server_socket::configure_address(const QHostAddress &address) {
+    return {address, 50000};
+}
 }  // namespace sv
