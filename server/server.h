@@ -27,12 +27,11 @@ namespace sv {
 class controller : network::udp_socket {
     Q_OBJECT
 private:
-    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, GET, DISCONNECT };
+    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
     std::map<std::string, e_commands> commands{
         {"login", e_commands::LOGIN},     {"register", e_commands::REGISTER},
         {"connect", e_commands::CONNECT}, {"hello", e_commands::GREET},
-        {"move", e_commands::MOVE},       {"get", e_commands::GET},
-        {"disconnect", e_commands::DISCONNECT}};
+        {"move", e_commands::MOVE},     {"disconnect", e_commands::DISCONNECT}};
 
 public:
     explicit controller(const QHostAddress &host1,

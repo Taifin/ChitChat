@@ -36,7 +36,7 @@ void controller::process() {
                     break;
             }
         } catch (std::out_of_range &e) {
-            send_datagram("Unknown command " + data[0] + "\n", query.second);
+            send_datagram("Unknown commanddddddddd " + data[0] + "\n", query.second);
         }
     }
 }
@@ -88,6 +88,7 @@ void controller::greet(std::vector<std::string> &data,
 void controller::update_layout(std::vector<std::string> &data,
                                const network::client &to) {
     assert(data.size() == 4);
+    qDebug() << "entered in move";
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {

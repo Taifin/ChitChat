@@ -1,5 +1,4 @@
 #include "registration.h"
-#include "database.h"
 #include "ui_registration.h"
 #include "user.h"
 #include "client_socket.h"

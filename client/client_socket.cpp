@@ -3,8 +3,7 @@
 
 client_socket::client_socket(const QHostAddress &host,
                              quint16 port,
-                             const std::string &type = "server",
-                             QObject *parent = nullptr) : udp_socket(host, port, type, parent) {
+                             QObject *parent = nullptr) : udp_socket(host, port, parent) {
 }
 
 void client_socket::process(){
@@ -43,10 +42,10 @@ void client_socket::process(){
     if (status == "cexists"){
         emit run_already_connected();
     }
-    if (status == "move"){
+    if (status == "move") {
 
     }
-    if (status == "disconnected"){
+    if (status == "disconnected") {
 
     }
 }

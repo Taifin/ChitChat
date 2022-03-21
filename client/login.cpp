@@ -1,15 +1,16 @@
 #include "login.h"
-#include "database.h"
+#include "ui_login.h"
 #include "main_window.h"
 #include "client_socket.h"
+#include "user.h"
 
 extern client_socket socket;
 extern network::client server;
 extern user current_user;
 
 login::login(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::login)
+      QDialog(parent),
+      ui(new Ui::login)
 {
     connect(&registration_m, SIGNAL(show_login_window_again()), this, SLOT(show_login_window()));
 
@@ -17,27 +18,35 @@ login::login(QWidget *parent) :
     connect(&socket, SIGNAL(run_wrong_password()), this, SLOT(wrong_password()));
     connect(&socket, SIGNAL(run_no_user()), this, SLOT(no_user()));
     connect(&socket, SIGNAL(run_error()), this, SLOT(error()));
+
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
 }
 
-login::~login() {
+login::~login()
+{
     delete ui;
 }
 
-void login::on_show_password_check_box_stateChanged(int arg1) {
-    if (arg1) {
+void login::on_show_password_check_box_stateChanged(int arg1)
+{
+    if (arg1){
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Normal);
-    } else {
+    }
+    else{
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Password);
     }
 }
 
-void login::on_log_in_button_clicked() {
+
+void login::on_log_in_button_clicked()
+{
     std::string login, password;
     login = (ui->login_line_edit->text().toStdString());
     password = ui->password_line_edit->text().toStdString();
+
     socket.send_datagram("login," + login + "," + password, server);
+    //successful_login(login); //TODO
 }
 
 void login::on_create_new_account_button_clicked()
@@ -46,12 +55,12 @@ void login::on_create_new_account_button_clicked()
     registration_m.show();
 }
 
-void login::show_login_window() {
+void login::show_login_window(){
     this->show();
 }
 
 void login::successful_login(std::string name){
-    current_user.set_name(name);
+    current_user = user(name, current_user.pwd());
     this->hide();
     emit show_main_window();
 }

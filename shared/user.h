@@ -12,8 +12,8 @@ struct point {
 };
 
 class user {
-    const std::string username;
-    const std::string password;
+    std::string username;
+    std::string password;
     point coords;
 
     // TODO: list of visited rooms
