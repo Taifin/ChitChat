@@ -29,7 +29,7 @@ std::vector<std::string> udp_socket::parse(const std::string &data) {
 void udp_socket::send_datagram(const std::string &data, const client &to) {
     QByteArray datagram(data.c_str());
     socket->writeDatagram(datagram, to.address, to.port);
-    socket->waitForReadyRead(500);
+    socket->waitForReadyRead(100);
 }
 
 // TODO: listen on different thread
