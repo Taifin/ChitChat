@@ -74,6 +74,7 @@ void controller::connect_user(std::vector<std::string> &data,
     server_user new_user{data[1], data[2], to};
     if (model::state::connect_user(new_user)) {
         translate_users_data(data, to);
+        update_layout(data, to);
     } else {
         send_datagram("cexists," + data[1] + "\n", to);
     }
