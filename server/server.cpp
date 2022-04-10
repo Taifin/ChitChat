@@ -36,7 +36,7 @@ void controller::process() {
                     break;
             }
         } catch (std::out_of_range &e) {
-            send_datagram("Unknown commanddddddddd " + data[0] + "\n", query.second);
+            send_datagram("Unknown command or user is not connected " + data[0] + "\n", query.second);
         }
     }
 }
