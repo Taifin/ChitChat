@@ -16,24 +16,30 @@ Server::Server() {
 
     QAudioFormat format;
     {
-        format.setSampleRate(8000);
+        format.setSampleRate(128000);
         format.setChannelCount(1);
-        format.setSampleSize(8);
+        format.setSampleSize(16);
         format.setCodec("audio/pcm");
         format.setByteOrder(QAudioFormat::LittleEndian);
         format.setSampleType(QAudioFormat::UnSignedInt);
     }
 
-    // m_inputaudio = new QAudioInput(format, this);
-    m_outputaudio = new QAudioOutput(format, this);
+    QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+    if (!info.isFormatSupported(format))
+        format = info.nearestFormat(format);
+
+    // m_inputaudio = new QAudioInput(format);
+    // m_inputaudio->start(socket);
+
+    m_outputaudio = new QAudioOutput(format);
     std::cerr << "m_outputaudio creatde" << std::endl;
+    device = m_outputaudio->start();
 
     QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(getMusic()));
 }
 void Server::getMusic() {
     std::cerr << "getMusic" << std::endl;
     // m_inputaudio->start(socket);
-    QIODevice *device = m_outputaudio->start();
 
     while (socket->hasPendingDatagrams()) {
         QByteArray data;

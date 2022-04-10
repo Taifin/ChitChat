@@ -22,5 +22,6 @@ private:
     QUdpSocket *socket;
     QAudioInput *m_inputaudio;
     QAudioOutput *m_outputaudio;
+    QIODevice *device;
 };
 #endif
