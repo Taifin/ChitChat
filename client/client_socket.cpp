@@ -44,11 +44,10 @@ void client_socket::process(){
         emit run_already_connected();
     }
     if (status == "move"){
-
+        qDebug() << "im dead";
+        emit run_change_position(data[1], stoi(data[2]), stoi(data[3]));
     }
-    if (status == "disconnected"){
 
-    }
 }
 
 
