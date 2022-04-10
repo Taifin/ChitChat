@@ -1,16 +1,16 @@
 #include "login.h"
 #include "ui_login.h"
+#include "database.h"
 #include "main_window.h"
 #include "client_socket.h"
-#include "user.h"
 
 extern client_socket socket;
 extern network::client server;
 extern user current_user;
 
 login::login(QWidget *parent) :
-      QDialog(parent),
-      ui(new Ui::login)
+    QDialog(parent),
+    ui(new Ui::login)
 {
     connect(&registration_m, SIGNAL(show_login_window_again()), this, SLOT(show_login_window()));
 
@@ -46,7 +46,6 @@ void login::on_log_in_button_clicked()
     password = ui->password_line_edit->text().toStdString();
 
     socket.send_datagram("login," + login + "," + password, server);
-    //successful_login(login); //TODO
 }
 
 void login::on_create_new_account_button_clicked()
@@ -60,7 +59,7 @@ void login::show_login_window(){
 }
 
 void login::successful_login(std::string name){
-    current_user = user(name, current_user.pwd());
+    current_user.set_name(name);
     this->hide();
     emit show_main_window();
 }

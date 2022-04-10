@@ -47,6 +47,9 @@ void client_socket::process(){
         qDebug() << "im dead";
         emit run_change_position(data[1], stoi(data[2]), stoi(data[3]));
     }
+    /*if (status == "connected"){
+
+    }*/
 
 }
 
