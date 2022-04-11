@@ -2,12 +2,9 @@
 #include "iostream"
 
 namespace network {
-void query_processor::set_keeper(queries_keeper* keeper1) {
-    keeper = keeper1;
-}
 void query_processor::wait_next_query() {
     std::unique_lock lock(keeper->queries_mutex);
-    keeper->query_available.wait(lock, [&](){ return !keeper->queries.empty(); });
+    keeper->query_available.wait(lock, [&](){ return !keeper->parsed_queries.empty(); });
     process();
 }
 
@@ -38,9 +35,11 @@ std::vector<std::string> query_processor::parse(const std::string &raw_data) {
     return parsed;
 }
 
-void udp_socket::send_datagram(const std::string &data, const client &to) {
-    QByteArray datagram(data.c_str());
-    socket->writeDatagram(datagram, to.address, to.port);
+void udp_socket::send() {
+    auto q = keeper->prepared_queries.front();
+    keeper->prepared_queries.pop();
+    qDebug() << "Sending";
+    socket->writeDatagram(q.first.c_str(), q.second.address, q.second.port);
 }
 
 void udp_socket::readPendingDatagrams() {
@@ -51,8 +50,7 @@ void udp_socket::readPendingDatagrams() {
                  << datagram.senderAddress().toString() << "at"
                  << datagram.senderPort();
         std::unique_lock lock(keeper->queries_mutex);
-        keeper->queries.push({datagram.data().toStdString(),
-                              configure_address(datagram.senderAddress())});
+        keeper->parsed_queries.push({datagram.data().toStdString(), {datagram.senderAddress(), datagram.senderPort()}});
     }
     keeper->query_available.notify_one();
 }

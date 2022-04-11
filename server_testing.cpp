@@ -8,8 +8,7 @@ int main(int argc, char *argv[]) {
     model::database::local_connection();
     network::queries_keeper* keeper = new network::queries_keeper;
     sv::server_socket receiver(QHostAddress::LocalHost, 60000, keeper);
-    sv::server_socket sender(QHostAddress::LocalHost, 0, keeper);
-    sv::server_processor processor(keeper, sender);
+    sv::server_processor processor(keeper, receiver);
     std::thread t([&processor](){
        while (true) {
            processor.wait_next_query();

@@ -19,7 +19,8 @@ struct client {
 };
 
 struct queries_keeper {
-    std::queue<std::pair<std::string, client>> queries;
+    std::queue<std::pair<std::string, client>> parsed_queries;
+    std::queue<std::pair<std::string, client>> prepared_queries;
     std::condition_variable query_available;
     std::mutex queries_mutex;
 };
@@ -37,10 +38,8 @@ public:
                         queries_keeper* keeper1,
                         QObject *parent = nullptr);
 
-    void send_datagram(const std::string &data, const client &to);
+    void wait_for_processed();
     /// Sends "msg" to client.
-
-    virtual client configure_address(const QHostAddress &address) = 0;
 
 signals:
 
@@ -49,6 +48,8 @@ public slots:
     /// While socket has pending datagrams, reads them into "queries", where
     /// they are stored as {data, from} pairs. The function is called
     /// automatically when readyRead() signal is emitted.
+
+    void send();
 };
 
 class query_processor {
@@ -64,8 +65,6 @@ public:
     }
 
     static std::vector<std::string> parse(const std::string &raw_data);
-
-    void set_keeper(queries_keeper *keeper1);
 
     void wait_next_query();
 

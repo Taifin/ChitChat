@@ -3,10 +3,15 @@
 
 namespace sv {
 
+void server_processor::prepare_query(const std::string &data, const network::client &cli) {
+    keeper->prepared_queries.push({data, cli});
+    emit aboba();
+}
+
 void server_processor::process() {
-    while (!keeper->queries.empty()) {
-        auto query = keeper->queries.front();
-        keeper->queries.pop();
+    while (!keeper->parsed_queries.empty()) {
+        auto query = keeper->parsed_queries.front();
+        keeper->parsed_queries.pop();
         data = parse(query.first);
         to = query.second;
         try {
@@ -31,8 +36,8 @@ void server_processor::process() {
                     break;
             }
         } catch (std::out_of_range &e) {
-            socket.send_datagram("Unknown command " + data[0] + "\n",
-                                 query.second);
+            prepare_query("Unknown command " + data[0] + "\n",
+                                      query.second);
         }
     }
 }
@@ -41,14 +46,14 @@ void server_processor::authorize_user() {
     assert(data.size() == 3);
     try {
         if (model::database::authorize(data[1], data[2])) {
-            socket.send_datagram("allowed," + data[1] + "\n", to);
+            prepare_query("allowed," + data[1] + "\n", to);
         } else {
-            socket.send_datagram("denied," + data[1] + "\n", to);
+            prepare_query("denied," + data[1] + "\n", to);
         }
     } catch (model::no_user_found &) {
-        socket.send_datagram("none," + data[1] + "\n", to);
+        prepare_query("none," + data[1] + "\n", to);
     } catch (model::database_error &) {
-        socket.send_datagram("dberror\n", to);
+        prepare_query("dberror\n", to);
     }
 }
 
@@ -56,9 +61,9 @@ void server_processor::register_user() {
     assert(data.size() == 3);
     user new_user(data[1], data[2]);
     if (model::database::create_user(&new_user)) {
-        socket.send_datagram("created," + data[1] + "\n", to);
+        prepare_query("created," + data[1] + "\n", to);
     } else {
-        socket.send_datagram("rexists," + data[1] + "\n", to);
+        prepare_query("rexists," + data[1] + "\n", to);
     }
 }
 
@@ -68,13 +73,13 @@ void server_processor::connect_user() {
     if (model::state::connect_user(new_user)) {
         translate_users_data();
     } else {
-        socket.send_datagram("cexists," + data[1] + "\n", to);
+        prepare_query("cexists," + data[1] + "\n", to);
     }
 }
 
 void server_processor::greet() {
     assert(data.size() == 2);
-    socket.send_datagram("Hello, " + data[1] + ", I'm Server God!\n", to);
+    prepare_query("Hello, " + data[1] + ", I'm Server God!\n", to);
 }
 
 void server_processor::update_layout() {
@@ -83,7 +88,7 @@ void server_processor::update_layout() {
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {
         if (u.client.address != to.address) {
-            socket.send_datagram(
+            prepare_query(
                 "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
                 u.client);
         }
@@ -101,21 +106,19 @@ void server_processor::translate_users_data() {
         all_users.pop_back();
     if (!all_users.empty())
         all_users += "\n";
-    socket.send_datagram(all_users, to);
+    prepare_query(all_users, to);
 }
 
 void server_processor::disconnect() {
     assert(data.size() == 5);
     model::state::disconnect_user(server_user(
         data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
-    socket.send_datagram("disconnected," + data[1] + "\n", to);
+    prepare_query("disconnected," + data[1] + "\n", to);
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
                                    network::udp_socket &socket)
     : query_processor(pKeeper, socket) {
+    connect(this, SIGNAL(aboba()), &socket, SLOT(send()));
 }
 
-network::client server_socket::configure_address(const QHostAddress &address) {
-    return {address, 50000};
-}
 }  // namespace sv

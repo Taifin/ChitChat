@@ -25,7 +25,6 @@
 namespace sv {
 
 class server_socket : public network::udp_socket {
-    network::client configure_address(const QHostAddress &address) override;
 
 public:
     explicit server_socket(const QHostAddress &host,
@@ -36,7 +35,8 @@ public:
     }
 };
 
-class server_processor : public network::query_processor {
+class server_processor : public QObject, public network::query_processor{
+    Q_OBJECT
 private:
     enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
     std::map<std::string, e_commands> commands{
@@ -69,6 +69,12 @@ public:
 
     server_processor(network::queries_keeper *pKeeper,
                      network::udp_socket &socket);
+
+    void prepare_query(const std::string& data, const network::client& cli);
+
+signals:
+
+    void aboba();
 };
 
 }  // namespace sv
