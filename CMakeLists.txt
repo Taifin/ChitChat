@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+add_compile_definitions(LOCAL)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)

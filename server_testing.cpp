@@ -3,11 +3,13 @@
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
-    // server's running on localhost, sending to port 50000, listening on port 60000
-
     model::database::local_connection();
     network::queries_keeper* keeper = new network::queries_keeper;
+#ifdef LOCAL
     sv::server_socket receiver(QHostAddress::LocalHost, 60000, keeper);
+#else
+    sv::server_socket receiver(QHostAddress::Any, 60000, keeper);
+#endif
     sv::server_processor processor(keeper, receiver);
     std::thread t([&processor](){
        while (true) {
