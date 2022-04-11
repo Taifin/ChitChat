@@ -2,15 +2,23 @@
 #include "iostream"
 
 namespace network {
+
+void query_processor::prepare_query(const std::string &q,
+                                    const network::client &cli) {
+    keeper->prepared_queries.push({q, cli});
+    emit prepared();
+}
+
 void query_processor::wait_next_query() {
     std::unique_lock lock(keeper->queries_mutex);
-    keeper->query_available.wait(lock, [&](){ return !keeper->parsed_queries.empty(); });
+    keeper->query_available.wait(
+        lock, [&]() { return !keeper->parsed_queries.empty(); });
     process();
 }
 
 udp_socket::udp_socket(const QHostAddress &host,
                        quint16 port,
-                       queries_keeper* keeper1,
+                       queries_keeper *keeper1,
                        QObject *parent) {
     socket = new QUdpSocket(this);
     socket->bind(port);
@@ -50,8 +58,15 @@ void udp_socket::readPendingDatagrams() {
                  << datagram.senderAddress().toString() << "at"
                  << datagram.senderPort();
         std::unique_lock lock(keeper->queries_mutex);
-        keeper->parsed_queries.push({datagram.data().toStdString(), {datagram.senderAddress(), datagram.senderPort()}});
+        keeper->parsed_queries.push(
+            {datagram.data().toStdString(),
+             {datagram.senderAddress(), datagram.senderPort()}});
     }
     keeper->query_available.notify_one();
+}
+
+query_processor::query_processor(queries_keeper *keeper, udp_socket &socket)
+    : keeper(keeper), socket(socket) {
+    connect(this, SIGNAL(aboba()), &socket, SLOT(send()));
 }
 }  // namespace network

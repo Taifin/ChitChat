@@ -3,11 +3,6 @@
 
 namespace sv {
 
-void server_processor::prepare_query(const std::string &data, const network::client &cli) {
-    keeper->prepared_queries.push({data, cli});
-    emit aboba();
-}
-
 void server_processor::process() {
     while (!keeper->parsed_queries.empty()) {
         auto query = keeper->parsed_queries.front();
@@ -118,7 +113,6 @@ void server_processor::disconnect() {
 server_processor::server_processor(network::queries_keeper *pKeeper,
                                    network::udp_socket &socket)
     : query_processor(pKeeper, socket) {
-    connect(this, SIGNAL(aboba()), &socket, SLOT(send()));
 }
 
 }  // namespace sv

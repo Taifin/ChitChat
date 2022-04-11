@@ -69,12 +69,6 @@ public:
 
     server_processor(network::queries_keeper *pKeeper,
                      network::udp_socket &socket);
-
-    void prepare_query(const std::string& data, const network::client& cli);
-
-signals:
-
-    void aboba();
 };
 
 }  // namespace sv

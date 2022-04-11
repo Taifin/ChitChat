@@ -52,7 +52,9 @@ public slots:
     void send();
 };
 
-class query_processor {
+class query_processor : public QObject {
+    Q_OBJECT
+
 protected:
     queries_keeper *keeper;
     udp_socket &socket;
@@ -60,15 +62,19 @@ protected:
     client to;
 
 public:
-    explicit query_processor(queries_keeper *keeper, udp_socket &socket)
-        : keeper(keeper), socket(socket) {
-    }
+    explicit query_processor(queries_keeper *keeper, udp_socket &socket);
 
     static std::vector<std::string> parse(const std::string &raw_data);
 
     void wait_next_query();
 
     virtual void process() = 0;
+
+    void prepare_query(const std::string&q, const network::client& cli);
+
+signals:
+
+    void prepared();
 };
 }  // namespace network
 
