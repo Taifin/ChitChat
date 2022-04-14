@@ -1,11 +1,11 @@
 #include "registration.h"
 #include "ui_registration.h"
-#include "database.h"
 #include "user.h"
 #include "client_socket.h"
 
 extern client_socket socket;
 extern network::client server;
+extern client_processor processor;
 
 registration::registration(QWidget *parent) :
     QDialog(parent),
@@ -14,8 +14,8 @@ registration::registration(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
 
-    connect(&socket, SIGNAL(run_successful_registration()), this, SLOT(successful_registration()));
-    connect(&socket, SIGNAL(run_duplicate()), this, SLOT(duplicate()));
+    connect(&processor, SIGNAL(run_successful_registration()), this, SLOT(successful_registration()));
+    connect(&processor, SIGNAL(run_duplicate()), this, SLOT(duplicate()));
 }
 
 registration::~registration()
@@ -40,7 +40,7 @@ void registration::on_confirm_button_clicked()
         ui->information_label->setText("Passwords don't match");
     }
     else{
-        socket.send_datagram("register," + login + "," + password, server);
+        processor.prepare_query("register," + login + "," + password, server);
     }
 }
 

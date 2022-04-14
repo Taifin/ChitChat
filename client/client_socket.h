@@ -12,11 +12,19 @@ class client_socket : public network::udp_socket
 public:
     client_socket(const QHostAddress &host,
                   quint16 port,
-                  const std::string &type ,
+                  network::queries_keeper* keeper ,
                   QObject *parent);
+signals:
 
-    void process();
 
+
+};
+
+class client_processor : public network::query_processor{
+    Q_OBJECT;
+public:
+    client_processor(network::queries_keeper* keeper, network::udp_socket& socket) : network::query_processor(keeper, socket){}
+    void process() override;
 signals:
     void run_successful_login(std::string name);
 
@@ -44,4 +52,3 @@ signals:
 };
 
 #endif // CLIENT_SOCKET_H
-
