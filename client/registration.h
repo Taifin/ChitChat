@@ -7,8 +7,7 @@ namespace Ui {
 class registration;
 }
 
-class registration : public QDialog
-{
+class registration : public QDialog {
     Q_OBJECT
 
 public:
@@ -35,4 +34,4 @@ private:
     Ui::registration *ui;
 };
 
-#endif // REGISTRATION_H
+#endif  // REGISTRATION_H

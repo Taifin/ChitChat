@@ -28,24 +28,21 @@ main_window::main_window(QWidget *parent)
     connect(&socket, SIGNAL(run_already_connected()), this, SLOT(already_connected()));
     connect(&socket, SIGNAL(run_connect_with_room(std::vector<std::string>)), this, SLOT(connect_with_room(std::vector<std::string>)));
     connect(&socket, SIGNAL(run_change_position(std::string, int, int)), this, SLOT(change_position(std::string, int, int)));
-
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
 }
 
-void main_window::start(){
+void main_window::start() {
     login_m.show();
 }
 
-void main_window::show_after_auth(){
+void main_window::show_after_auth() {
     this->show();
 };
 
 main_window::~main_window()
 {
     delete scene;
-    delete ui;
-}
 
 void main_window::on_connect_button_clicked()
 {

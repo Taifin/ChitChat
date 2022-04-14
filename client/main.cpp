@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 #include "main_window.h"
 
+=======
+>>>>>>> 47963e277f94a1c2700253dba185dd408a040d20
 #include <QApplication>
 #include "client_socket.h"
 #include "socket.h"
