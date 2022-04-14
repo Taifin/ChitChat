@@ -67,6 +67,6 @@ void udp_socket::readPendingDatagrams() {
 
 query_processor::query_processor(queries_keeper *keeper, udp_socket &socket)
     : keeper(keeper), socket(socket) {
-    connect(this, SIGNAL(aboba()), &socket, SLOT(send()));
+    connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
 }
 }  // namespace network

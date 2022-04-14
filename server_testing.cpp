@@ -4,7 +4,7 @@
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
     model::database::local_connection();
-    network::queries_keeper* keeper = new network::queries_keeper;
+    network::queries_keeper* keeper = new network::queries_keeper; // TODO: delete keeper
 #ifdef LOCAL
     sv::server_socket receiver(QHostAddress::LocalHost, 60000, keeper);
 #else

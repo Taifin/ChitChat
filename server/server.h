@@ -35,8 +35,8 @@ public:
     }
 };
 
-class server_processor : public QObject, public network::query_processor{
-    Q_OBJECT
+class server_processor : public network::query_processor {
+    Q_OBJECT;
 private:
     enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
     std::map<std::string, e_commands> commands{
