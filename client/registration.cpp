@@ -1,13 +1,8 @@
 #include "registration.h"
-<<<<<<< HEAD
-=======
-#include "database.h"
->>>>>>> 47963e277f94a1c2700253dba185dd408a040d20
 #include "ui_registration.h"
 #include "user.h"
 #include "client_socket.h"
 
-extern client_socket socket;
 extern network::client server;
 extern client_processor processor;
 

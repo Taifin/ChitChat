@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 #include "main_window.h"
-
-=======
->>>>>>> 47963e277f94a1c2700253dba185dd408a040d20
 #include <QApplication>
 #include "client_socket.h"
 #include "socket.h"
 #include <thread>
-
 #include <map>
 #include "client_user.h"
 
@@ -20,6 +15,7 @@ client_processor processor(keeper, socket);
 
 int main(int argc, char *argv[])
 {
+
     std::thread t([](){
         while(true){
             processor.wait_next_query();
@@ -29,7 +25,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     main_window w;
-//    w.start();
+    w.start();
 
     return a.exec();
 }

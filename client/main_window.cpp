@@ -11,10 +11,10 @@
 #include <chrono>
 #include <thread>
 
-extern client_socket socket;
 extern network::client server;
 extern client_user current_user;
 extern std::map<std::string, client_user> users_in_the_room;
+extern client_processor processor;
 
 
 main_window::main_window(QWidget *parent)
@@ -25,9 +25,9 @@ main_window::main_window(QWidget *parent)
 
     connect(&login_m, SIGNAL(show_main_window()), this, SLOT(show_after_auth()));
 
-    connect(&socket, SIGNAL(run_already_connected()), this, SLOT(already_connected()));
-    connect(&socket, SIGNAL(run_connect_with_room(std::vector<std::string>)), this, SLOT(connect_with_room(std::vector<std::string>)));
-    connect(&socket, SIGNAL(run_change_position(std::string, int, int)), this, SLOT(change_position(std::string, int, int)));
+    connect(&processor, SIGNAL(run_already_connected()), this, SLOT(already_connected()));
+    connect(&processor, SIGNAL(run_connect_with_room(std::vector<std::string>)), this, SLOT(connect_with_room(std::vector<std::string>)));
+    connect(&processor, SIGNAL(run_change_position(std::string,int,int)), this, SLOT(change_position(std::string,int,int)));
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
 }
@@ -40,13 +40,13 @@ void main_window::show_after_auth() {
     this->show();
 };
 
-main_window::~main_window()
-{
+main_window::~main_window() {
     delete scene;
+}
 
 void main_window::on_connect_button_clicked()
 {
-    socket.send_datagram("connect," + current_user.name() +","+ current_user.pwd(), server);
+    processor.prepare_query("connect," + current_user.name() +","+ current_user.pwd(), server);
 }
 
 void main_window::already_connected()

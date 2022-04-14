@@ -1,6 +1,5 @@
 #ifndef LOGIN_H
 #define LOGIN_H
-
 #include <QDialog>
 #include "registration.h"
 #include "client_socket.h"

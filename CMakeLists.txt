@@ -12,9 +12,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Network)
 include_directories(client)
+include_directories(shared)
 
 set(PROJECT_SOURCES
         client/main.cpp
@@ -31,11 +31,11 @@ set(PROJECT_SOURCES
         client/client_socket.h
         client/client_socket.cpp
         shared/socket.h
-        socket.cpp
-        sprite.h
-        sprite.cpp
-        client_user.h
-        client_user.cpp
+        shared/socket.cpp
+        client/sprite.h
+        client/sprite.cpp
+        client/client_user.h
+        client/client_user.cpp
         )
 
 

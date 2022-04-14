@@ -5,8 +5,7 @@
 int STEP_SIZE = 5;
 
 extern network::client server;
-extern client_socket socket;
-
+extern client_processor processor;
 
 sprite::sprite(std::string name) : name(name)
 {
@@ -43,22 +42,22 @@ void change_position(int step_size, sprite *walker, directions dir)
     int y = walker->y();
     switch (dir){
         case directions::UP:
-            socket.send_datagram("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y-step_size), server);
+            processor.prepare_query("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y-step_size), server);
             walker->setPos(x, y-step_size);
             walker->name_display->setPos(walker->name_display->x(), walker->name_display->y()-step_size);
             break;
         case directions::DOWN:
-            socket.send_datagram("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y+step_size), server);
+            processor.prepare_query("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y+step_size), server);
             walker->setPos(x, y+step_size);
             walker->name_display->setPos(walker->name_display->x(), walker->name_display->y()+step_size);
             break;
         case directions::RIGHT:
-            socket.send_datagram("move," + walker->name + "," + std::to_string(x+step_size) + "," + std::to_string(y), server);
+            processor.prepare_query("move," + walker->name + "," + std::to_string(x+step_size) + "," + std::to_string(y), server);
             walker->setPos(x+step_size, y);
             walker->name_display->setPos(walker->name_display->x()+step_size, walker->name_display->y());
             break;
         case directions::LEFT:
-            socket.send_datagram("move," + walker->name + "," + std::to_string(x-step_size) + "," + std::to_string(y), server);
+            processor.prepare_query("move," + walker->name + "," + std::to_string(x-step_size) + "," + std::to_string(y), server);
             walker->setPos(x-step_size, y);
             walker->name_display->setPos(walker->name_display->x()-step_size, walker->name_display->y());
             break;
