@@ -7,12 +7,10 @@ void database::local_connection(const std::string &dbname) {
   users_connection = pqxx::connection(params);
 }
 
-void database::connection(const std::string &dbname,
-                          const std::string &host,
-                          const std::string &port,
-                          const std::string &user) {
-  params = "dbname=" + dbname + " host=" + host + " port=" + port +
-           " user=" + user;
+void database::connection(const std::string &dbname, const std::string &host,
+                          const std::string &port, const std::string &user) {
+  params =
+      "dbname=" + dbname + " host=" + host + " port=" + port + " user=" + user;
   users_connection = pqxx::connection(params);
 }
 
@@ -26,16 +24,14 @@ void database::debug_create_db() {
 void database::debug_create_table() {
   pqxx::connection conn("dbname=chitchat");
   pqxx::work w(conn);
-  w.exec(
-      "CREATE TABLE IF NOT EXISTS users (uname VARCHAR(30), "
-      "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
+  w.exec("CREATE TABLE IF NOT EXISTS users (uname VARCHAR(30), "
+         "upassword VARCHAR(30));"); // TODO: avatar and visited rooms
   w.commit();
 }
 bool database::create_user(user *new_user) {
-  bool exists =
-      execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
-                     new_user->name())[0][0]
-          .as<bool>();
+  bool exists = execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
+                               new_user->name())[0][0]
+                    .as<bool>();
   if (!exists) {
     execute_params("INSERT INTO users (uname, upassword) VALUES ($1, $2);",
                    new_user->name(), new_user->pwd());
@@ -54,9 +50,8 @@ user database::get_user_data(user *user_) {
               raw_user_data[0]["upassword"].as<std::string>());
 }
 
-pqxx::result database::execute_protected(
-    const std::string &connection_params,
-    const std::string &query) {
+pqxx::result database::execute_protected(const std::string &connection_params,
+                                         const std::string &query) {
   pqxx::connection conn(connection_params);
   pqxx::work w(conn);
   try {
@@ -70,10 +65,9 @@ pqxx::result database::execute_protected(
 }
 bool database::authorize(const std::string &username,
                          const std::string &given_password) {
-  auto exists =
-      execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
-                     username)[0][0]
-          .as<bool>();
+  auto exists = execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
+                               username)[0][0]
+                    .as<bool>();
   if (exists) {
     auto stored_password =
         execute_params("SELECT upassword FROM users WHERE uname=$1;",
@@ -84,4 +78,4 @@ bool database::authorize(const std::string &username,
     throw no_user_found("Cannot find user to authorize.");
   }
 }
-}
+} // namespace model

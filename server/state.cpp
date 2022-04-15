@@ -26,4 +26,4 @@ std::vector<server_user> state::get_users() {
 void state::disconnect_user(const server_user &disc_user) {
   connected_users.erase(disc_user.name());
 }
-}
+} // namespace model

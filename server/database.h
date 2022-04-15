@@ -1,10 +1,10 @@
 #ifndef CHITCHAT_DATABASE_H
 #define CHITCHAT_DATABASE_H
 
-#include <iostream>
-#include <string>
 #include "pqxx/pqxx"
 #include "user.h"
+#include <iostream>
+#include <string>
 
 namespace model {
 
@@ -25,10 +25,8 @@ public:
   static void local_connection(const std::string &dbname = "chitchat");
   /// Default connector.
 
-  static void connection(const std::string &dbname,
-                         const std::string &host,
-                         const std::string &port,
-                         const std::string &user);
+  static void connection(const std::string &dbname, const std::string &host,
+                         const std::string &port, const std::string &user);
   /// Connector to establish full remote connection.
 
   static void debug_create_db();
@@ -71,5 +69,5 @@ public:
   /// https://www.postgresql.org/docs/10/libpq-connect.html#LIBPQ-CONNSTRING),
   /// exceptions are handled.
 };
-}  // namespace model
-#endif  // CHITCHAT_DATABASE_H
+} // namespace model
+#endif // CHITCHAT_DATABASE_H
