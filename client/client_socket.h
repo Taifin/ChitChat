@@ -6,11 +6,11 @@
 #include <QUdpSocket>
 #include "socket.h"
 
-class client_socket : public network::udp_socket {
+class client_socket : public network::tcp_socket {
     Q_OBJECT
 public:
     client_socket(const QHostAddress &host,
-                  quint16 port,
+                  quint16 port, QTcpSocket* ser,
                   network::queries_keeper *keeper,
                   QObject *parent);
 signals:
@@ -21,7 +21,7 @@ class client_processor : public network::query_processor {
 
 public:
     client_processor(network::queries_keeper *keeper,
-                     network::udp_socket &socket)
+                     network::tcp_socket &socket)
         : network::query_processor(keeper, socket) {
     }
     void process() override;

@@ -12,7 +12,7 @@
 #include "client_user.h"
 #include "sprite.h"
 
-extern network::client server;
+extern QTcpSocket* remote_server;
 extern client_user current_user;
 extern std::map<std::string, client_user> users_in_the_room;
 extern client_processor processor;
@@ -20,6 +20,8 @@ extern client_processor processor;
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
     scene = new QGraphicsScene();
+
+    remote_server->connectToHost(QHostAddress("194.169.163.120"), 1235);
 
     qRegisterMetaType<std::vector<std::string>>("std::vector<std::string>");
     connect(&login_m, SIGNAL(show_main_window()), this,
@@ -49,12 +51,12 @@ main_window::~main_window() {
                                 current_user.pwd() + "," +
                                 std::to_string(current_user.get_x()) + "," +
                                 std::to_string(current_user.get_y()),
-                            server);
+                            remote_server);
 }
 
 void main_window::on_connect_button_clicked() {
     processor.prepare_query(
-        "connect," + current_user.name() + "," + current_user.pwd(), server);
+        "connect," + current_user.name() + "," + current_user.pwd(), remote_server);
 }
 
 void main_window::already_connected() {

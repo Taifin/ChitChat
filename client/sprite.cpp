@@ -4,7 +4,7 @@
 
 int STEP_SIZE = 5;
 
-extern network::client server;
+extern QTcpSocket* remote_server;
 extern client_processor processor;
 
 sprite::sprite(const std::string &name) : name(name) {
@@ -41,7 +41,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
             processor.prepare_query("move," + walker->name + "," +
                                         std::to_string(x) + "," +
                                         std::to_string(y - step_size),
-                                    server);
+                                    remote_server);
             walker->setPos(x, y - step_size);
             walker->name_display->setPos(walker->name_display->x(),
                                          walker->name_display->y() - step_size);
@@ -50,7 +50,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
             processor.prepare_query("move," + walker->name + "," +
                                         std::to_string(x) + "," +
                                         std::to_string(y + step_size),
-                                    server);
+                                    remote_server);
             walker->setPos(x, y + step_size);
             walker->name_display->setPos(walker->name_display->x(),
                                          walker->name_display->y() + step_size);
@@ -59,7 +59,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
             processor.prepare_query("move," + walker->name + "," +
                                         std::to_string(x + step_size) + "," +
                                         std::to_string(y),
-                                    server);
+                                    remote_server);
             walker->setPos(x + step_size, y);
             walker->name_display->setPos(walker->name_display->x() + step_size,
                                          walker->name_display->y());
@@ -68,7 +68,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
             processor.prepare_query("move," + walker->name + "," +
                                         std::to_string(x - step_size) + "," +
                                         std::to_string(y),
-                                    server);
+                                    remote_server);
             walker->setPos(x - step_size, y);
             walker->name_display->setPos(walker->name_display->x() - step_size,
                                          walker->name_display->y());

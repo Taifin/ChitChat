@@ -6,12 +6,12 @@
 #include "main_window.h"
 #include "socket.h"
 
-network::client server{QHostAddress("194.169.163.120"), 1235};
+QTcpSocket* remote_server = new QTcpSocket;
 client_user current_user("noname", "default_password");
 std::map<std::string, client_user> users_in_the_room;
 network::queries_keeper *keeper =
     new network::queries_keeper;  //Нужно delete keeper;
-client_socket socket(QHostAddress::Any, 0, keeper, nullptr);
+client_socket socket(QHostAddress::Any, 60000, remote_server, keeper, nullptr);
 client_processor processor(keeper, socket);
 
 int main(int argc, char *argv[]) {

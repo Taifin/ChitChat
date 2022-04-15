@@ -81,7 +81,7 @@ void server_processor::update_layout() {
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {
-        if (u.client.address != to.address) {
+        if (u.client != to) {
             prepare_query(
                 "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
                 u.client);
@@ -114,7 +114,7 @@ void server_processor::disconnect() {
     }
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
-                                   network::udp_socket &socket)
+                                   network::tcp_socket &socket)
     : query_processor(pKeeper, socket) {
 }
 
