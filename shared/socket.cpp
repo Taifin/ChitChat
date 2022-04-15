@@ -22,7 +22,7 @@ tcp_socket::tcp_socket(const QHostAddress &host,
                        queries_keeper *keeper1,
                        QObject *parent) {
     server = new QTcpServer(this);
-    server->listen(host);
+    server->listen(host, port);
     qDebug() << "Started listening at:" << server->serverPort();
     keeper = keeper1;
     connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
