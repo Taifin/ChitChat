@@ -24,6 +24,12 @@ private slots:
 
     void on_show_password_check_stateChanged(int arg1);
 
+    void successful_registration();
+
+    void duplicate();
+
+    //void error();
+
 private:
     Ui::registration *ui;
 };

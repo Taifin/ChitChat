@@ -1,12 +1,18 @@
 #include "registration.h"
-#include "database.h"
 #include "ui_registration.h"
 #include "user.h"
+#include "client_socket.h"
+
+extern network::client server;
+extern client_processor processor;
 
 registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+
+    connect(&processor, SIGNAL(run_successful_registration()), this, SLOT(successful_registration()));
+    connect(&processor, SIGNAL(run_duplicate()), this, SLOT(duplicate()));
 }
 
 registration::~registration() {
@@ -18,7 +24,8 @@ void registration::on_back_button_clicked() {
     emit show_login_window_again();
 }
 
-void registration::on_confirm_button_clicked() {
+void registration::on_confirm_button_clicked()
+{    
     std::string login, password, confirm_password;
     login = (ui->name_line_edit->text()).toStdString();
     password = ui->password_line_edit->text().toStdString();
@@ -26,24 +33,23 @@ void registration::on_confirm_button_clicked() {
 
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
-    } else {
-        User user(login, password);
-        try {
-            if (db::chitchat_database::create_user(&user)) {
-                this->hide();
-                emit show_login_window_again();
-            } else {
-                ui->information_label->setText(
-                    "Name already in use. Please choose another one");
-            }
-        } catch (...) {
-            ui->information_label->setText("Something go wrong");
-        }
+    }
+    else{
+        processor.prepare_query("register," + login + "," + password, server);
     }
 }
 
-void registration::on_show_password_check_stateChanged(int arg1) {
-    if (arg1) {
+void registration::successful_registration(){
+    this->hide();
+    emit show_login_window_again();
+}
+void registration::duplicate(){
+    ui->information_label->setText("Name already in use. Please choose another one");
+}
+
+void registration::on_show_password_check_stateChanged(int arg1)
+{
+    if (arg1){
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Normal);
         ui->confirm_line_edit->QLineEdit::setEchoMode(QLineEdit::Normal);
     } else {
