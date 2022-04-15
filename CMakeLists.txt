@@ -41,5 +41,3 @@ set(PROJECT_SOURCES
 
 add_executable(ChitChat ${PROJECT_SOURCES} )
 target_link_libraries(ChitChat PRIVATE Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
-add_executable(test shared/socket.cpp client_to_server_testing.cpp)
-target_link_libraries(test Qt5::Network -pthread)
