@@ -44,6 +44,7 @@ void main_window::show_after_auth() {
 
 main_window::~main_window() {
     delete scene;
+    processor.prepare_query("disconnect," + current_user.name() +","+ current_user.pwd() +","+ std::to_string(current_user.get_x()) + "," + std::to_string(current_user.get_y()), server);
 }
 
 void main_window::on_connect_button_clicked()
@@ -85,6 +86,7 @@ void main_window::connect_with_room(std::vector<std::string> data)
 
     QGraphicsView *view = ui->room_view;
     view->setScene(scene);
+
 }
 
 void main_window::change_position(std::string name, int x, int y)
@@ -95,3 +97,7 @@ void main_window::change_position(std::string name, int x, int y)
 
 
 
+void main_window::roommate_disconnect(const std::string &roommate_name){
+    scene->removeItem(users_in_the_room[roommate_name].user_sprite);
+    scene->removeItem(users_in_the_room[roommate_name].user_sprite->name_display);
+}
