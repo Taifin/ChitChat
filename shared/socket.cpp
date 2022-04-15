@@ -48,6 +48,7 @@ void udp_socket::send() {
     keeper->prepared_queries.pop();
     qDebug() << "Sending";
     socket->writeDatagram(q.first.c_str(), q.second.address, q.second.port);
+    socket->waitForReadyRead(25);
 }
 
 void udp_socket::readPendingDatagrams() {
