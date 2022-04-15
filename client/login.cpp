@@ -1,6 +1,7 @@
 #include "login.h"
 #include "ui_login.h"
 #include <QLineEdit>
+#include <QMetaType>
 #include "client_socket.h"
 #include "main_window.h"
 #include "user.h"
@@ -15,6 +16,7 @@ login::login(QWidget *parent) :
 {
     connect(&registration_m, SIGNAL(show_login_window_again()), this, SLOT(show_login_window()));
 
+    qRegisterMetaType<std::string>("std::string");
     connect(&processor, SIGNAL(run_successful_login(std::string)), this, SLOT(successful_login(std::string)));
     connect(&processor, SIGNAL(run_wrong_password()), this, SLOT(wrong_password()));
     connect(&processor, SIGNAL(run_no_user()), this, SLOT(no_user()));
@@ -52,7 +54,7 @@ void login::show_login_window() {
     this->show();
 }
 
-void login::successful_login(std::string name){
+void login::successful_login(const std::string& name){
     current_user.set_name(name);
     this->hide();
     emit show_main_window();

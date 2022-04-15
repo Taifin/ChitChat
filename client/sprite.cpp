@@ -7,7 +7,7 @@ int STEP_SIZE = 5;
 extern network::client server;
 extern client_processor processor;
 
-sprite::sprite(std::string name) : name(name)
+sprite::sprite(const std::string &name) : name(name)
 {
      //name_display->setPlainText(QString("a"));
      //name_display->setPlainText(QString("aa"));

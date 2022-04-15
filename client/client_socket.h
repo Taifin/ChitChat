@@ -15,9 +15,6 @@ public:
                   network::queries_keeper* keeper ,
                   QObject *parent);
 signals:
-
-
-
 };
 
 class client_processor : public network::query_processor{
@@ -26,7 +23,7 @@ public:
     client_processor(network::queries_keeper* keeper, network::udp_socket& socket) : network::query_processor(keeper, socket){}
     void process() override;
 signals:
-    void run_successful_login(std::string name);
+    void run_successful_login(const std::string& name);
 
     void run_wrong_password();
 

@@ -10,6 +10,7 @@
 #include <memory>
 #include <chrono>
 #include <thread>
+#include <QMetaType>
 
 extern network::client server;
 extern client_user current_user;
@@ -23,6 +24,7 @@ main_window::main_window(QWidget *parent)
 {
     scene = new QGraphicsScene();
 
+    qRegisterMetaType<std::vector<std::string>>("std::vector<std::string>");
     connect(&login_m, SIGNAL(show_main_window()), this, SLOT(show_after_auth()));
 
     connect(&processor, SIGNAL(run_already_connected()), this, SLOT(already_connected()));
