@@ -7,9 +7,9 @@ int main(int argc, char *argv[]) {
   network::queries_keeper *keeper =
       new network::queries_keeper; // TODO: delete keeper
 #ifdef LOCAL
-  sv::server_socket receiver(QHostAddress::LocalHost, 60000, keeper);
+  sv::server_socket receiver(QHostAddress::LocalHost, 1235, keeper);
 #else
-  sv::server_socket receiver(QHostAddress::Any, 60000, keeper);
+  sv::server_socket receiver(QHostAddress::Any, 1235, keeper);
 #endif
   sv::server_processor processor(keeper, receiver);
   std::thread t([&processor]() {
