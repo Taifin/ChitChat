@@ -33,6 +33,9 @@ main_window::main_window(QWidget *parent)
             this, SLOT(connect_with_room(std::vector<std::string>)));
     connect(&processor, SIGNAL(run_change_position(std::string, int, int)),
             this, SLOT(change_position(std::string, int, int)));
+    connect(&processor, SIGNAL(run_disconnect_roommate(const std::string&)), this,
+            SLOT(disconnect_roommate(const std::string&)));
+
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
 }
