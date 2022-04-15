@@ -32,7 +32,7 @@ void server_processor::process() {
             }
         } catch (std::out_of_range &e) {
             prepare_query("Unknown command " + data[0] + "\n",
-                                      query.second);
+                          query.second);
         }
     }
 }
