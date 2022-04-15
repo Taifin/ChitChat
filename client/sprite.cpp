@@ -4,7 +4,7 @@
 
 int STEP_SIZE = 5;
 
-extern QTcpSocket* remote_server;
+extern QTcpSocket *remote_server;
 extern client_processor processor;
 
 sprite::sprite(const std::string &name) : name(name) {

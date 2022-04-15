@@ -6,7 +6,7 @@
 #include "ui_login.h"
 #include "user.h"
 
-extern QTcpSocket* remote_server;
+extern QTcpSocket *remote_server;
 extern user current_user;
 extern client_processor processor;
 

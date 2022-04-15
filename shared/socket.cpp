@@ -4,8 +4,7 @@
 
 namespace network {
 
-void query_processor::prepare_query(const std::string &q,
-                                    QTcpSocket* cli) {
+void query_processor::prepare_query(const std::string &q, QTcpSocket *cli) {
     keeper->prepared_queries.push({q, cli});
     emit prepared();
 }
@@ -51,7 +50,7 @@ void tcp_socket::send() {
 }
 
 void tcp_socket::read() {
-    auto* sender = dynamic_cast<QTcpSocket*>(QObject::sender());
+    auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     QByteArray data = sender->readAll();
     std::unique_lock lock(keeper->queries_mutex);
     keeper->parsed_queries.push({data.toStdString(), sender});
@@ -64,14 +63,14 @@ query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
 }
 
 void tcp_socket::connect_one() {
-    QTcpSocket* new_socket = server->nextPendingConnection();
+    QTcpSocket *new_socket = server->nextPendingConnection();
     connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
     connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
     sockets.push_back(new_socket);
 }
 
 void tcp_socket::disconnect_one() {
-    auto* socket = dynamic_cast<QTcpSocket*>(QObject::sender());
+    auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
     sockets.removeOne(socket);
 }
 }  // namespace network

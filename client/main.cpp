@@ -6,7 +6,7 @@
 #include "main_window.h"
 #include "socket.h"
 
-QTcpSocket* remote_server = new QTcpSocket;
+QTcpSocket *remote_server = new QTcpSocket;
 client_user current_user("noname", "default_password");
 std::map<std::string, client_user> users_in_the_room;
 network::queries_keeper *keeper =

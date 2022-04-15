@@ -12,7 +12,7 @@
 #include "client_user.h"
 #include "sprite.h"
 
-extern QTcpSocket* remote_server;
+extern QTcpSocket *remote_server;
 extern client_user current_user;
 extern std::map<std::string, client_user> users_in_the_room;
 extern client_processor processor;
@@ -56,7 +56,8 @@ main_window::~main_window() {
 
 void main_window::on_connect_button_clicked() {
     processor.prepare_query(
-        "connect," + current_user.name() + "," + current_user.pwd(), remote_server);
+        "connect," + current_user.name() + "," + current_user.pwd(),
+        remote_server);
 }
 
 void main_window::already_connected() {
