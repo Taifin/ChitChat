@@ -3,10 +3,10 @@
 
 #include <iostream>
 #include <string>
-#include "../entities/user.h"
 #include "pqxx/pqxx"
+#include "user.h"
 
-namespace db {
+namespace model {
 
 struct database_error : std::runtime_error {
     explicit database_error(const std::string &msg) : std::runtime_error(msg){};
@@ -16,7 +16,7 @@ struct no_user_found : database_error {
     explicit no_user_found(const std::string &msg) : database_error(msg){};
 };
 
-struct chitchat_database {
+struct database {
 private:
     inline static std::string params;
     inline static pqxx::connection users_connection;
@@ -40,7 +40,7 @@ public:
     /// database locally (and ensure that your default postgres user in $PGUSER
     /// has all rights).
 
-    static bool create_user(User *new_user);
+    static bool create_user(user *new_user);
     /// true if user is created, false if duplicate
 
     template <typename... Args>
@@ -59,7 +59,7 @@ public:
     /// Checks if user's password stored in database matches given_password. If
     /// no such user found, no_user_found is thrown.
 
-    static User get_user_data(User *user);
+    static user get_user_data(user *user_);
     /// Returns object of User class with fields initialized with data from
     /// user's filed from database. If no user in records, no_user_found is
     /// thrown.
@@ -71,6 +71,5 @@ public:
     /// https://www.postgresql.org/docs/10/libpq-connect.html#LIBPQ-CONNSTRING),
     /// exceptions are handled.
 };
-}  // namespace db
-
+}  // namespace model
 #endif  // CHITCHAT_DATABASE_H
