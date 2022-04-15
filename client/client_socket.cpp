@@ -2,14 +2,17 @@
 #include "login.h"
 
 client_socket::client_socket(const QHostAddress &host, quint16 port,
+                             QTcpSocket* ser,
                              network::queries_keeper *keeper,
                              QObject *parent = nullptr)
-    : udp_socket(host, port, keeper, parent) {}
+    : tcp_socket(host, port, keeper, parent) {
+  connect(ser, SIGNAL(readyRead()), this, SLOT(read()));
+}
 
 void client_processor::process() {
   std::vector<std::string> data = parse(keeper->parsed_queries.front().first);
   std::string status = data[0];
-  network::client current_client = keeper->parsed_queries.front().second;
+  QTcpSocket* current_client = keeper->parsed_queries.front().second;
   keeper->parsed_queries.pop();
   for (const auto &d : data) {
     qDebug() << d.c_str();

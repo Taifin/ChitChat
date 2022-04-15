@@ -3,7 +3,7 @@
 #include "ui_registration.h"
 #include "user.h"
 
-extern network::client server;
+extern QTcpSocket*remote_server;
 extern client_processor processor;
 
 registration::registration(QWidget *parent)
@@ -32,7 +32,8 @@ void registration::on_confirm_button_clicked() {
   if (password != confirm_password) {
     ui->information_label->setText("Passwords don't match");
   } else {
-    processor.prepare_query("register," + login + "," + password, server);
+    processor.prepare_query("register," + login + "," + password,
+                            remote_server);
   }
 }
 

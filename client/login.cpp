@@ -6,7 +6,7 @@
 #include <QLineEdit>
 #include <QMetaType>
 
-extern network::client server;
+extern QTcpSocket*remote_server;
 extern user current_user;
 extern client_processor processor;
 
@@ -39,7 +39,7 @@ void login::on_log_in_button_clicked() {
   std::string login, password;
   login = (ui->login_line_edit->text().toStdString());
   password = ui->password_line_edit->text().toStdString();
-  processor.prepare_query("login," + login + "," + password, server);
+  processor.prepare_query("login," + login + "," + password, remote_server);
 }
 
 void login::on_create_new_account_button_clicked() {

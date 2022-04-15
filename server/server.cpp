@@ -31,7 +31,8 @@ void server_processor::process() {
         break;
       }
     } catch (std::out_of_range &e) {
-      prepare_query("Unknown command " + data[0] + "\n", query.second);
+      prepare_query("Unknown command " + data[0] + "\n",
+                    query.second);
     }
   }
 }
@@ -78,11 +79,13 @@ void server_processor::greet() {
 
 void server_processor::update_layout() {
   assert(data.size() == 4);
-  model::state::update_coords(data[1], std::stoi(data[2]), std::stoi(data[3]));
+  model::state::update_coords(data[1], std::stoi(data[2]),
+                              std::stoi(data[3]));
   for (const auto &u : model::state::get_users()) {
-    if (u.client.address != to.address) {
-      prepare_query("move," + data[1] + "," + data[2] + "," + data[3] + "\n",
-                    u.client);
+    if (u.client != to) {
+      prepare_query(
+          "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
+          u.client);
     }
   }
 }
@@ -108,7 +111,8 @@ void server_processor::disconnect() {
   prepare_query("disconnected," + data[1] + "\n", to);
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
-                                   network::udp_socket &socket)
-    : query_processor(pKeeper, socket) {}
+                                   network::tcp_socket &socket)
+    : query_processor(pKeeper, socket) {
+}
 
-} // namespace sv
+}  // namespace sv

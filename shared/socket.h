@@ -4,7 +4,8 @@
 #include <QCoreApplication>
 #include <QNetworkDatagram>
 #include <QObject>
-#include <QUdpSocket>
+#include <QTcpServer>
+#include <QTcpSocket>
 #include <condition_variable>
 #include <mutex>
 #include <queue>
@@ -19,22 +20,25 @@ struct client {
 };
 
 struct queries_keeper {
-  std::queue<std::pair<std::string, client>> parsed_queries;
-  std::queue<std::pair<std::string, client>> prepared_queries;
+  std::queue<std::pair<std::string, QTcpSocket*>> parsed_queries;
+  std::queue<std::pair<std::string, QTcpSocket*>> prepared_queries;
   std::condition_variable query_available;
   std::mutex queries_mutex;
 };
 
-class udp_socket : public QObject {
+class tcp_socket : public QObject {
   Q_OBJECT
 
 protected:
   queries_keeper *keeper;
-  QUdpSocket *socket;
+  QTcpServer *server;
+  QList<QTcpSocket*> sockets;
 
 public:
-  explicit udp_socket(const QHostAddress &host, quint16 port,
-                      queries_keeper *keeper1, QObject *parent = nullptr);
+  explicit tcp_socket(const QHostAddress &host,
+                      quint16 port,
+                      queries_keeper* keeper1,
+                      QObject *parent = nullptr);
 
   void wait_for_processed();
   /// Sends "msg" to client.
@@ -42,10 +46,14 @@ public:
 signals:
 
 public slots:
-  void readPendingDatagrams();
+  void read();
   /// While socket has pending datagrams, reads them into "queries", where
   /// they are stored as {data, from} pairs. The function is called
   /// automatically when readyRead() signal is emitted.
+
+  void connect_one();
+
+  void disconnect_one();
 
   void send();
 };
@@ -55,12 +63,12 @@ class query_processor : public QObject {
 
 protected:
   queries_keeper *keeper;
-  udp_socket &socket;
+  tcp_socket &socket;
   std::vector<std::string> data;
-  client to;
+  QTcpSocket* to;
 
 public:
-  explicit query_processor(queries_keeper *keeper, udp_socket &socket);
+  explicit query_processor(queries_keeper *keeper, tcp_socket &socket);
 
   static std::vector<std::string> parse(const std::string &raw_data);
 
@@ -68,12 +76,12 @@ public:
 
   virtual void process() = 0;
 
-  void prepare_query(const std::string &q, const network::client &cli);
+  void prepare_query(const std::string&q, QTcpSocket* cli);
 
 signals:
 
   void prepared();
 };
-} // namespace network
+}  // namespace network
 
-#endif // CHITCHAT_SOCKET_H
+#endif  // CHITCHAT_SOCKET_H
