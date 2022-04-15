@@ -49,7 +49,7 @@ signals:
 
     void run_change_position(std::string, int, int);
 
-    void run_disconnect_roommate(const std::string&);
+    void run_disconnect_roommate(const std::string &);
 
     // void run_initialize_users_in_the_room(std::vector<std::string> data);
 };

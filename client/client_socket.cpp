@@ -43,13 +43,13 @@ void client_processor::process() {
         emit run_connect_with_room(data);
     }
     if (status == "cexists") {
-      emit run_already_connected();
+        emit run_already_connected();
     }
     if (status == "move") {
-      emit run_change_position(data[1], stoi(data[2]), stoi(data[3]));
+        emit run_change_position(data[1], stoi(data[2]), stoi(data[3]));
     }
-    if (status == "disconnected"){
-      qDebug() << data[1].c_str();
-      emit run_disconnect_roommate(data[1]);
+    if (status == "disconnected") {
+        qDebug() << data[1].c_str();
+        emit run_disconnect_roommate(data[1]);
     }
 }
