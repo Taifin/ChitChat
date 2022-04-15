@@ -7,11 +7,11 @@
 
 class server_user : public user {
 public:
-    QTcpSocket* client;
+    QTcpSocket *client;
 
     explicit server_user(std::string uname,
                          std::string upwd,
-                         QTcpSocket* socket,  // NOLINT
+                         QTcpSocket *socket,  // NOLINT
                          int x = 0,
                          int y = 0)
         : user(std::move(uname), std::move(upwd), x, y), client(socket) {

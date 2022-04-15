@@ -3,7 +3,7 @@
 
 client_socket::client_socket(const QHostAddress &host,
                              quint16 port,
-                             QTcpSocket* ser,
+                             QTcpSocket *ser,
                              network::queries_keeper *keeper,
                              QObject *parent = nullptr)
     : tcp_socket(host, port, keeper, parent) {
@@ -13,7 +13,7 @@ client_socket::client_socket(const QHostAddress &host,
 void client_processor::process() {
     std::vector<std::string> data = parse(keeper->parsed_queries.front().first);
     std::string status = data[0];
-    auto* current_client = keeper->parsed_queries.front().second;
+    auto *current_client = keeper->parsed_queries.front().second;
     keeper->parsed_queries.pop();
     for (const auto &d : data) {
         qDebug() << d.c_str();
