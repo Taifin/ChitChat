@@ -1,20 +1,21 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
+project(ChitChat)
 
-project(ChitChat VERSION 0.1 LANGUAGES CXX)
-
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+add_compile_definitions(LOCAL)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Network)
 include_directories(client)
 include_directories(shared)
+include_directories(server)
 
 set(PROJECT_SOURCES
         client/main.cpp
@@ -37,6 +38,9 @@ set(PROJECT_SOURCES
         client/client_user.h
         client/client_user.cpp
         )
+
+add_executable(ChitChat_server server/server.cpp server_testing.cpp server/state.cpp server/database.cpp shared/socket.cpp)
+target_link_libraries(ChitChat_server Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
 
 
 add_executable(ChitChat ${PROJECT_SOURCES} )
