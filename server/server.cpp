@@ -107,7 +107,7 @@ void server_processor::disconnect() {
       data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
   for (const auto &u : model::state::get_users()) {
     if (u.name() != data[1]) {
-      prepare_query("disconnected, " + u.name() + "\n", u.client);
+      prepare_query("disconnected," + u.name() + "\n", u.client);
     }
   }
 }
