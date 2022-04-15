@@ -105,7 +105,9 @@ void server_processor::disconnect() {
   assert(data.size() == 5);
   model::state::disconnect_user(server_user(
       data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
-  prepare_query("disconnected," + data[1] + "\n", to);
+  for (const auto &u : model::state::get_users()) {
+    prepare_query("disconnected, " + u.name() + "\n", u.client);
+  }
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
                                    network::udp_socket &socket)
