@@ -38,6 +38,7 @@ set(PROJECT_SOURCES
         client/client_user.h
         client/client_user.cpp
         )
+
 add_executable(ChitChat_server server/server.cpp server_testing.cpp server/state.cpp server/database.cpp shared/socket.cpp)
 target_link_libraries(ChitChat_server Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
 
