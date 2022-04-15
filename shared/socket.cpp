@@ -70,4 +70,5 @@ query_processor::query_processor(queries_keeper *keeper, udp_socket &socket)
     : keeper(keeper), socket(socket) {
     connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
 }
-}  // namespace network
+
+} // namespace network

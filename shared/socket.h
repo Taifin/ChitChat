@@ -14,8 +14,8 @@
 
 namespace network {
 struct client {
-    QHostAddress address;
-    int port;
+  QHostAddress address;
+  int port;
 };
 
 struct queries_keeper {
@@ -26,17 +26,15 @@ struct queries_keeper {
 };
 
 class udp_socket : public QObject {
-    Q_OBJECT
+  Q_OBJECT
 
 protected:
     queries_keeper *keeper;
     QUdpSocket *socket;
 
 public:
-    explicit udp_socket(const QHostAddress &host,
-                        quint16 port,
-                        queries_keeper* keeper1,
-                        QObject *parent = nullptr);
+  explicit udp_socket(const QHostAddress &host, quint16 port,
+                      queries_keeper *keeper1, QObject *parent = nullptr);
 
     void wait_for_processed();
     /// Sends "msg" to client.
@@ -76,6 +74,6 @@ signals:
 
     void prepared();
 };
-}  // namespace network
+} // namespace network
 
-#endif  // CHITCHAT_SOCKET_H
+#endif // CHITCHAT_SOCKET_H
