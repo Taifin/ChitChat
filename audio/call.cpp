@@ -4,7 +4,7 @@
 #include <QAudioOutput>
 #include <QObject>
 #include <QUdpSocket>
-
+#include <iostream>
 Call::~Call() {
 }
 
@@ -23,12 +23,33 @@ void Call::onConnected() {
     if (!info.isFormatSupported(format))
         format = info.nearestFormat(format);
 
-    QUdpSocket *socket = new QUdpSocket();
-    // socket->connectToHost("194.169.163.120", 4269);
+    // QUdpSocket *out_socket = new QUdpSocket();
+    // out_socket->connectToHost("127.0.0.1", 4242);
+
+    first_socket = new QUdpSocket();
+    first_socket->connectToHost("127.0.0.1", 4242);
+
     m_inputaudio = new QAudioInput(format);
     m_outputaudio = new QAudioOutput(format);
 
-    socket->connectToHost("127.0.0.1", 4269);
+    m_inputaudio->start(first_socket);
 
-    m_inputaudio->start(socket);
+    device = m_outputaudio->start();
+
+    std::cerr << "device created" << std::endl;
+    // QObject::connect(first_socket, SIGNAL(readyRead()), this,
+    // SLOT(getMusic()));
+    first_socket->connect(first_socket, SIGNAL(readyRead()), this,
+                          SLOT(getMusic()));
+}
+
+void Call::getMusic() {
+    std::cerr << "Call::getMusic()" << std::endl;
+    while (first_socket->hasPendingDatagrams()) {
+        std::cerr << "data recieved" << std::endl;
+        QByteArray data;
+        data.resize(first_socket->pendingDatagramSize());
+        first_socket->readDatagram(data.data(), data.size());
+        device->write(data.data(), data.size());
+    }
 }

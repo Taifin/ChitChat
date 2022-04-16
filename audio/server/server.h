@@ -19,7 +19,8 @@ public slots:
     void getMusic();
 
 private:
-    QUdpSocket *socket;
+    QUdpSocket *in_socket;
+    QUdpSocket *out_socket;
     QAudioInput *m_inputaudio;
     QAudioOutput *m_outputaudio;
     QIODevice *device;
