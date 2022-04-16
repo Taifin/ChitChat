@@ -18,7 +18,7 @@ Server::~Server() {
 
 void Server::setConnection(quint16 port) {
     in_socket = new QUdpSocket();
-    in_socket->bind(port);
+    in_socket->bind(QHostAddress::Any, port);
 
     // out_socket = new QUdpSocket();
     // out_socket->bind(4141);
@@ -67,7 +67,8 @@ void thread_connection(Server *server, qint16 port) {
     server->setConnection(port);
 }
 int main(int argc, char **argv) {
-    QApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
+
     Server server;
     Server server2;
 
@@ -75,11 +76,17 @@ int main(int argc, char **argv) {
 
     std::cin >> port_1 >> port_2;
     std::cout << "F" << std::endl;
+    
+    // std::thread first(thread_connection, &server, port_1);
+    // std::thread second(thread_connection, &server2, port_2);
     // std::thread first(thread_connection, &server, port_1);
     server.setConnection(port_1);
     // first.detach();
+    // second.detach();
 
     server2.setConnection(port_2);
-
-    return app.exec();
+//	while(true){
+		
+//	}
+   return app.exec();
 }
