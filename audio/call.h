@@ -9,6 +9,7 @@
 class Call : public QObject {
     Q_OBJECT
 public:
+    quint16 port = 4242;
     virtual ~Call();
 public slots:
     void onConnected();
@@ -17,7 +18,7 @@ public slots:
 private:
     QAudioInput *m_inputaudio;
     QAudioOutput *m_outputaudio;
-    QUdpSocket *in_socket;
+    QUdpSocket *first_socket;
     QIODevice *device;
 };
 

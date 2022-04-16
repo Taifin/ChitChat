@@ -10,19 +10,19 @@ class Server : public QObject {
     Q_OBJECT
 public:
     virtual ~Server();
-    Server();
-    void start() {
-        // listen(QHostAddress::Any, 4269);
-    }
+    void setConnection(quint16 port);
 
 public slots:
     void getMusic();
 
 private:
     QUdpSocket *in_socket;
-    QUdpSocket *out_socket;
-    QAudioInput *m_inputaudio;
-    QAudioOutput *m_outputaudio;
-    QIODevice *device;
+    // QUdpSocket *out_socket;
+    // QAudioInput *m_inputaudio;
+    // QAudioOutput *m_outputaudio;
+    // QIODevice *device;
+    // QByteArray data_buffer_1;
+    // QByteArray data_buffer_2;
 };
+
 #endif

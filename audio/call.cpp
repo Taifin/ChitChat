@@ -27,7 +27,7 @@ void Call::onConnected() {
     // out_socket->connectToHost("127.0.0.1", 4242);
 
     first_socket = new QUdpSocket();
-    first_socket->connectToHost("127.0.0.1", 4242);
+    first_socket->connectToHost("127.0.0.1", port);
 
     m_inputaudio = new QAudioInput(format);
     m_outputaudio = new QAudioOutput(format);
