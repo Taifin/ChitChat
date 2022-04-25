@@ -67,6 +67,7 @@ void server_processor::connect_user() {
     server_user new_user{data[1], data[2], to};
     if (model::state::connect_user(new_user)) {
         translate_users_data();
+        new_user_connected();
     } else {
         prepare_query("cexists," + data[1] + "\n", to);
     }
