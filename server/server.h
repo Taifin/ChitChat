@@ -67,6 +67,8 @@ public:
 
     void translate_users_data();
 
+    void new_user_connected();
+
     void update_layout();
 
     void disconnect();

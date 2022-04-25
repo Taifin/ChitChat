@@ -1,4 +1,5 @@
 #include "server.h"
+#include <cassert>
 #include "state.h"
 
 namespace sv {
@@ -116,6 +117,13 @@ void server_processor::disconnect() {
 server_processor::server_processor(network::queries_keeper *pKeeper,
                                    network::tcp_socket &socket)
     : query_processor(pKeeper, socket) {
+}
+void server_processor::new_user_connected() {
+    for (const auto &u : model::state::get_users()) {
+        if (u.name() != data[1]) {
+            prepare_query("new," + u.name() + "\n", u.client);
+        }
+    }
 }
 
 }  // namespace sv
