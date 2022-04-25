@@ -52,4 +52,7 @@ void client_processor::process() {
         qDebug() << data[1].c_str();
         emit run_disconnect_roommate(data[1]);
     }
+    if (status == "new") {
+        emit run_connect_roommate(data[1]);
+    }
 }

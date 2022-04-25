@@ -34,6 +34,8 @@ private slots:
 
     void roommate_disconnect(const std::string &roommate_name);
 
+    void roommate_connect(const std::string &roommate_name);
+
 private:
     Ui::main_window *ui;
     login login_m;

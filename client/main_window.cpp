@@ -35,6 +35,8 @@ main_window::main_window(QWidget *parent)
             this, SLOT(change_position(std::string, int, int)));
     connect(&processor, SIGNAL(run_disconnect_roommate(const std::string &)),
             this, SLOT(disconnect_roommate(const std::string &)));
+    connect(&processor, SIGNAL(run_connect_roommate(const std::string &)), this,
+            SLOT(roommate_connect(const std::string &)));
 
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
@@ -68,7 +70,7 @@ void main_window::already_connected() {
 }
 
 void main_window::connect_with_room(std::vector<std::string> data) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     scene->setSceneRect(-250, -250, 500, 500);
 
@@ -111,4 +113,14 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
     scene->removeItem(users_in_the_room[roommate_name].user_sprite);
     scene->removeItem(
         users_in_the_room[roommate_name].user_sprite->name_display);
+}
+
+void main_window::roommate_connect(const std::string &roommate_name) {
+    client_user u(roommate_name, "pwd", 0, 0);
+    users_in_the_room[roommate_name] = u;
+    u.user_sprite->setRect(0, 0, 30, 30);
+    u.user_sprite->name_display->setPlainText(QString(roommate_name.c_str()));
+    u.user_sprite->name_display->setPos(0, -20);
+    scene->addItem(u.user_sprite);
+    scene->addItem(u.user_sprite->name_display);
 }
