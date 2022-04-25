@@ -51,7 +51,7 @@ signals:
 
     void run_disconnect_roommate(const std::string &);
 
-    void run_connect_roommate(const std::string&);
+    void run_connect_roommate(const std::string &);
 
     // void run_initialize_users_in_the_room(std::vector<std::string> data);
 };
