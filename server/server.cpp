@@ -122,7 +122,7 @@ server_processor::server_processor(network::queries_keeper *pKeeper,
 void server_processor::new_user_connected() {
     for (const auto &u : model::state::get_users()) {
         if (u.name() != data[1]) {
-            prepare_query("new," + u.name() + "\n", u.client);
+            prepare_query("new," + data[1] + "\n", u.client);
         }
     }
 }

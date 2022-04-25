@@ -34,7 +34,7 @@ main_window::main_window(QWidget *parent)
     connect(&processor, SIGNAL(run_change_position(std::string, int, int)),
             this, SLOT(change_position(std::string, int, int)));
     connect(&processor, SIGNAL(run_disconnect_roommate(const std::string &)),
-            this, SLOT(disconnect_roommate(const std::string &)));
+            this, SLOT(roommate_disconnect(const std::string &)));
     connect(&processor, SIGNAL(run_connect_roommate(const std::string &)), this,
             SLOT(roommate_connect(const std::string &)));
 
