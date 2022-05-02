@@ -1,15 +1,15 @@
 #ifndef CHITCHAT_SERVER_H
 #define CHITCHAT_SERVER_H
 
-#include "database.h"
-#include "socket.h"
-#include "user.h"
 #include <iostream>
 #include <map>
 #include <queue>
 #include <sstream>
 #include <string>
 #include <vector>
+#include "database.h"
+#include "socket.h"
+#include "user.h"
 
 /// +------------+-----------------------------+------------------------------------------------------------------------------------------+
 /// | command    |           format            | return |
@@ -28,51 +28,57 @@
 namespace sv {
 
 class server_socket : public network::tcp_socket {
-
 public:
-  explicit server_socket(const QHostAddress &host, quint16 port,
-                         network::queries_keeper *keeper1,
-                         QObject *parent = nullptr)
-      : network::tcp_socket(host, port, keeper1) {}
+    explicit server_socket(const QHostAddress &host,
+                           quint16 port,
+                           network::queries_keeper *keeper1,
+                           QObject *parent = nullptr)
+        : network::tcp_socket(host, port, keeper1) {
+    }
 };
 
 class server_processor : public network::query_processor {
-  Q_OBJECT;
+    Q_OBJECT;
 
 private:
-  enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
-  std::map<std::string, e_commands> commands{
-      {"login", e_commands::LOGIN},     {"register", e_commands::REGISTER},
-      {"connect", e_commands::CONNECT}, {"hello", e_commands::GREET},
-      {"move", e_commands::MOVE},       {"disconnect", e_commands::DISCONNECT}};
+    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
+    std::map<std::string, e_commands> commands{
+        {"login", e_commands::LOGIN},
+        {"register", e_commands::REGISTER},
+        {"connect", e_commands::CONNECT},
+        {"hello", e_commands::GREET},
+        {"move", e_commands::MOVE},
+        {"disconnect", e_commands::DISCONNECT}};
 
 public:
-  void process() override;
+    void process() override;
 
-  void authorize_user();
-  /// Calls to database's authorize(), exceptions are handled.
-  /// Use it to authorize user on login screen.
+    void authorize_user();
+    /// Calls to database's authorize(), exceptions are handled.
+    /// Use it to authorize user on login screen.
 
-  void register_user();
-  /// Calls to database's create_user().
-  /// Use it to make new user in database.
+    void register_user();
+    /// Calls to database's create_user().
+    /// Use it to make new user in database.
 
-  void connect_user();
-  /// Calls to model's connect_user().
-  /// Use it to connect user to the room (in future).
+    void connect_user();
+    /// Calls to model's connect_user().
+    /// Use it to connect user to the room (in future).
 
-  void translate_users_data();
+    void translate_users_data();
 
-  void update_layout();
+    void new_user_connected();
 
-  void disconnect();
+    void update_layout();
 
-  void greet();
-  /// Debugging: sends message in return.
+    void disconnect();
 
-  server_processor(network::queries_keeper *pKeeper,
-                   network::tcp_socket &socket);
+    void greet();
+    /// Debugging: sends message in return.
+
+    server_processor(network::queries_keeper *pKeeper,
+                     network::tcp_socket &socket);
 };
 
-} // namespace sv
+}  // namespace sv
 #endif

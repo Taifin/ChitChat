@@ -7,16 +7,16 @@
 namespace model {
 class state {
 private:
-  static std::map<std::string, server_user> connected_users;
+    static std::map<std::string, server_user> connected_users;
 
 public:
-  static bool connect_user(const server_user &new_user);
+    static bool connect_user(const server_user &new_user);
 
-  static void disconnect_user(const server_user &disc_user);
+    static void disconnect_user(const server_user &disc_user);
 
-  static void update_coords(const std::string &username, int x, int y);
+    static void update_coords(const std::string &username, int x, int y);
 
-  static std::vector<server_user> get_users();
+    static std::vector<server_user> get_users();
 };
-} // namespace model
-#endif // CHITCHAT_STATE_H
+}  // namespace model
+#endif  // CHITCHAT_STATE_H

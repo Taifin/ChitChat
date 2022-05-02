@@ -15,72 +15,73 @@
 
 namespace network {
 struct client {
-  QHostAddress address;
-  int port;
+    QHostAddress address;
+    int port;
 };
 
 struct queries_keeper {
-  std::queue<std::pair<std::string, QTcpSocket*>> parsed_queries;
-  std::queue<std::pair<std::string, QTcpSocket*>> prepared_queries;
-  std::condition_variable query_available;
-  std::mutex queries_mutex;
+    std::queue<std::pair<std::string, QTcpSocket *>> parsed_queries;
+    std::queue<std::pair<std::string, QTcpSocket *>> prepared_queries;
+    std::condition_variable query_available;
+    std::mutex queries_mutex;
 };
 
 class tcp_socket : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
 protected:
-  queries_keeper *keeper;
-  QTcpServer *server;
-  QList<QTcpSocket*> sockets;
+    queries_keeper *keeper;
+    QTcpServer *server;
+    QList<QTcpSocket *> sockets;
 
 public:
-  explicit tcp_socket(const QHostAddress &host,
-                      quint16 port,
-                      queries_keeper* keeper1,
-                      QObject *parent = nullptr);
+    explicit tcp_socket(const QHostAddress &host,
+                        quint16 port,
+                        queries_keeper *keeper1,
+                        QObject *parent = nullptr);
 
-  void wait_for_processed();
-  /// Sends "msg" to client.
+    void wait_for_processed();
+    /// Sends "msg" to client.
 
 signals:
 
 public slots:
-  void read();
-  /// While socket has pending datagrams, reads them into "queries", where
-  /// they are stored as {data, from} pairs. The function is called
-  /// automatically when readyRead() signal is emitted.
 
-  void connect_one();
+    void read();
+    /// While socket has pending datagrams, reads them into "queries", where
+    /// they are stored as {data, from} pairs. The function is called
+    /// automatically when readyRead() signal is emitted.
 
-  void disconnect_one();
+    void connect_one();
 
-  void send();
+    void disconnect_one();
+
+    void send();
 };
 
 class query_processor : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
 protected:
-  queries_keeper *keeper;
-  tcp_socket &socket;
-  std::vector<std::string> data;
-  QTcpSocket* to;
+    queries_keeper *keeper;
+    tcp_socket &socket;
+    std::vector<std::string> data;
+    QTcpSocket *to;
 
 public:
-  explicit query_processor(queries_keeper *keeper, tcp_socket &socket);
+    explicit query_processor(queries_keeper *keeper, tcp_socket &socket);
 
-  static std::vector<std::string> parse(const std::string &raw_data);
+    static std::vector<std::string> parse(const std::string &raw_data);
 
-  void wait_next_query();
+    void wait_next_query();
 
-  virtual void process() = 0;
+    virtual void process() = 0;
 
-  void prepare_query(const std::string&q, QTcpSocket* cli);
+    void prepare_query(const std::string &q, QTcpSocket *cli);
 
 signals:
 
-  void prepared();
+    void prepared();
 };
 }  // namespace network
 
