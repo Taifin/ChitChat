@@ -20,7 +20,6 @@ extern client_processor processor;
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
-
     scene = new QGraphicsScene();
 
     remote_server->connectToHost(QHostAddress("194.169.163.120"), 1235);
@@ -42,7 +41,6 @@ main_window::main_window(QWidget *parent)
 
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
-
 }
 
 void main_window::start() {
@@ -65,11 +63,9 @@ main_window::~main_window() {
 }
 
 void main_window::on_connect_button_clicked() {
-
     processor.prepare_query(
         "connect," + current_user.name() + "," + current_user.pwd(),
         remote_server);
-
 }
 
 void main_window::already_connected() {

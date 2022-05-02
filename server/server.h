@@ -28,7 +28,6 @@
 namespace sv {
 
 class server_socket : public network::tcp_socket {
-
 public:
     explicit server_socket(const QHostAddress &host,
                            quint16 port,
@@ -36,7 +35,6 @@ public:
                            QObject *parent = nullptr)
         : network::tcp_socket(host, port, keeper1) {
     }
-
 };
 
 class server_processor : public network::query_processor {
@@ -80,7 +78,6 @@ public:
 
     server_processor(network::queries_keeper *pKeeper,
                      network::tcp_socket &socket);
-
 };
 
 }  // namespace sv

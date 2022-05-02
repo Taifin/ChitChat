@@ -27,19 +27,17 @@ void registration::on_back_button_clicked() {
 }
 
 void registration::on_confirm_button_clicked() {
-
     std::string login, password, confirm_password;
     login = (ui->name_line_edit->text()).toStdString();
     password = ui->password_line_edit->text().toStdString();
     confirm_password = ui->confirm_line_edit->text().toStdString();
 
     if (password != confirm_password) {
-      ui->information_label->setText("Passwords don't match");
+        ui->information_label->setText("Passwords don't match");
     } else {
-      processor.prepare_query("register," + login + "," + password,
-                              remote_server);
+        processor.prepare_query("register," + login + "," + password,
+                                remote_server);
     }
-
 }
 
 void registration::successful_registration() {

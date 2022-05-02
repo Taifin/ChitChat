@@ -7,7 +7,6 @@
 #include "socket.h"
 
 class client_socket : public network::tcp_socket {
-
     Q_OBJECT
 public:
     client_socket(const QHostAddress &host,
@@ -22,7 +21,6 @@ class client_processor : public network::query_processor {
     Q_OBJECT;
 
 public:
-
     client_processor(network::queries_keeper *keeper,
                      network::tcp_socket &socket)
         : network::query_processor(keeper, socket) {

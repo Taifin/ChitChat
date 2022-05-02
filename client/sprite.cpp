@@ -35,7 +35,6 @@ sprite::~sprite() {
 }
 
 void change_position(int step_size, sprite *walker, directions dir) {
-
     int x = walker->x();
     int y = walker->y();
     switch (dir) {
@@ -76,5 +75,4 @@ void change_position(int step_size, sprite *walker, directions dir) {
                                          walker->name_display->y());
             break;
     }
-
 }
