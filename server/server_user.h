@@ -2,6 +2,7 @@
 #define CHITCHAT_SERVER_USER_H
 
 #include <utility>
+
 #include "socket.h"
 #include "user.h"
 
@@ -17,6 +18,7 @@ public:
         : user(std::move(uname), std::move(upwd), x, y), client(socket) {
     }
 
+
     bool operator==(const server_user &other) {
         return this->name() == other.name();
     }
@@ -24,6 +26,7 @@ public:
     bool operator==(server_user &&other) {
         return this->name() == other.name();
     }
+
 };
 
 #endif  // CHITCHAT_SERVER_USER_H

@@ -20,6 +20,7 @@ struct client {
 };
 
 struct queries_keeper {
+
     std::queue<std::pair<std::string, QTcpSocket *>> parsed_queries;
     std::queue<std::pair<std::string, QTcpSocket *>> prepared_queries;
     std::condition_variable query_available;
@@ -40,12 +41,14 @@ public:
                         queries_keeper *keeper1,
                         QObject *parent = nullptr);
 
+
     void wait_for_processed();
     /// Sends "msg" to client.
 
 signals:
 
 public slots:
+
     void read();
     /// While socket has pending datagrams, reads them into "queries", where
     /// they are stored as {data, from} pairs. The function is called
@@ -56,12 +59,14 @@ public slots:
     void disconnect_one();
 
     void send();
+
 };
 
 class query_processor : public QObject {
     Q_OBJECT
 
 protected:
+
     queries_keeper *keeper;
     tcp_socket &socket;
     std::vector<std::string> data;
@@ -76,7 +81,9 @@ public:
 
     virtual void process() = 0;
 
+
     void prepare_query(const std::string &q, QTcpSocket *cli);
+
 
 signals:
 

@@ -5,6 +5,7 @@
 int STEP_SIZE = 5;
 
 extern QTcpSocket *remote_server;
+
 extern client_processor processor;
 
 sprite::sprite(const std::string &name) : name(name) {
@@ -34,6 +35,7 @@ sprite::~sprite() {
 }
 
 void change_position(int step_size, sprite *walker, directions dir) {
+
     int x = walker->x();
     int y = walker->y();
     switch (dir) {
@@ -74,4 +76,5 @@ void change_position(int step_size, sprite *walker, directions dir) {
                                          walker->name_display->y());
             break;
     }
+
 }

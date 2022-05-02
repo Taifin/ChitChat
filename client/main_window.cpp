@@ -13,12 +13,14 @@
 #include "sprite.h"
 
 extern QTcpSocket *remote_server;
+
 extern client_user current_user;
 extern std::map<std::string, client_user> users_in_the_room;
 extern client_processor processor;
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
+
     scene = new QGraphicsScene();
 
     remote_server->connectToHost(QHostAddress("194.169.163.120"), 1235);
@@ -40,6 +42,7 @@ main_window::main_window(QWidget *parent)
 
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+
 }
 
 void main_window::start() {
@@ -52,17 +55,21 @@ void main_window::show_after_auth() {
 
 main_window::~main_window() {
     delete scene;
+
     processor.prepare_query("disconnect," + current_user.name() + "," +
                                 current_user.pwd() + "," +
                                 std::to_string(current_user.get_x()) + "," +
                                 std::to_string(current_user.get_y()),
+
                             remote_server);
 }
 
 void main_window::on_connect_button_clicked() {
+
     processor.prepare_query(
         "connect," + current_user.name() + "," + current_user.pwd(),
         remote_server);
+
 }
 
 void main_window::already_connected() {

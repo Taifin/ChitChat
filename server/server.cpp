@@ -6,34 +6,34 @@ namespace sv {
 
 void server_processor::process() {
     while (!keeper->parsed_queries.empty()) {
-        auto query = keeper->parsed_queries.front();
-        keeper->parsed_queries.pop();
-        data = parse(query.first);
-        to = query.second;
-        try {
-            switch (commands.at(data[0])) {
-                case e_commands::LOGIN:
-                    authorize_user();
-                    break;
-                case e_commands::REGISTER:
-                    register_user();
-                    break;
-                case e_commands::CONNECT:
-                    connect_user();
-                    break;
-                case e_commands::GREET:
-                    greet();
-                    break;
-                case e_commands::MOVE:
-                    update_layout();
-                    break;
-                case e_commands::DISCONNECT:
-                    disconnect();
-                    break;
-            }
-        } catch (std::out_of_range &e) {
-            prepare_query("Unknown command " + data[0] + "\n", query.second);
+      auto query = keeper->parsed_queries.front();
+      keeper->parsed_queries.pop();
+      data = parse(query.first);
+      to = query.second;
+      try {
+        switch (commands.at(data[0])) {
+        case e_commands::LOGIN:
+          authorize_user();
+          break;
+        case e_commands::REGISTER:
+          register_user();
+          break;
+        case e_commands::CONNECT:
+          connect_user();
+          break;
+        case e_commands::GREET:
+          greet();
+          break;
+        case e_commands::MOVE:
+          update_layout();
+          break;
+        case e_commands::DISCONNECT:
+          disconnect();
+          break;
         }
+      } catch (std::out_of_range &e) {
+        prepare_query("Unknown command " + data[0] + "\n",
+                      query.second);
     }
 }
 
@@ -83,11 +83,11 @@ void server_processor::update_layout() {
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {
-        if (u.client != to) {
-            prepare_query(
-                "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
-                u.client);
-        }
+      if (u.client != to) {
+        prepare_query(
+            "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
+            u.client);
+
     }
 }
 
@@ -119,6 +119,7 @@ server_processor::server_processor(network::queries_keeper *pKeeper,
                                    network::tcp_socket &socket)
     : query_processor(pKeeper, socket) {
 }
+  
 void server_processor::new_user_connected() {
     for (const auto &u : model::state::get_users()) {
         if (u.name() != data[1]) {
@@ -126,5 +127,6 @@ void server_processor::new_user_connected() {
         }
     }
 }
+
 
 }  // namespace sv
