@@ -13,28 +13,44 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 224, 237);
+border-color: rgb(173, 127, 168);
+border-top-color: rgb(173, 127, 168);</string>
+  </property>
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
      <x>90</x>
      <y>50</y>
-     <width>211</width>
-     <height>109</height>
+     <width>253</width>
+     <height>115</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="login_label">
+      <property name="styleSheet">
+       <string notr="true">font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Login</string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QLineEdit" name="login_line_edit"/>
+     <widget class="QLineEdit" name="login_line_edit">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(239, 41, 41);
+background-color: rgb(238, 238, 236);</string>
+      </property>
+     </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="password_label">
+      <property name="styleSheet">
+       <string notr="true">font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Password</string>
       </property>
@@ -42,6 +58,10 @@
     </item>
     <item row="1" column="1">
      <widget class="QLineEdit" name="password_line_edit">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(239, 41, 41);
+background-color: rgb(238, 238, 236);</string>
+      </property>
       <property name="echoMode">
        <enum>QLineEdit::Password</enum>
       </property>
@@ -49,6 +69,10 @@
     </item>
     <item row="2" column="1">
      <widget class="QCheckBox" name="show_password_check_box">
+      <property name="styleSheet">
+       <string notr="true">alternate-background-color: rgb(238, 238, 236);
+font: 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>show password</string>
       </property>
@@ -61,8 +85,8 @@
     <rect>
      <x>120</x>
      <y>180</y>
-     <width>160</width>
-     <height>81</height>
+     <width>182</width>
+     <height>101</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -81,6 +105,18 @@
     </item>
     <item>
      <widget class="QPushButton" name="log_in_button">
+      <property name="font">
+       <font>
+        <family>Source Code Pro</family>
+        <pointsize>10</pointsize>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Log In</string>
       </property>
@@ -88,6 +124,18 @@
     </item>
     <item>
      <widget class="QPushButton" name="create_new_account_button">
+      <property name="font">
+       <font>
+        <family>Source Code Pro</family>
+        <pointsize>10</pointsize>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Create New Account</string>
       </property>

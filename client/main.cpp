@@ -4,7 +4,7 @@
 #include "client_socket.h"
 #include "client_user.h"
 #include "main_window.h"
-#include "socket.h"
+#include "shared/socket.h"
 
 QTcpSocket *remote_server = new QTcpSocket();
 client_user current_user("noname", "default_password");

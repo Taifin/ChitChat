@@ -2,7 +2,7 @@
 #define CLIENT_USER_H
 
 #include "sprite.h"
-#include "user.h"
+#include "shared/user.h"
 
 class client_user : public user {
 public:

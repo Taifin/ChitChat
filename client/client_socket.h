@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QUdpSocket>
-#include "socket.h"
+#include "shared/socket.h"
 
 class client_socket : public network::tcp_socket {
     Q_OBJECT

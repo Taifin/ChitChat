@@ -4,7 +4,7 @@
 #include "client_socket.h"
 #include "main_window.h"
 #include "ui_login.h"
-#include "user.h"
+#include "shared/user.h"
 
 extern QTcpSocket *remote_server;
 
