@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
-    <height>507</height>
+    <width>791</width>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>main_window</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 224, 237);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="layoutDirection">
@@ -22,7 +25,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>821</width>
+      <width>781</width>
       <height>561</height>
      </rect>
     </property>
@@ -102,7 +105,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>831</width>
+     <width>791</width>
      <height>22</height>
     </rect>
    </property>

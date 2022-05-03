@@ -16,16 +16,24 @@ sprite::sprite(const std::string &name) : name(name) {
 void sprite::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_Up:
-            change_position(STEP_SIZE, this, directions::UP);
+            if (pos().y() > -250){
+                change_position(STEP_SIZE, this, directions::UP);
+            }
             break;
         case Qt::Key_Down:
-            change_position(STEP_SIZE, this, directions::DOWN);
+            if (pos().y() < 230){
+                change_position(STEP_SIZE, this, directions::DOWN);
+            }
             break;
         case Qt::Key_Left:
-            change_position(STEP_SIZE, this, directions::LEFT);
+            if (pos().x() > -290){
+                change_position(STEP_SIZE, this, directions::LEFT);
+            }
             break;
         case Qt::Key_Right:
-            change_position(STEP_SIZE, this, directions::RIGHT);
+            if (pos().x() < 255){
+                change_position(STEP_SIZE, this, directions::RIGHT);
+            }
             break;
     }
 }
@@ -75,4 +83,5 @@ void change_position(int step_size, sprite *walker, directions dir) {
                                          walker->name_display->y());
             break;
     }
+    qDebug() << std::to_string(walker->x()).c_str() << std::to_string(walker->y()).c_str();
 }
