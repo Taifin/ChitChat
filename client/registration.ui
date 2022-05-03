@@ -177,7 +177,7 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
      <x>30</x>
      <y>160</y>
      <width>371</width>
-     <height>301</height>
+     <height>311</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -186,12 +186,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string/>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="finn_label">
       <property name="text">
        <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -200,12 +206,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string>TextLabel</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item row="2" column="1">
      <widget class="QLabel" name="sonic_label">
       <property name="text">
        <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -214,12 +226,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string/>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item row="3" column="2">
      <widget class="QRadioButton" name="stormtroopers_radio_button">
       <property name="text">
        <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -228,12 +246,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string>TextLabel</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QRadioButton" name="finn_radio_button">
       <property name="text">
        <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -242,12 +266,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string>TextLabel</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item row="0" column="1">
      <widget class="QLabel" name="mushroom_label">
       <property name="text">
        <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -256,12 +286,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string/>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="pikachu_label">
       <property name="text">
        <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -270,12 +306,18 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string/>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item row="0" column="2">
      <widget class="QLabel" name="rafael_label">
       <property name="text">
        <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -284,6 +326,9 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string/>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item row="2" column="2">
@@ -291,12 +336,21 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
       <property name="text">
        <string>TextLabel</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item row="1" column="1">
      <widget class="QRadioButton" name="mushroom_radio_button">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
       <property name="text">
        <string/>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -304,6 +358,9 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
      <widget class="QRadioButton" name="rafael_radio_button">
       <property name="text">
        <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
