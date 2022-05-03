@@ -14,7 +14,7 @@
    <string>main_window</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 224, 237);</string>
+   <string notr="true">background-color: rgb(117, 80, 123);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="layoutDirection">
@@ -61,6 +61,10 @@
            <height>0</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+         </property>
          <property name="text">
           <string>connect</string>
          </property>
@@ -77,6 +81,10 @@
        </item>
        <item>
         <widget class="QPushButton" name="change_avatar_button">
+         <property name="styleSheet">
+          <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+         </property>
          <property name="text">
           <string>change character</string>
          </property>

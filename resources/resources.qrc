@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>floor.png</file>
+        <file>pikachu_sprite.png</file>
+        <file>kermit_sprite.png</file>
+        <file>kermit_sprite_small.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix1"/>
+</RCC>

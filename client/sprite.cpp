@@ -9,6 +9,7 @@ extern QTcpSocket *remote_server;
 extern client_processor processor;
 
 sprite::sprite(const std::string &name) : name(name) {
+    setPixmap(QPixmap(":/images/kermit_sprite_small.png"));
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
 }
@@ -16,22 +17,22 @@ sprite::sprite(const std::string &name) : name(name) {
 void sprite::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_Up:
-            if (pos().y() > -250){
+            if (pos().y() > -5){
                 change_position(STEP_SIZE, this, directions::UP);
             }
             break;
         case Qt::Key_Down:
-            if (pos().y() < 230){
+            if (pos().y() < 455){
                 change_position(STEP_SIZE, this, directions::DOWN);
             }
             break;
         case Qt::Key_Left:
-            if (pos().x() > -290){
+            if (pos().x() > -45){
                 change_position(STEP_SIZE, this, directions::LEFT);
             }
             break;
         case Qt::Key_Right:
-            if (pos().x() < 255){
+            if (pos().x() < 490){
                 change_position(STEP_SIZE, this, directions::RIGHT);
             }
             break;

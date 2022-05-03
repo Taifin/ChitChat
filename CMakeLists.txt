@@ -35,6 +35,7 @@ set(PROJECT_SOURCES
             client/sprite.cpp
             client/client_user.h
             client/client_user.cpp
+            resources/resources.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

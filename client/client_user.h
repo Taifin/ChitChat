@@ -9,7 +9,8 @@ public:
     client_user();
     client_user(std::string uname, std::string upwd);
     client_user(std::string uname, std::string upwd, int x, int y);
-    sprite *user_sprite = new sprite(this->name());
+    void set_user_sprite();
+    sprite *user_sprite;
     ~client_user();
 
 private:

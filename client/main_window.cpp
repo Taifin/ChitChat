@@ -77,15 +77,18 @@ void main_window::already_connected() {
 
 void main_window::connect_with_room(std::vector<std::string> data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    current_user.set_user_sprite();
 
-    scene->setSceneRect(-250, -250, 500, 500);
+    //client_user->user_sprite = new sprite(client_user->name());
+
+    scene->setSceneRect(0, 0, 500, 500);
 
     for (int i = 1; i < data.size(); i += 3) {
         if (data[i] != current_user.name()) {
             client_user u(data[i], "psw", stoi(data[i + 1]), stoi(data[i + 2]));
             users_in_the_room[data[i]] = u;
-            users_in_the_room[data[i]].user_sprite->setRect(
-                stoi(data[i + 1]), stoi(data[i + 2]), 30, 30);
+            //users_in_the_room[data[i]].user_sprite->setRect(
+                //stoi(data[i + 1]), stoi(data[i + 2]), 30, 30);
             users_in_the_room[data[i]].user_sprite->name_display->setPlainText(
                 QString(users_in_the_room[data[i]].name().c_str()));
             users_in_the_room[data[i]].user_sprite->name_display->setPos(
@@ -96,7 +99,8 @@ void main_window::connect_with_room(std::vector<std::string> data) {
         }
     }
 
-    current_user.user_sprite->setRect(0, 0, 30, 30);
+    //current_user.user_sprite->setPixmap(QPixmap(":/images/pikachu_sprite.png"));
+    //current_user.user_sprite->setRect(0, 0, 30, 30);
     current_user.user_sprite->name_display->setPlainText(
         QString(current_user.name().c_str()));
     current_user.user_sprite->name_display->setPos(0, -20);
@@ -107,7 +111,8 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     current_user.user_sprite->setFocus();
 
     QGraphicsView *view = ui->room_view;
-    scene->setBackgroundBrush(Qt::blue);
+    qDebug() << (":/images/floor.png");
+    scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
     view->setFixedSize(600, 550);
     view->setScene(scene);
 }
@@ -126,7 +131,7 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
 void main_window::roommate_connect(const std::string &roommate_name) {
     client_user u(roommate_name, "pwd", 0, 0);
     users_in_the_room[roommate_name] = u;
-    u.user_sprite->setRect(0, 0, 30, 30);
+    //u.user_sprite->setRect(0, 0, 30, 30);
     u.user_sprite->name_display->setPlainText(QString(roommate_name.c_str()));
     u.user_sprite->name_display->setPos(0, -20);
     scene->addItem(u.user_sprite);
