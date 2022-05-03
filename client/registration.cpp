@@ -1,6 +1,7 @@
 #include "registration.h"
 #include "client_socket.h"
 #include "ui_registration.h"
+#include <vector>
 #include "shared/user.h"
 
 extern QTcpSocket *remote_server;
@@ -11,6 +12,17 @@ registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+
+    ui->finn_label->setPixmap(QPixmap(":/images/finn_sprite.png"));
+    ui->sonic_label->setPixmap(QPixmap(":/images/sonic_sprite.png"));
+    ui->rafael_label->setPixmap(QPixmap(":/images/rafael_sprite.png"));
+    ui->kermit_label->setPixmap(QPixmap(":/images/kermit_sprite.png"));
+    ui->gambol_label->setPixmap(QPixmap(":/images/gambol_sprite.png"));
+    ui->pikachu_label->setPixmap(QPixmap(":/images/pikachu_sprite.png"));
+    ui->miku_label->setPixmap(QPixmap(":/images/miku_sprite.png"));
+    ui->mushroom_label->setPixmap(QPixmap(":/images/mushroom_sprite.png"));
+    ui->stormtroopers_label->setPixmap(QPixmap(":/images/stormtroopers_sprite.png"));
+
 
     connect(&processor, SIGNAL(run_successful_registration()), this,
             SLOT(successful_registration()));
