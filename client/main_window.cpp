@@ -11,6 +11,9 @@
 #include "./ui_main_window.h"
 #include "client_user.h"
 #include "sprite.h"
+#include <QImage>
+#include <QBrush>
+
 
 extern QTcpSocket *remote_server;
 
@@ -104,6 +107,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     current_user.user_sprite->setFocus();
 
     QGraphicsView *view = ui->room_view;
+    scene->setBackgroundBrush(Qt::blue);
     view->setFixedSize(600, 550);
     view->setScene(scene);
 }
