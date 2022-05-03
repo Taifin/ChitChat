@@ -8,8 +8,8 @@ extern QTcpSocket *remote_server;
 
 extern client_processor processor;
 
-sprite::sprite(const std::string &name) : name(name) {
-    setPixmap(QPixmap(":/images/kermit_sprite_small.png"));
+sprite::sprite(const std::string &name, std::string skin) : name(name) {
+    setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
 }

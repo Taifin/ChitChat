@@ -9,11 +9,12 @@ public:
     client_user();
     client_user(std::string uname, std::string upwd);
     client_user(std::string uname, std::string upwd, int x, int y);
-    void set_user_sprite();
+    void set_user_sprite(std::string skin = "pikachu");
     sprite *user_sprite;
     ~client_user();
 
 private:
+
 };
 
 #endif  // CLIENT_USER_H
