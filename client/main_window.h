@@ -38,6 +38,8 @@ private slots:
 
     void roommate_connect(const std::string &roommate_name);
 
+    void show_curren_sprite();
+
 private:
     Ui::main_window *ui;
     login login_m;

@@ -35,7 +35,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     std::string skin;
 signals:
-    void clean_scene_after_choice();
+    void add_curren_sprite();
 };
 
 #endif  // SPRITE_H

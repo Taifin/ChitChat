@@ -56,6 +56,7 @@ void main_window::start() {
 
 void main_window::show_after_auth() {
     this->show();
+    show_curren_sprite();
 };
 
 main_window::~main_window() {
@@ -82,6 +83,7 @@ void main_window::already_connected() {
 
 void main_window::connect_with_room(std::vector<std::string> data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    scene->clear();
     current_user.set_user_sprite();
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
@@ -133,16 +135,33 @@ void main_window::roommate_connect(const std::string &roommate_name) {
     scene->addItem(users_in_the_room[roommate_name].user_sprite->name_display);
 }
 
+void main_window::show_curren_sprite()
+{
+    scene->clear();
+    QGraphicsTextItem *text = new QGraphicsTextItem("Your character");
+    scene->addItem(text);
+    text->setPos(200, 100);
+    QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(QPixmap(":/images/"+ QString(current_user.skin.c_str()) + "_sprite.png"));
+    scene->addItem(user_skin);
+    user_skin->setPos(250, 220);
+}
+
 void main_window::on_change_avatar_button_clicked()
 {
-
     //view->setEnabled(true);
+    scene->clear();
+    QGraphicsTextItem *text = new QGraphicsTextItem("Select a character by clicking on it");
+    scene->addItem(text);
+    text->setPos(200, 100);
     std::vector<std::string> characters = {"finn", "gambol", "miku", "mushroom", "rafael", "sonic", "stormtroopers", "kermit", "pikachu"};
     for (int i = 0; i < 9; i++){
         sprite_for_choice *skin = new sprite_for_choice(characters[i]);
-        connect(skin, SIGNAL(clean_scene_after_choice()), scene, SLOT(clear()));
+         connect(skin, SIGNAL(add_curren_sprite()), this, SLOT(show_curren_sprite()));
         scene->addItem(skin);
+
         skin->setPos(150+((i % 3)*100), 120+((i / 3)*100));
+
     }
+
 }
 

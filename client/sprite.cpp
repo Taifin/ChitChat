@@ -20,22 +20,22 @@ sprite::sprite(const std::string &name, std::string skin) : name(name) {
 void sprite::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_Up:
-            if (pos().y() > -5){
+            if (pos().y() > 0){
                 change_position(STEP_SIZE, this, directions::UP);
             }
             break;
         case Qt::Key_Down:
-            if (pos().y() < 455){
+            if (pos().y() < 475){
                 change_position(STEP_SIZE, this, directions::DOWN);
             }
             break;
         case Qt::Key_Left:
-            if (pos().x() > -45){
+            if (pos().x() > 0){
                 change_position(STEP_SIZE, this, directions::LEFT);
             }
             break;
         case Qt::Key_Right:
-            if (pos().x() < 490){
+            if (pos().x() < 525){
                 change_position(STEP_SIZE, this, directions::RIGHT);
             }
             break;
@@ -102,11 +102,6 @@ sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin)
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "cliced" << skin.c_str();
     current_user.skin = skin;
-    QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect(this);
-    effect->setColor(Qt::black);
-    setGraphicsEffect(effect);
-    clean_scene_after_choice();
-    //setGraphicsEffect(NULL);
+    emit this->add_curren_sprite();
 }
