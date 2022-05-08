@@ -22,6 +22,8 @@ public:
     ~main_window();
 
 private slots:
+    void on_change_avatar_button_clicked();
+
     void show_after_auth();
 
     void on_connect_button_clicked();
@@ -40,6 +42,7 @@ private:
     Ui::main_window *ui;
     login login_m;
     QGraphicsScene *scene;
+    QGraphicsView *view;
     // sprite *sprite_current_user;
 };
 #endif  // MAIN_WINDOW_H

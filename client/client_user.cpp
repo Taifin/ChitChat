@@ -16,9 +16,9 @@ client_user::client_user(std::string uname, std::string upwd, int x, int y)
     // user_sprite->setRect(0, 0, 30, 30);
 }
 
-void client_user::set_user_sprite(std::string)
+void client_user::set_user_sprite()
 {
-    this->user_sprite = new sprite(this->name());
+    this->user_sprite = new sprite(this->name(), this->skin);
 }
 
 client_user::~client_user() {

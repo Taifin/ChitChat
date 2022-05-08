@@ -49,13 +49,50 @@ void registration::on_confirm_button_clicked() {
     } else {
         processor.prepare_query("register," + login + "," + password,
                                 remote_server);
+        //TODO: передавать на сервер информацию о выборе
+        if (ui->finn_radio_button->isChecked()){
+            qDebug() << "finn";
     }
+        else if (ui->gambol_radio_button->isChecked())
+        {
+                    qDebug() << "gambol";
+            }
+        else if (ui->kermit_radio_button->isChecked())
+        {
+                    qDebug() << "kertmit";
+            }
+        else if (ui->miku_radio_button->isChecked())
+        {
+                    qDebug() << "miku";
+            }
+        else if (ui->mushroom_radio_button->isChecked())
+        {
+                    qDebug() << "mushrom";
+            }
+        else if (ui->pikachu_radio_button->isChecked())
+        {
+                    qDebug() << "pikachu";
+            }
+        else if (ui->rafael_radio_button->isChecked())
+        {
+                    qDebug() << "rafael";
+            }
+        else if (ui->sonic_radio_button->isChecked())
+        {
+                    qDebug() << "sonic";
+            }
+        else if (ui->stormtroopers_radio_button->isChecked())
+        {
+                    qDebug() << "rafael";
+            }
+}
 }
 
 void registration::successful_registration() {
     this->hide();
     emit show_login_window_again();
 }
+
 void registration::duplicate() {
     ui->information_label->setText(
         "Name already in use. Please choose another one");

@@ -11,6 +11,7 @@
         <file>stormtroopers_sprite.png</file>
         <file>rafael_sprite.png</file>
         <file>miku_sprite.png</file>
+        <file>background.png</file>
     </qresource>
     <qresource prefix="/new/prefix1"/>
 </RCC>

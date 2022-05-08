@@ -30,15 +30,24 @@ main_window::main_window(QWidget *parent)
             SLOT(already_connected()));
     connect(&processor, SIGNAL(run_connect_with_room(std::vector<std::string>)),
             this, SLOT(connect_with_room(std::vector<std::string>)));
-    connect(&processor, SIGNAL(run_change_position(std::string, int, int)),
-            this, SLOT(change_position(std::string, int, int)));
+    connect(&processor, SIGNAL(run_change_position(std::string,int,int)),
+            this, SLOT(change_position(std::string,int,int)));
     connect(&processor, SIGNAL(run_disconnect_roommate(const std::string &)),
             this, SLOT(roommate_disconnect(const std::string &)));
     connect(&processor, SIGNAL(run_connect_roommate(const std::string &)), this,
             SLOT(roommate_connect(const std::string &)));
 
+
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    view = ui->room_view;
+    view->setFixedSize(600, 550);
+    qDebug() << view->y() <<" "<< view->x() << " " << view->width() << " " << view->height();
+    scene->setSceneRect(scene->itemsBoundingRect());
+
+    view->x(),
+    view->setScene(scene);
+    scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
 }
 
 void main_window::start() {
@@ -64,6 +73,7 @@ void main_window::on_connect_button_clicked() {
     processor.prepare_query(
         "connect," + current_user.name() + "," + current_user.pwd(),
         remote_server);
+    ui->change_avatar_button->hide();
 }
 
 void main_window::already_connected() {
@@ -74,7 +84,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     current_user.set_user_sprite();
 
-    scene->setSceneRect(0, 0, 500, 500);
+    scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
     for (int i = 1; i < data.size(); i += 3) {
         if (data[i] != current_user.name()) {
@@ -99,13 +109,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
-    current_user.user_sprite->setFocus();
-
-    QGraphicsView *view = ui->room_view;
-    qDebug() << (":/images/floor.png");
-    scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
-    view->setFixedSize(600, 550);
-    view->setScene(scene);
+    current_user.user_sprite->setFocus();    
 }
 
 void main_window::change_position(std::string name, int x, int y) {
@@ -114,16 +118,9 @@ void main_window::change_position(std::string name, int x, int y) {
 }
 
 void main_window::roommate_disconnect(const std::string &roommate_name) {
-    qDebug() << roommate_name.c_str();
-    for (auto x:users_in_the_room){
-        qDebug() << x.first.c_str();
-}
     scene->removeItem(users_in_the_room[roommate_name].user_sprite->name_display);
     scene->removeItem(users_in_the_room[roommate_name].user_sprite);
     users_in_the_room.erase(roommate_name);
-    for (auto x:users_in_the_room){
-        qDebug() << x.first.c_str();
-}
 }
 
 void main_window::roommate_connect(const std::string &roommate_name) {
@@ -135,3 +132,17 @@ void main_window::roommate_connect(const std::string &roommate_name) {
     scene->addItem(users_in_the_room[roommate_name].user_sprite);
     scene->addItem(users_in_the_room[roommate_name].user_sprite->name_display);
 }
+
+void main_window::on_change_avatar_button_clicked()
+{
+
+    //view->setEnabled(true);
+    std::vector<std::string> characters = {"finn", "gambol", "miku", "mushroom", "rafael", "sonic", "stormtroopers", "kermit", "pikachu"};
+    for (int i = 0; i < 9; i++){
+        sprite_for_choice *skin = new sprite_for_choice(characters[i]);
+        connect(skin, SIGNAL(clean_scene_after_choice()), scene, SLOT(clear()));
+        scene->addItem(skin);
+        skin->setPos(150+((i % 3)*100), 120+((i / 3)*100));
+    }
+}
+

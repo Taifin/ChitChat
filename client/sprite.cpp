@@ -1,14 +1,17 @@
 #include "sprite.h"
 #include <QKeyEvent>
+#include <QGraphicsEffect>
 #include "client_socket.h"
+#include "client_user.h"
 
 int STEP_SIZE = 5;
 
 extern QTcpSocket *remote_server;
-
 extern client_processor processor;
+extern client_user current_user;
 
 sprite::sprite(const std::string &name, std::string skin) : name(name) {
+
     setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
@@ -41,6 +44,11 @@ void sprite::keyPressEvent(QKeyEvent *event) {
 
 sprite::~sprite() {
     delete name_display;
+}
+
+void sprite::change_skin(const std::string &skin)
+{
+    setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
 }
 
 void change_position(int step_size, sprite *walker, directions dir) {
@@ -85,4 +93,20 @@ void change_position(int step_size, sprite *walker, directions dir) {
             break;
     }
     qDebug() << std::to_string(walker->x()).c_str() << std::to_string(walker->y()).c_str();
+}
+
+sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin)
+{
+    setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
+}
+
+void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "cliced" << skin.c_str();
+    current_user.skin = skin;
+    QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect(this);
+    effect->setColor(Qt::black);
+    setGraphicsEffect(effect);
+    clean_scene_after_choice();
+    //setGraphicsEffect(NULL);
 }
