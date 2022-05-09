@@ -38,4 +38,12 @@ signals:
     void add_curren_sprite();
 };
 
+class sprite_of_object : public QObject, public QGraphicsPixmapItem {
+    Q_OBJECT
+
+public:
+    sprite_of_object(std::string object);
+    std::string type_of_object;
+};
+
 #endif  // SPRITE_H

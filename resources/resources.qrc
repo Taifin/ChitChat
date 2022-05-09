@@ -12,6 +12,7 @@
         <file>rafael_sprite.png</file>
         <file>miku_sprite.png</file>
         <file>background.png</file>
+        <file>game_machine.png</file>
     </qresource>
     <qresource prefix="/new/prefix1"/>
 </RCC>

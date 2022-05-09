@@ -45,6 +45,6 @@ private:
     login login_m;
     QGraphicsScene *scene;
     QGraphicsView *view;
-    // sprite *sprite_current_user;
+    sprite_of_object *game_machine = new sprite_of_object("game_machine");
 };
 #endif  // MAIN_WINDOW_H

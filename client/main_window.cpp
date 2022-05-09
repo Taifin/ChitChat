@@ -84,6 +84,8 @@ void main_window::already_connected() {
 void main_window::connect_with_room(std::vector<std::string> data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     scene->clear();
+    scene->addItem(game_machine);
+    game_machine->setPos(100, 70);
     current_user.set_user_sprite();
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
@@ -112,6 +114,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     scene->addItem(current_user.user_sprite->name_display);
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
     current_user.user_sprite->setFocus();    
+
 }
 
 void main_window::change_position(std::string name, int x, int y) {
@@ -160,7 +163,6 @@ void main_window::on_change_avatar_button_clicked()
         scene->addItem(skin);
 
         skin->setPos(150+((i % 3)*100), 120+((i / 3)*100));
-
     }
 
 }
