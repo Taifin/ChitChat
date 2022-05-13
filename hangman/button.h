@@ -3,11 +3,10 @@
 
 #include <QToolButton>
 
-class button : public QToolButton
-{
+class button : public QToolButton {
     Q_OBJECT
 public:
     explicit button(const QString &text, QWidget *parent = nullptr);
 };
 
-#endif // BUTTON_H
+#endif  // BUTTON_H

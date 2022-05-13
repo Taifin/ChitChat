@@ -3,8 +3,8 @@
 #include <QMetaType>
 #include "client_socket.h"
 #include "main_window.h"
-#include "ui_login.h"
 #include "shared/user.h"
+#include "ui_login.h"
 
 extern QTcpSocket *remote_server;
 
