@@ -4,8 +4,8 @@
 #include <QGraphicsScene>
 #include <QMainWindow>
 #include "login.h"
-#include "sprite.h"
 #include "room.h"
+#include "sprite.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

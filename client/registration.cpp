@@ -1,8 +1,8 @@
 #include "registration.h"
-#include "client_socket.h"
-#include "ui_registration.h"
 #include <vector>
+#include "client_socket.h"
 #include "shared/user.h"
+#include "ui_registration.h"
 
 extern QTcpSocket *remote_server;
 
@@ -21,8 +21,8 @@ registration::registration(QWidget *parent)
     ui->pikachu_label->setPixmap(QPixmap(":/images/pikachu_sprite.png"));
     ui->miku_label->setPixmap(QPixmap(":/images/miku_sprite.png"));
     ui->mushroom_label->setPixmap(QPixmap(":/images/mushroom_sprite.png"));
-    ui->stormtroopers_label->setPixmap(QPixmap(":/images/stormtroopers_sprite.png"));
-
+    ui->stormtroopers_label->setPixmap(
+        QPixmap(":/images/stormtroopers_sprite.png"));
 
     connect(&processor, SIGNAL(run_successful_registration()), this,
             SLOT(successful_registration()));
@@ -49,43 +49,27 @@ void registration::on_confirm_button_clicked() {
     } else {
         processor.prepare_query("register," + login + "," + password,
                                 remote_server);
-        //TODO: передавать на сервер информацию о выборе
-        if (ui->finn_radio_button->isChecked()){
+        // TODO: передавать на сервер информацию о выборе
+        if (ui->finn_radio_button->isChecked()) {
             qDebug() << "finn";
+        } else if (ui->gambol_radio_button->isChecked()) {
+            qDebug() << "gambol";
+        } else if (ui->kermit_radio_button->isChecked()) {
+            qDebug() << "kertmit";
+        } else if (ui->miku_radio_button->isChecked()) {
+            qDebug() << "miku";
+        } else if (ui->mushroom_radio_button->isChecked()) {
+            qDebug() << "mushrom";
+        } else if (ui->pikachu_radio_button->isChecked()) {
+            qDebug() << "pikachu";
+        } else if (ui->rafael_radio_button->isChecked()) {
+            qDebug() << "rafael";
+        } else if (ui->sonic_radio_button->isChecked()) {
+            qDebug() << "sonic";
+        } else if (ui->stormtroopers_radio_button->isChecked()) {
+            qDebug() << "rafael";
+        }
     }
-        else if (ui->gambol_radio_button->isChecked())
-        {
-                    qDebug() << "gambol";
-            }
-        else if (ui->kermit_radio_button->isChecked())
-        {
-                    qDebug() << "kertmit";
-            }
-        else if (ui->miku_radio_button->isChecked())
-        {
-                    qDebug() << "miku";
-            }
-        else if (ui->mushroom_radio_button->isChecked())
-        {
-                    qDebug() << "mushrom";
-            }
-        else if (ui->pikachu_radio_button->isChecked())
-        {
-                    qDebug() << "pikachu";
-            }
-        else if (ui->rafael_radio_button->isChecked())
-        {
-                    qDebug() << "rafael";
-            }
-        else if (ui->sonic_radio_button->isChecked())
-        {
-                    qDebug() << "sonic";
-            }
-        else if (ui->stormtroopers_radio_button->isChecked())
-        {
-                    qDebug() << "rafael";
-            }
-}
 }
 
 void registration::successful_registration() {
