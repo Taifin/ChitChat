@@ -4,7 +4,8 @@
 #include <random>
 #include "Config.h"
 
-static std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+static std::mt19937 rng(
+    std::chrono::steady_clock::now().time_since_epoch().count());
 static std::uniform_real_distribution<> gen_int(-1, 1);
 
 struct vector {
@@ -14,7 +15,7 @@ struct vector {
 
 struct Game;
 
-class Ball: public QObject, public QGraphicsRectItem {
+class Ball : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 
     friend Game;
@@ -26,7 +27,7 @@ public slots:
     void move();
 
 signals:
-    void brick_collision(QGraphicsItem*);
+    void brick_collision(QGraphicsItem *);
 
     void ball_destroyed();
 
@@ -34,7 +35,7 @@ private:
     vector velocity;
     vector absolute_velocity;
     double speed;
-    QGraphicsItem* plank;
+    QGraphicsItem *plank;
 
     void wall_bounce(qreal x_, qreal y_);
 
@@ -53,4 +54,4 @@ private:
     qreal bottom();
 };
 
-#endif//ARKANOID_BALL_H
+#endif  // ARKANOID_BALL_H

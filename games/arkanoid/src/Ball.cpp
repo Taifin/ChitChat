@@ -3,7 +3,8 @@
 void Ball::move() {
     qDebug() << pos();
     for (int i = 1; i < this->collidingItems().size(); i++) {
-        if (this->collidingItems()[i] != plank && this->collidingItems()[i]->isVisible()) {
+        if (this->collidingItems()[i] != plank &&
+            this->collidingItems()[i]->isVisible()) {
             brick_bounce(this->collidingItems()[i]);
             emit(brick_collision(this->collidingItems()[i]));
         } else if (this->collidingItems()[i] == plank) {
@@ -15,11 +16,15 @@ void Ball::move() {
 }
 
 void Ball::wall_bounce(qreal x_, qreal y_) {
-    if (this->left() < -x_) velocity.x = absolute_velocity.x;
-    if (this->right() > x_) velocity.x = -absolute_velocity.x;
-    if (this->top() < -y_) velocity.y = absolute_velocity.y;
-//    if (this->bottom() > y_) velocity.y = -absolute_velocity.y;
-    if (this->bottom() > y_) emit(ball_destroyed());
+    if (this->left() < -x_)
+        velocity.x = absolute_velocity.x;
+    if (this->right() > x_)
+        velocity.x = -absolute_velocity.x;
+    if (this->top() < -y_)
+        velocity.y = absolute_velocity.y;
+    //    if (this->bottom() > y_) velocity.y = -absolute_velocity.y;
+    if (this->bottom() > y_)
+        emit(ball_destroyed());
 }
 void Ball::brick_bounce(QGraphicsItem *brick) {
     auto right_overlap = right() + 250 - brick->boundingRect().left();
@@ -39,7 +44,8 @@ void Ball::brick_bounce(QGraphicsItem *brick) {
 
 void Ball::plank_bounce() {
     velocity.y = -absolute_velocity.y;
-    if (bottom() > plank->y() + Config::FIELD_HEIGHT / 2 - plank->boundingRect().y()) {
+    if (bottom() >
+        plank->y() + Config::FIELD_HEIGHT / 2 - plank->boundingRect().y()) {
         if (left() < plank->x()) {
             velocity.x = -absolute_velocity.x;
         } else {
@@ -66,7 +72,9 @@ Ball::Ball(QGraphicsItem *plank_) {
 }
 
 void Ball::randomize_velocity() {
-    velocity = {static_cast<float>(gen_int(rng)), static_cast<float>(gen_int(rng))};
+    velocity = {static_cast<float>(gen_int(rng)),
+                static_cast<float>(gen_int(rng))};
     absolute_velocity = {abs(velocity.x), abs(velocity.y)};
-    speed = Config::SPEED_VECTOR_LENGTH / std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    speed = Config::SPEED_VECTOR_LENGTH /
+            std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
 }

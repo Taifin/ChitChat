@@ -22,7 +22,7 @@ public:
     ~Game();
 
 public slots:
-    void destroy_brick(QGraphicsItem* brick);
+    void destroy_brick(QGraphicsItem *brick);
 
     void fail();
 
@@ -43,11 +43,12 @@ private:
     QGraphicsScene *start_scene = new QGraphicsScene();
     QGraphicsScene *end_scene = new QGraphicsScene();
     QGraphicsView *game_view = new QGraphicsView();
-    QGraphicsTextItem *game_over_text = new QGraphicsTextItem("Game is over! Your score is:");
+    QGraphicsTextItem *game_over_text =
+        new QGraphicsTextItem("Game is over! Your score is:");
     QPushButton *start_button = new QPushButton("Start new game");
     QGraphicsRectItem *border = new QGraphicsRectItem(0, 0, 500, 500);
     unsigned int lives = 3;
     unsigned int score = 0;
     void new_ball();
 };
-#endif// GAME_H
+#endif  // GAME_H

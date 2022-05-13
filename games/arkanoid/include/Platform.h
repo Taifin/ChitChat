@@ -4,10 +4,9 @@
 #include "Config.h"
 
 class Plank : public QGraphicsRectItem {
-
 public:
     void keyPressEvent(QKeyEvent *event) override;
 
     void change_pos(int step, int direction);
 };
-#endif//ARKANOID_PLATFORM_H
+#endif  // ARKANOID_PLATFORM_H

@@ -1,13 +1,13 @@
 #include "include/Game.h"
 
-Game::Game(QWidget *parent)
-    : QMainWindow(parent) {
+Game::Game(QWidget *parent) : QMainWindow(parent) {
     prepare_menu_scene();
     prepare_game_scene();
     prepare_end_scene();
     game_view->setScene(start_scene);
     game_view->show();
-    game_view->setFixedSize(Config::FIELD_WIDTH + 50, Config::FIELD_HEIGHT + 50);
+    game_view->setFixedSize(Config::FIELD_WIDTH + 50,
+                            Config::FIELD_HEIGHT + 50);
 }
 
 Game::~Game() = default;
@@ -23,7 +23,7 @@ void Game::destroy_brick(QGraphicsItem *brick) {
 
 void Game::start_game() {
     new_ball();
-    for (auto item: game_scene->items()) {
+    for (auto item : game_scene->items()) {
         item->setVisible(true);
     }
     score = 0;
@@ -61,8 +61,13 @@ void Game::prepare_game_scene() {
     b->setRect(Config::FIELD_WIDTH / 2, Config::FIELD_HEIGHT / 2, 20, 20);
     for (int i = 0; i < Config::AMOUNT_OF_BRICKS_IN_ROW; i++) {
         for (int j = 0; j < 5; j++) {
-            game_scene->addItem(new QGraphicsRectItem(((Config::FIELD_WIDTH - Config::PADDING) / Config::AMOUNT_OF_BRICKS_IN_ROW) * i + Config::SPACE_BETWEEN_BRICKS * (i + 1),
-                                                      Config::FIELD_WIDTH / Config::AMOUNT_OF_BRICKS_IN_ROW * 0.8 * j, Config::BRICK_WIDTH, Config::BRICK_HEIGHT));
+            game_scene->addItem(new QGraphicsRectItem(
+                ((Config::FIELD_WIDTH - Config::PADDING) /
+                 Config::AMOUNT_OF_BRICKS_IN_ROW) *
+                        i +
+                    Config::SPACE_BETWEEN_BRICKS * (i + 1),
+                Config::FIELD_WIDTH / Config::AMOUNT_OF_BRICKS_IN_ROW * 0.8 * j,
+                Config::BRICK_WIDTH, Config::BRICK_HEIGHT));
         }
     }
     auto *lives_text = new QGraphicsTextItem("lives:");
@@ -82,7 +87,8 @@ void Game::prepare_game_scene() {
     p->setFlag(QGraphicsItem::ItemIsFocusable);
     p->setFocus();
     QObject::connect(movement_timer, SIGNAL(timeout()), b, SLOT(move()));
-    QObject::connect(b, SIGNAL(brick_collision(QGraphicsItem*)), this, SLOT(destroy_brick(QGraphicsItem*)));
+    QObject::connect(b, SIGNAL(brick_collision(QGraphicsItem *)), this,
+                     SLOT(destroy_brick(QGraphicsItem *)));
     QObject::connect(b, SIGNAL(ball_destroyed()), this, SLOT(fail()));
 }
 
