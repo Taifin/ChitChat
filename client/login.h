@@ -9,7 +9,8 @@ namespace Ui {
 class login;
 }
 
-class login : public QDialog {
+class login : public QDialog
+{
     Q_OBJECT
 
 public:
@@ -43,4 +44,4 @@ private:
     registration registration_m;
 };
 
-#endif  // LOGIN_H
+#endif // LOGIN_H

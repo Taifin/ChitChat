@@ -53,17 +53,19 @@ main_window::main_window(QWidget *parent)
     scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
 }
 
-void main_window::start() {
+void main_window::start(){
     login_m.show();
 }
 
-void main_window::show_after_auth() {
+void main_window::show_after_auth(){
     this->show();
     show_curren_sprite();
 };
 
 main_window::~main_window() {
     delete scene;
+    delete ui;
+}
 
     processor.prepare_query("disconnect," + current_user.name() + "," +
                                 current_user.pwd() + "," +

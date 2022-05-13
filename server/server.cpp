@@ -80,6 +80,7 @@ void server_processor::greet() {
 
 void server_processor::update_layout() {
     assert(data.size() == 4);
+    qDebug() << "entered in move";
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {

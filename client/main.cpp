@@ -1,3 +1,6 @@
+#include "main_window.h"
+#include "database.h"
+
 #include <QApplication>
 #include <map>
 #include <thread>

@@ -74,4 +74,3 @@ target_link_libraries(Arkanoid Qt5::Widgets)
 
 add_library(Hangman SHARED ${HANGMAN_SOURCES})
 target_link_libraries(Hangman Qt5::Widgets)
-
