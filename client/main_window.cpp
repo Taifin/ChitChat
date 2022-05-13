@@ -9,6 +9,8 @@
 #include "./ui_main_window.h"
 #include "client_user.h"
 #include "sprite.h"
+#include "room.h"
+
 
 extern QTcpSocket *remote_server;
 
@@ -18,7 +20,7 @@ extern client_processor processor;
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
-    scene = new QGraphicsScene();
+    scene = new room();
 
     remote_server->connectToHost(QHostAddress("194.169.163.120"), 1235);
 
@@ -31,7 +33,7 @@ main_window::main_window(QWidget *parent)
     connect(&processor, SIGNAL(run_connect_with_room(std::vector<std::string>)),
             this, SLOT(connect_with_room(std::vector<std::string>)));
     connect(&processor, SIGNAL(run_change_position(std::string,int,int)),
-            this, SLOT(change_position(std::string,int,int)));
+            this, SLOT(user_changed_position(std::string,int,int)));
     connect(&processor, SIGNAL(run_disconnect_roommate(const std::string &)),
             this, SLOT(roommate_disconnect(const std::string &)));
     connect(&processor, SIGNAL(run_connect_roommate(const std::string &)), this,
@@ -88,6 +90,8 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     game_machine->setPos(100, 70);
     current_user.set_user_sprite();
 
+    scene->set_curren_user_sprite(current_user.user_sprite);
+
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
     for (int i = 1; i < data.size(); i += 3) {
@@ -112,12 +116,16 @@ void main_window::connect_with_room(std::vector<std::string> data) {
 
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
+
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
+    this->sprite_of_current_user = current_user.user_sprite;
+
+    //current_user.user_sprite->setFocusPolicy(QT::StrongFocus);
     current_user.user_sprite->setFocus();    
 
 }
 
-void main_window::change_position(std::string name, int x, int y) {
+void main_window::user_changed_position(std::string name, int x, int y) {
     users_in_the_room[name].user_sprite->setPos(x, y);
     users_in_the_room[name].user_sprite->name_display->setPos(x, y -20);
 }
@@ -164,6 +172,5 @@ void main_window::on_change_avatar_button_clicked()
 
         skin->setPos(150+((i % 3)*100), 120+((i / 3)*100));
     }
-
 }
 

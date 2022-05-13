@@ -107,7 +107,6 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
      <widget class="QPushButton" name="log_in_button">
       <property name="font">
        <font>
-        <family>Source Code Pro</family>
         <pointsize>10</pointsize>
         <italic>false</italic>
         <bold>true</bold>
@@ -126,7 +125,6 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
      <widget class="QPushButton" name="create_new_account_button">
       <property name="font">
        <font>
-        <family>Source Code Pro</family>
         <pointsize>10</pointsize>
         <italic>false</italic>
         <bold>true</bold>

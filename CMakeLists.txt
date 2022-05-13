@@ -16,7 +16,9 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Network)
 
 set(PROJECT_SOURCES
-    client/main.cpp
+            client/main.cpp
+            client/model.h
+            client/model.cpp
             client/main_window.cpp
             client/main_window.h
             client/main_window.ui
@@ -35,6 +37,8 @@ set(PROJECT_SOURCES
             client/sprite.cpp
             client/client_user.h
             client/client_user.cpp
+            client/room.h
+            client/room.cpp
             resources/resources.qrc
 )
 

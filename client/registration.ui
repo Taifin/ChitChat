@@ -114,7 +114,8 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
     <item>
      <widget class="QPushButton" name="confirm_button">
       <property name="styleSheet">
-       <string notr="true">font: 700 10pt &quot;Source Code Pro&quot;;</string>
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
       </property>
       <property name="text">
        <string>Confirm</string>
@@ -124,7 +125,8 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
     <item>
      <widget class="QPushButton" name="back_button">
       <property name="styleSheet">
-       <string notr="true">font: 700 10pt &quot;Source Code Pro&quot;;</string>
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
       </property>
       <property name="text">
        <string>Back</string>

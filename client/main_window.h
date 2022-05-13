@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include "login.h"
 #include "sprite.h"
+#include "room.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,6 +20,7 @@ public:
     void start();
 
     main_window(QWidget *parent = nullptr);
+
     ~main_window();
 
 private slots:
@@ -32,7 +34,7 @@ private slots:
 
     void connect_with_room(std::vector<std::string> data);
 
-    void change_position(std::string name, int x, int y);
+    void user_changed_position(std::string name, int x, int y);
 
     void roommate_disconnect(const std::string &roommate_name);
 
@@ -43,8 +45,9 @@ private slots:
 private:
     Ui::main_window *ui;
     login login_m;
-    QGraphicsScene *scene;
+    room *scene;
     QGraphicsView *view;
     sprite_of_object *game_machine = new sprite_of_object("game_machine");
+    sprite *sprite_of_current_user;
 };
 #endif  // MAIN_WINDOW_H

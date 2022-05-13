@@ -5,8 +5,6 @@
 #include "client_socket.h"
 #include "client_user.h"
 
-int STEP_SIZE = 5;
-
 extern QTcpSocket *remote_server;
 extern client_processor processor;
 extern client_user current_user;
