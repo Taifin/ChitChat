@@ -2,9 +2,9 @@
 #define CHITCHAT_USER_H
 
 #include <utility>
+#include "QHostAddress"
 #include "string"
 #include "vector"
-#include "QHostAddress"
 
 struct point {
     int x;
@@ -16,19 +16,17 @@ class user {
     std::string password;
     point coords;
 
-    // TODO: list of visited rooms
-    // TODO: avatar
 public:
     explicit user(std::string uname, std::string upwd, int x = 0, int y = 0)
         : username(std::move(uname)),
           password(std::move(upwd)),
           coords({x, y}){};
 
-    [[nodiscard]] const std::string& name() const {
+    [[nodiscard]] const std::string &name() const {
         return username;
     }
 
-    [[nodiscard]] const std::string& pwd() const {
+    [[nodiscard]] const std::string &pwd() const {
         return password;
     }
 
@@ -46,6 +44,17 @@ public:
 
     void set_coords(int x, int y) {
         coords = {x, y};
+    }
+
+    user &operator=(const user &other) {
+        username = other.username;
+        password = other.password;
+        coords = other.coords;
+        return *this;
+    }
+
+    void set_name(const std::string &name) {
+        username = name;
     }
 };
 

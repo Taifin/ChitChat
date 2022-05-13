@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>floor.png</file>
+        <file>pikachu_sprite.png</file>
+        <file>kermit_sprite_old.png</file>
+        <file>kermit_sprite.png</file>
+        <file>finn_sprite.png</file>
+        <file>gambol_sprite.png</file>
+        <file>sonic_sprite.png</file>
+        <file>mushroom_sprite.png</file>
+        <file>stormtroopers_sprite.png</file>
+        <file>rafael_sprite.png</file>
+        <file>miku_sprite.png</file>
+        <file>background.png</file>
+        <file>game_machine.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix1"/>
+</RCC>

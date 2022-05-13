@@ -1,7 +1,7 @@
 #ifndef CHITCHAT_STATE_H
 #define CHITCHAT_STATE_H
-#include "server_user.h"
 #include "map"
+#include "server_user.h"
 #include "string"
 
 namespace model {
@@ -18,5 +18,5 @@ public:
 
     static std::vector<server_user> get_users();
 };
-}
+}  // namespace model
 #endif  // CHITCHAT_STATE_H

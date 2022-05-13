@@ -1,122 +1,132 @@
 #include "server.h"
+#include <cassert>
 #include "state.h"
 
 namespace sv {
 
-controller::controller(const QHostAddress &host1,
-                       quint16 port1,
-                       QObject *parent1)
-    : udp_socket(host1, port1, parent1) {
-}
-
-void controller::process() {
-    while (!queries.empty()) {
-        auto query = queries.front();
-        queries.pop();
-        auto data = parse(query.first);
+void server_processor::process() {
+    while (!keeper->parsed_queries.empty()) {
+        auto query = keeper->parsed_queries.front();
+        keeper->parsed_queries.pop();
+        data = parse(query.first);
+        to = query.second;
         try {
             switch (commands.at(data[0])) {
                 case e_commands::LOGIN:
-                    authorize_user(data, query.second);
+                    authorize_user();
                     break;
                 case e_commands::REGISTER:
-                    register_user(data, query.second);
+                    register_user();
                     break;
                 case e_commands::CONNECT:
-                    connect_user(data, query.second);
+                    connect_user();
                     break;
                 case e_commands::GREET:
-                    greet(data, query.second);
+                    greet();
                     break;
                 case e_commands::MOVE:
-                    update_layout(data, query.second);
+                    update_layout();
                     break;
                 case e_commands::DISCONNECT:
-                    disconnect(data, query.second);
+                    disconnect();
                     break;
             }
         } catch (std::out_of_range &e) {
-            send_datagram("Unknown command or user is not connected " + data[0] + "\n", query.second);
+            prepare_query("Unknown command " + data[0] + "\n", query.second);
         }
     }
 }
 
-void controller::authorize_user(std::vector<std::string> &data,
-                                const network::client &to) {
+void server_processor::authorize_user() {
     assert(data.size() == 3);
     try {
         if (model::database::authorize(data[1], data[2])) {
-            send_datagram("allowed," + data[1] + "\n", to);
+            prepare_query("allowed," + data[1] + "\n", to);
         } else {
-            send_datagram("denied," + data[1] + "\n", to);
+            prepare_query("denied," + data[1] + "\n", to);
         }
     } catch (model::no_user_found &) {
-        send_datagram("none," + data[1] + "\n", to);
+        prepare_query("none," + data[1] + "\n", to);
     } catch (model::database_error &) {
-        send_datagram("dberror\n", to);
+        prepare_query("dberror\n", to);
     }
 }
 
-void controller::register_user(std::vector<std::string> &data,
-                               const network::client &to) {
+void server_processor::register_user() {
     assert(data.size() == 3);
     user new_user(data[1], data[2]);
     if (model::database::create_user(&new_user)) {
-        send_datagram("created," + data[1] + "\n", to);
+        prepare_query("created," + data[1] + "\n", to);
     } else {
-        send_datagram("rexists," + data[1] + "\n", to);
+        prepare_query("rexists," + data[1] + "\n", to);
     }
 }
 
-void controller::connect_user(std::vector<std::string> &data,
-                              const network::client &to) {
+void server_processor::connect_user() {
     assert(data.size() == 3);
     server_user new_user{data[1], data[2], to};
     if (model::state::connect_user(new_user)) {
-        translate_users_data(data, to);
-        update_layout(data, to);
+        translate_users_data();
+        new_user_connected();
     } else {
-        send_datagram("cexists," + data[1] + "\n", to);
+        prepare_query("cexists," + data[1] + "\n", to);
     }
 }
 
-void controller::greet(std::vector<std::string> &data,
-                       const network::client &to) {
+void server_processor::greet() {
     assert(data.size() == 2);
-    send_datagram("Hello, " + data[1] + ", I'm Server God!\n", to);
+    prepare_query("Hello, " + data[1] + ", I'm Server God!\n", to);
 }
 
-void controller::update_layout(std::vector<std::string> &data,
-                               const network::client &to) {
+void server_processor::update_layout() {
     assert(data.size() == 4);
     qDebug() << "entered in move";
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {
-        send_datagram("move," + data[1] + "," + data[2] + "," + data[3] + "\n",
-                      u.client);
+        if (u.client != to) {
+            prepare_query(
+                "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
+                u.client);
+        }
     }
 }
 
-void controller::translate_users_data(std::vector<std::string> &data,
-                                      const network::client &to) {
+void server_processor::translate_users_data() {
     std::string all_users = "connected,";
     // TODO
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
                      std::to_string(u.get_coords().y) + ",";
     }
-    if (all_users.back() == ',') all_users.pop_back();
-    if (!all_users.empty()) all_users += "\n";
-    send_datagram(all_users, to);
+    if (all_users.back() == ',')
+        all_users.pop_back();
+    if (!all_users.empty())
+        all_users += "\n";
+    prepare_query(all_users, to);
 }
 
-void controller::disconnect(std::vector<std::string> &data,
-                            const network::client &to) {
+void server_processor::disconnect() {
     assert(data.size() == 5);
     model::state::disconnect_user(server_user(
         data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
-    send_datagram("disconnected," + data[1] + "\n", to);
+    for (const auto &u : model::state::get_users()) {
+        if (u.name() != data[1]) {
+            prepare_query("disconnected," + data[1] + "\n", u.client);
+        }
+    }
+}
+server_processor::server_processor(network::queries_keeper *pKeeper,
+                                   network::tcp_socket &socket)
+    : query_processor(pKeeper, socket) {
+}
+
+void server_processor::new_user_connected() {
+    for (const auto &u : model::state::get_users()) {
+        if (u.name() != data[1]) {
+            prepare_query("new," + data[1] + "\n", u.client);
+        }
+    }
 }
 
 }  // namespace sv

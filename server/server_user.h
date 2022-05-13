@@ -2,19 +2,19 @@
 #define CHITCHAT_SERVER_USER_H
 
 #include <utility>
-#include "user.h"
 #include "socket.h"
+#include "user.h"
 
 class server_user : public user {
 public:
-    const network::client client;
+    QTcpSocket *client;
 
     explicit server_user(std::string uname,
                          std::string upwd,
-                         const network::client& cli, // NOLINT
+                         QTcpSocket *socket,  // NOLINT
                          int x = 0,
                          int y = 0)
-        : user(std::move(uname), std::move(upwd), x, y), client(cli) {
+        : user(std::move(uname), std::move(upwd), x, y), client(socket) {
     }
 
     bool operator==(const server_user &other) {

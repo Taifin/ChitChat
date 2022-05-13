@@ -1,26 +1,51 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
+#include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QObject>
+#include <QtGui>
+#include <unordered_map>
 
-enum class directions {UP, DOWN, LEFT, RIGHT};
+static int STEP_SIZE = 5;
 
-class sprite : public QObject, public QGraphicsRectItem
-{
+enum class directions { UP, DOWN, LEFT, RIGHT };
+
+class sprite : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
-    sprite(std::string name);
+    sprite(const std::string &name, std::string skin);
     void keyPressEvent(QKeyEvent *event);
 
-    std::string name;
+    const std::string &name;
 
     ~sprite();
 
     QGraphicsTextItem *name_display = new QGraphicsTextItem;
+
+    void change_skin(const std::string &skin);
 };
 
 void change_position(int step_size, sprite *walker, directions dir);
 
-#endif // SPRITE_H
+class sprite_for_choice : public QObject, public QGraphicsPixmapItem {
+    Q_OBJECT
+
+public:
+    sprite_for_choice(const std::string &skin);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    std::string skin;
+signals:
+    void add_curren_sprite();
+};
+
+class sprite_of_object : public QObject, public QGraphicsPixmapItem {
+    Q_OBJECT
+
+public:
+    sprite_of_object(std::string object);
+    std::string type_of_object;
+};
+
+#endif  // SPRITE_H

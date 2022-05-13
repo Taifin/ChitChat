@@ -28,7 +28,7 @@ private slots:
 
     void duplicate();
 
-    //void error();
+    // void error();
 
 private:
     Ui::registration *ui;

@@ -8,9 +8,9 @@ void database::local_connection(const std::string &dbname) {
 }
 
 void database::connection(const std::string &dbname,
-                                   const std::string &host,
-                                   const std::string &port,
-                                   const std::string &user) {
+                          const std::string &host,
+                          const std::string &port,
+                          const std::string &user) {
     params = "dbname=" + dbname + " host=" + host + " port=" + port +
              " user=" + user;
     users_connection = pqxx::connection(params);
@@ -54,9 +54,8 @@ user database::get_user_data(user *user_) {
                 raw_user_data[0]["upassword"].as<std::string>());
 }
 
-pqxx::result database::execute_protected(
-    const std::string &connection_params,
-    const std::string &query) {
+pqxx::result database::execute_protected(const std::string &connection_params,
+                                         const std::string &query) {
     pqxx::connection conn(connection_params);
     pqxx::work w(conn);
     try {
@@ -69,7 +68,7 @@ pqxx::result database::execute_protected(
     }
 }
 bool database::authorize(const std::string &username,
-                                  const std::string &given_password) {
+                         const std::string &given_password) {
     auto exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
                        username)[0][0]
@@ -84,4 +83,4 @@ bool database::authorize(const std::string &username,
         throw no_user_found("Cannot find user to authorize.");
     }
 }
-}
+}  // namespace model

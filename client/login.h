@@ -1,18 +1,15 @@
 #ifndef LOGIN_H
 #define LOGIN_H
-
 #include <QDialog>
-#include "registration.h"
-#include "client_socket.h"
 #include <QObject>
-
+#include "client_socket.h"
+#include "registration.h"
 
 namespace Ui {
 class login;
 }
 
-class login : public QDialog
-{
+class login : public QDialog {
     Q_OBJECT
 
 public:
@@ -33,7 +30,7 @@ private slots:
 
     void show_login_window();
 
-    void successful_login(std::string name);
+    void successful_login(const std::string &name);
 
     void wrong_password();
 
@@ -46,4 +43,4 @@ private:
     registration registration_m;
 };
 
-#endif // LOGIN_H
+#endif  // LOGIN_H

@@ -1,22 +1,76 @@
-cmake_minimum_required(VERSION 3.10)
-project(ChitChat)
+cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_CXX_STANDARD 17)
+project(ChitChat VERSION 0.1 LANGUAGES CXX)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
-include_directories(shared)
 include_directories(client)
+include_directories(shared)
 include_directories(server)
+include_directories(games/arkanoid)
+include_directories(games/hangman)
 
-add_executable(ChitChat_server server/server.cpp server_testing.cpp server/state.cpp server/database.cpp shared/socket.cpp)
-add_executable(ChitChat_client client/client_socket.cpp client/client_socket.h client/client_user.cpp client/client_user.h client/login.cpp client/login.h client/login.ui
-        client/main.cpp client/main_window.cpp client/main_window.h client/main_window.ui client/registration.cpp client/registration.h client/registration.ui client/sprite.cpp client/sprite.h
-        shared/socket.cpp shared/socket.h shared/user.h)
-target_link_libraries(ChitChat_server Qt5::Widgets Qt5::Network -lpqxx -lpq)
-target_link_libraries(ChitChat_client Qt5::Widgets Qt5::Network)
+add_compile_definitions(LOCAL)
+#add_compile_definitions(NOLOCAL)
 
+set(CLIENT_SOURCES
+        client/main.cpp
+        client/model.h
+        client/model.cpp
+        client/main_window.cpp
+        client/main_window.h
+        client/main_window.ui
+        client/login.h
+        client/login.cpp
+        client/login.ui
+        shared/user.h
+        client/registration.h
+        client/registration.cpp
+        client/registration.ui
+        client/client_socket.h
+        client/client_socket.cpp
+        shared/socket.h
+        shared/socket.cpp
+        client/sprite.h
+        client/sprite.cpp
+        client/client_user.h
+        client/client_user.cpp
+        client/room.h
+        client/room.cpp
+        resources/resources.qrc
+        )
+
+set(SERVER_SOURCES
+        server/server.cpp
+        server_testing.cpp
+        server/state.cpp
+        server/database.cpp
+        shared/socket.cpp
+        )
+
+set(ARKANOID_SOURCES
+        games/arkanoid/src/Ball.cpp
+        games/arkanoid/src/Game.cpp
+        games/arkanoid/src/Platform.cpp)
+
+set(HANGMAN_SOURCES
+        games/hangman/button.cpp
+        games/hangman/game_hangman.cpp
+        games/hangman/game_hangman.ui)
+
+add_executable(ChitChatClient ${CLIENT_SOURCES} )
+target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network -pthread)
+
+add_executable(ChitChatServer ${SERVER_SOURCES})
+target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
+
+add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
+target_link_libraries(Arkanoid Qt5::Widgets)
+
+add_library(Hangman SHARED ${HANGMAN_SOURCES})
+target_link_libraries(Hangman Qt5::Widgets)

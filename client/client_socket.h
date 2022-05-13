@@ -1,24 +1,34 @@
 #ifndef CLIENT_SOCKET_H
 #define CLIENT_SOCKET_H
 
+#include <QObject>
 #include <QString>
 #include <QUdpSocket>
-#include <QObject>
-#include "socket.h"
+#include "shared/socket.h"
 
-class client_socket : public network::udp_socket
-{
+class client_socket : public network::tcp_socket {
     Q_OBJECT
 public:
     client_socket(const QHostAddress &host,
                   quint16 port,
-                  const std::string &type ,
+                  QTcpSocket *ser,
+                  network::queries_keeper *keeper,
                   QObject *parent);
+signals:
+};
 
-    void process();
+class client_processor : public network::query_processor {
+    Q_OBJECT;
+
+public:
+    client_processor(network::queries_keeper *keeper,
+                     network::tcp_socket &socket)
+        : network::query_processor(keeper, socket) {
+    }
+    void process() override;
 
 signals:
-    void run_successful_login(std::string name);
+    void run_successful_login(const std::string &name);
 
     void run_wrong_password();
 
@@ -40,8 +50,9 @@ signals:
 
     void run_change_position(std::string, int, int);
 
-    //void run_initialize_users_in_the_room(std::vector<std::string> data);
+    void run_disconnect_roommate(const std::string &);
+
+    void run_connect_roommate(const std::string &);
 };
 
-#endif // CLIENT_SOCKET_H
-
+#endif  // CLIENT_SOCKET_H
