@@ -8,11 +8,12 @@
 #include "sprite.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class main_window; }
+namespace Ui {
+class main_window;
+}
 QT_END_NAMESPACE
 
-class main_window : public QMainWindow
-{
+class main_window : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -49,4 +50,4 @@ private:
     sprite_of_object *game_machine = new sprite_of_object("game_machine");
     sprite *sprite_of_current_user;
 };
-#endif // MAIN_WINDOW_H
+#endif  // MAIN_WINDOW_H

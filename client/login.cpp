@@ -27,29 +27,23 @@ login::login(QWidget *parent) : QDialog(parent), ui(new Ui::login) {
     this->setWindowTitle("ChitChat");
 }
 
-login::~login()
-{
+login::~login() {
     delete ui;
 }
 
-void login::on_show_password_check_box_stateChanged(int arg1)
-{
-    if (arg1){
+void login::on_show_password_check_box_stateChanged(int arg1) {
+    if (arg1) {
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Normal);
-    }
-    else{
+    } else {
         ui->password_line_edit->QLineEdit::setEchoMode(QLineEdit::Password);
     }
 }
 
-
-void login::on_log_in_button_clicked()
-{
+void login::on_log_in_button_clicked() {
     std::string login, password;
     login = (ui->login_line_edit->text().toStdString());
     password = ui->password_line_edit->text().toStdString();
     processor.prepare_query("login," + login + "," + password, remote_server);
-
 }
 
 void login::on_create_new_account_button_clicked() {
@@ -57,7 +51,7 @@ void login::on_create_new_account_button_clicked() {
     registration_m.show();
 }
 
-void login::show_login_window(){
+void login::show_login_window() {
     this->show();
 }
 
