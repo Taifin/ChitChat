@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QUdpSocket>
-#include "socket.h"
+#include "shared/socket.h"
 
 class client_socket : public network::tcp_socket {
     Q_OBJECT
@@ -54,7 +54,6 @@ signals:
 
     void run_connect_roommate(const std::string &);
 
-    // void run_initialize_users_in_the_room(std::vector<std::string> data);
 };
 
 #endif  // CLIENT_SOCKET_H

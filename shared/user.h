@@ -16,8 +16,6 @@ class user {
     std::string password;
     point coords;
 
-    // TODO: list of visited rooms
-    // TODO: avatar
 public:
     explicit user(std::string uname, std::string upwd, int x = 0, int y = 0)
         : username(std::move(uname)),

@@ -1,7 +1,8 @@
 #include "registration.h"
 #include "client_socket.h"
 #include "ui_registration.h"
-#include "user.h"
+#include <vector>
+#include "shared/user.h"
 
 extern QTcpSocket *remote_server;
 
@@ -11,6 +12,17 @@ registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+
+    ui->finn_label->setPixmap(QPixmap(":/images/finn_sprite.png"));
+    ui->sonic_label->setPixmap(QPixmap(":/images/sonic_sprite.png"));
+    ui->rafael_label->setPixmap(QPixmap(":/images/rafael_sprite.png"));
+    ui->kermit_label->setPixmap(QPixmap(":/images/kermit_sprite.png"));
+    ui->gambol_label->setPixmap(QPixmap(":/images/gambol_sprite.png"));
+    ui->pikachu_label->setPixmap(QPixmap(":/images/pikachu_sprite.png"));
+    ui->miku_label->setPixmap(QPixmap(":/images/miku_sprite.png"));
+    ui->mushroom_label->setPixmap(QPixmap(":/images/mushroom_sprite.png"));
+    ui->stormtroopers_label->setPixmap(QPixmap(":/images/stormtroopers_sprite.png"));
+
 
     connect(&processor, SIGNAL(run_successful_registration()), this,
             SLOT(successful_registration()));
@@ -37,13 +49,50 @@ void registration::on_confirm_button_clicked() {
     } else {
         processor.prepare_query("register," + login + "," + password,
                                 remote_server);
+        //TODO: передавать на сервер информацию о выборе
+        if (ui->finn_radio_button->isChecked()){
+            qDebug() << "finn";
     }
+        else if (ui->gambol_radio_button->isChecked())
+        {
+                    qDebug() << "gambol";
+            }
+        else if (ui->kermit_radio_button->isChecked())
+        {
+                    qDebug() << "kertmit";
+            }
+        else if (ui->miku_radio_button->isChecked())
+        {
+                    qDebug() << "miku";
+            }
+        else if (ui->mushroom_radio_button->isChecked())
+        {
+                    qDebug() << "mushrom";
+            }
+        else if (ui->pikachu_radio_button->isChecked())
+        {
+                    qDebug() << "pikachu";
+            }
+        else if (ui->rafael_radio_button->isChecked())
+        {
+                    qDebug() << "rafael";
+            }
+        else if (ui->sonic_radio_button->isChecked())
+        {
+                    qDebug() << "sonic";
+            }
+        else if (ui->stormtroopers_radio_button->isChecked())
+        {
+                    qDebug() << "rafael";
+            }
+}
 }
 
 void registration::successful_registration() {
     this->hide();
     emit show_login_window_again();
 }
+
 void registration::duplicate() {
     ui->information_label->setText(
         "Name already in use. Please choose another one");

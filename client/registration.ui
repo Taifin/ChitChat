@@ -6,49 +6,72 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>437</width>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 224, 237);
+border-color: rgb(173, 127, 168);
+border-top-color: rgb(173, 127, 168);</string>
+  </property>
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>70</y>
+     <x>50</x>
+     <y>20</y>
      <width>321</width>
-     <height>118</height>
+     <height>120</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="name_label">
+      <property name="styleSheet">
+       <string notr="true">font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
-       <string>name</string>
+       <string>Name</string>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="password_label">
+      <property name="styleSheet">
+       <string notr="true">font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
-       <string>password</string>
+       <string>Password</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="confirm_label">
+      <property name="styleSheet">
+       <string notr="true">font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
-       <string>confirm password</string>
+       <string>Confirm Password</string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QLineEdit" name="name_line_edit"/>
+     <widget class="QLineEdit" name="name_line_edit">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(239, 41, 41);
+background-color: rgb(238, 238, 236);</string>
+      </property>
+     </widget>
     </item>
     <item row="1" column="1">
      <widget class="QLineEdit" name="password_line_edit">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(239, 41, 41);
+background-color: rgb(238, 238, 236);</string>
+      </property>
       <property name="echoMode">
        <enum>QLineEdit::Password</enum>
       </property>
@@ -56,6 +79,10 @@
     </item>
     <item row="2" column="1">
      <widget class="QLineEdit" name="confirm_line_edit">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(239, 41, 41);
+background-color: rgb(238, 238, 236);</string>
+      </property>
       <property name="echoMode">
        <enum>QLineEdit::Password</enum>
       </property>
@@ -63,6 +90,10 @@
     </item>
     <item row="3" column="1">
      <widget class="QCheckBox" name="show_password_check">
+      <property name="styleSheet">
+       <string notr="true">alternate-background-color: rgb(238, 238, 236);
+font: 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>show password</string>
       </property>
@@ -73,8 +104,8 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>220</y>
+     <x>130</x>
+     <y>470</y>
      <width>160</width>
      <height>61</height>
     </rect>
@@ -82,6 +113,10 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="confirm_button">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Confirm</string>
       </property>
@@ -89,6 +124,10 @@
     </item>
     <item>
      <widget class="QPushButton" name="back_button">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Back</string>
       </property>
@@ -117,6 +156,217 @@
    <property name="margin">
     <number>0</number>
    </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>140</y>
+     <width>191</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 700 12pt &quot;Source Code Pro&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Choose a character</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>160</y>
+     <width>371</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="5" column="2">
+     <widget class="QRadioButton" name="gambol_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="finn_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="kermit_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="sonic_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QRadioButton" name="sonic_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QRadioButton" name="stormtroopers_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="miku_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QRadioButton" name="finn_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLabel" name="gambol_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="mushroom_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QRadioButton" name="kermit_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="pikachu_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QRadioButton" name="miku_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="rafael_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QRadioButton" name="pikachu_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="stormtroopers_label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QRadioButton" name="mushroom_radio_button">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QRadioButton" name="rafael_radio_button">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
