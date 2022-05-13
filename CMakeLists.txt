@@ -12,6 +12,8 @@ find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 include_directories(client)
 include_directories(shared)
 include_directories(server)
+include_directories(games/arkanoid)
+include_directories(games/hangman)
 
 add_compile_definitions(LOCAL)
 #add_compile_definitions(NOLOCAL)
@@ -51,8 +53,25 @@ set(SERVER_SOURCES
         shared/socket.cpp
         )
 
+set(ARKANOID_SOURCES
+        games/arkanoid/src/Ball.cpp
+        games/arkanoid/src/Game.cpp
+        games/arkanoid/src/Platform.cpp)
+
+set(HANGMAN_SOURCES
+        games/hangman/button.cpp
+        games/hangman/game_hangman.cpp
+        games/hangman/game_hangman.ui)
+
 add_executable(ChitChatClient ${CLIENT_SOURCES} )
 target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network -pthread)
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
 target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
+
+add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
+target_link_libraries(Arkanoid Qt5::Widgets)
+
+add_library(Hangman SHARED ${HANGMAN_SOURCES})
+target_link_libraries(Hangman Qt5::Widgets)
+
