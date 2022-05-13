@@ -22,7 +22,11 @@ main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
     scene = new room();
 
+#ifdef LOCAL
+    remote_server->connectToHost(QHostAddress::LocalHost, 1235);
+#else
     remote_server->connectToHost(QHostAddress("194.169.163.120"), 1235);
+#endif
 
     qRegisterMetaType<std::vector<std::string>>("std::vector<std::string>");
     connect(&login_m, SIGNAL(show_main_window()), this,
