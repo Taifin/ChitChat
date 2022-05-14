@@ -26,10 +26,12 @@ public:
           password(std::move(upwd)),
           coords({x, y}){};
 
-    user(const user& other) : username(other.username),
+    user(const user &other)
+        : username(other.username),
           password(other.password),
           coords(other.coords),
-          skin(other.skin) {}
+          skin(other.skin) {
+    }
 
     virtual ~user() = default;
 
@@ -81,7 +83,7 @@ public:
     }
 
 private slots:
-    void initialize(const std::string& name, const std::string& skin_type) {
+    void initialize(const std::string &name, const std::string &skin_type) {
         set_skin(skin_type);
         set_name(name);
         qDebug() << get_skin().c_str() << get_name().c_str();
