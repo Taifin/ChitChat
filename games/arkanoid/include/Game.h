@@ -3,21 +3,24 @@
 
 #include "Ball.h"
 #include "Platform.h"
+#include "abstract_game.h"
 
 // TODO: memory leaks
 // TODO: remove unnecessary class members from Game
 
-class Game : public QMainWindow {
+class Q_DECL_EXPORT Game : ChitChat_game {
     Q_OBJECT
 
 public:
-    Game(QWidget *parent = nullptr);
+    Game();
 
     void prepare_game_scene();
 
     void prepare_menu_scene();
 
     void prepare_end_scene();
+
+    void start() override;
 
     ~Game();
 

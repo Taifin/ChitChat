@@ -17,6 +17,7 @@ include_directories(games/arkanoid)
 include_directories(games/hangman)
 
 add_compile_definitions(LOCAL)
+add_compile_definitions(SHARED)
 #add_compile_definitions(NOLOCAL)
 
 set(CLIENT_SOURCES
@@ -57,12 +58,17 @@ set(SERVER_SOURCES
 set(ARKANOID_SOURCES
         games/arkanoid/src/Ball.cpp
         games/arkanoid/src/Game.cpp
-        games/arkanoid/src/Platform.cpp)
+        games/arkanoid/src/Platform.cpp
+        games/arkanoid/include/Game.h
+        games/arkanoid/include/Ball.h
+        games/arkanoid/include/Platform.h
+        shared/abstract_game.h)
 
 set(HANGMAN_SOURCES
         games/hangman/button.cpp
         games/hangman/game_hangman.cpp
-        games/hangman/game_hangman.ui)
+        games/hangman/game_hangman.ui
+        shared/abstract_game.h)
 
 add_executable(ChitChatClient ${CLIENT_SOURCES} )
 target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network -pthread)
