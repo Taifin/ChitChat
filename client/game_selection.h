@@ -2,9 +2,9 @@
 #define GAME_SELECTION_H
 
 #include <QWidget>
-#include "abstract_game.h"
-#include "QLibrary"
 #include "QFileInfo"
+#include "QLibrary"
+#include "abstract_game.h"
 
 namespace Ui {
 class game_selection;
@@ -23,14 +23,14 @@ private slots:
     void on_arkanoid_button_clicked();
     void on_hangman_button_clicked();
 
-    void start_game(const std::string& name);
+    void start_game(const std::string &name);
 
 signals:
-    void game_chosen(const std::string& name);
+    void game_chosen(const std::string &name);
 
 private:
     Ui::game_selection *ui;
-    QLibrary* game = nullptr;
+    QLibrary *game = nullptr;
 };
 
 #endif  // GAME_SELECTION_H

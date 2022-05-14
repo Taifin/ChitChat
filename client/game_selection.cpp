@@ -5,7 +5,8 @@
 game_selection::game_selection(QWidget *parent)
     : QWidget(parent), ui(new Ui::game_selection) {
     ui->setupUi(this);
-    connect(this, SIGNAL(game_chosen(const std::string &)), this, SLOT(start_game(const std::string &)));
+    connect(this, SIGNAL(game_chosen(const std::string &)), this,
+            SLOT(start_game(const std::string &)));
 }
 
 game_selection::~game_selection() {
@@ -34,11 +35,11 @@ void game_selection::start_game(const std::string &name) {
     game = new QLibrary(info.absoluteFilePath());
     if (game->load()) {
         qDebug() << "Loaded!";
-        typedef ChitChat_game*(*CreateGame)();
+        typedef ChitChat_game *(*CreateGame)();
         auto f = (CreateGame)game->resolve("get_game");
         if (f) {
             qDebug() << "Game found!";
-            ChitChat_game* w = f();
+            ChitChat_game *w = f();
             w->start();
         }
     } else {
