@@ -2,8 +2,8 @@
 #define ROOM_H
 #include <QGraphicsScene>
 #include <QKeyEvent>
-#include "sprite.h"
 #include "game_selection.h"
+#include "sprite.h"
 
 class room : public QGraphicsScene {
 public:
@@ -15,7 +15,6 @@ public:
 private:
     sprite *current_user_sprite;
     game_selection choose_game;
-
 };
 
 #endif  // ROOM_H

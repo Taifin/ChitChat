@@ -4,11 +4,11 @@
 #include <QKeyEvent>
 #include "client_socket.h"
 #include "client_user.h"
-#include "view.h"
 #include "sprite.h"
+#include "view.h"
 
 sprite::sprite(const std::string &name, std::string skin) : name(name) {
-    setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
+    setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
 }
@@ -46,8 +46,9 @@ void sprite::change_skin(const std::string &skin) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
 }
 
-bool is_colliding(sprite *walker){
-    QGraphicsTextItem *text = new QGraphicsTextItem("click on cntl+g to start a game");
+bool is_colliding(sprite *walker) {
+    QGraphicsTextItem *text =
+        new QGraphicsTextItem("click on cntl+g to start a game");
     QGraphicsScene *scene = walker->scene();
     QList<QGraphicsItem *> colliding_items = walker->collidingItems();
     for (int i = 0, n = colliding_items.size(); i < n; ++i) {
@@ -70,7 +71,6 @@ bool is_colliding(sprite *walker){
     return false;
 }
 
-
 void change_position(int step_size, sprite *walker, directions dir) {
     int x = walker->x();
     int y = walker->y();
@@ -89,24 +89,24 @@ void change_position(int step_size, sprite *walker, directions dir) {
             break;
     }
     is_colliding(walker);
-    walker->name_display->setPos(walker->name_display->x() + walker->x() - x, walker->name_display->y() + walker->y() - y);
+    walker->name_display->setPos(walker->name_display->x() + walker->x() - x,
+                                 walker->name_display->y() + walker->y() - y);
     x = walker->x();
     y = walker->y();
-    emit walker->run_send_request("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y));
-    qDebug() << std::to_string(walker->x()).c_str() << std::to_string(walker->y()).c_str();
-
+    emit walker->run_send_request("move," + walker->name + "," +
+                                  std::to_string(x) + "," + std::to_string(y));
+    qDebug() << std::to_string(walker->x()).c_str()
+             << std::to_string(walker->y()).c_str();
 }
 
 sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
 }
 
-void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
+void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     //Здесь нужно отправить датаграмму на изменение скина;-
-    //current_view.main_process.set_user_skin(skin);
+    // current_view.main_process.set_user_skin(skin);
     emit this->add_curren_sprite();
-
 }
 
 sprite_of_object::sprite_of_object(std::string object)

@@ -23,7 +23,6 @@ main_window::main_window(QWidget *parent)
 
     view->x(), view->setScene(scene);
     scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
-
 }
 
 void main_window::show_after_auth() {
@@ -35,14 +34,14 @@ main_window::~main_window() {
     delete scene;
 
     emit run_send_request("disconnect," + current_user.name() + "," +
-                     current_user.pwd() + "," +
-                     std::to_string(current_user.get_x()) + "," +
-                     std::to_string(current_user.get_y()));
-
+                          current_user.pwd() + "," +
+                          std::to_string(current_user.get_x()) + "," +
+                          std::to_string(current_user.get_y()));
 }
 
 void main_window::on_connect_button_clicked() {
-    run_send_request("connect," + current_user.name() + "," + current_user.pwd());
+    run_send_request("connect," + current_user.name() + "," +
+                     current_user.pwd());
     ui->change_avatar_button->hide();
 }
 
@@ -119,18 +118,19 @@ void main_window::show_curren_sprite() {
     QGraphicsTextItem *text = new QGraphicsTextItem("Your character");
     scene->addItem(text);
     text->setPos(200, 100);
-    QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(QPixmap(":/images/"+ QString(current_user.get_skin().c_str()) + "_sprite.png"));
+    QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
+        QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
+                "_sprite.png"));
     scene->addItem(user_skin);
     user_skin->setPos(250, 220);
 }
 
-void main_window::set_user_skin(const std::string &skin){
+void main_window::set_user_skin(const std::string &skin) {
     current_user.skin = skin;
 }
 
-void main_window::on_change_avatar_button_clicked()
-{
-    //view->setEnabled(true);
+void main_window::on_change_avatar_button_clicked() {
+    // view->setEnabled(true);
     scene->clear();
     QGraphicsTextItem *text =
         new QGraphicsTextItem("Select a character by clicking on it");
@@ -149,9 +149,10 @@ void main_window::on_change_avatar_button_clicked()
     }
 }
 
-void main_window::set_user_sprite()
-{
-    current_user.user_sprite = new sprite(current_user.name(), current_user.get_skin());
-    connect(current_user.user_sprite, SIGNAL(run_send_request(const std::string &)), current_session,
+void main_window::set_user_sprite() {
+    current_user.user_sprite =
+        new sprite(current_user.name(), current_user.get_skin());
+    connect(current_user.user_sprite,
+            SIGNAL(run_send_request(const std::string &)), current_session,
             SLOT(send_request(const std::string &)));
 }

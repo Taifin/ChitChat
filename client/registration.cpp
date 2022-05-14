@@ -1,10 +1,8 @@
 #include "registration.h"
-#include "ui_registration.h"
 #include <vector>
 #include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
-
 
 registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
@@ -19,7 +17,8 @@ registration::registration(QWidget *parent)
     ui->pikachu_label->setPixmap(QPixmap(":/images/pikachu_sprite.png"));
     ui->miku_label->setPixmap(QPixmap(":/images/miku_sprite.png"));
     ui->mushroom_label->setPixmap(QPixmap(":/images/mushroom_sprite.png"));
-    ui->stormtroopers_label->setPixmap(QPixmap(":/images/stormtroopers_sprite.png"));
+    ui->stormtroopers_label->setPixmap(
+        QPixmap(":/images/stormtroopers_sprite.png"));
 }
 
 registration::~registration() {
@@ -41,8 +40,8 @@ void registration::on_confirm_button_clicked() {
         ui->information_label->setText("Passwords don't match");
     } else {
         emit run_send_request("register," + login + "," + password);
-        //TODO: передавать на сервер информацию о выборе
-        if (ui->finn_radio_button->isChecked()){
+        // TODO: передавать на сервер информацию о выборе
+        if (ui->finn_radio_button->isChecked()) {
             qDebug() << "finn";
         } else if (ui->gambol_radio_button->isChecked()) {
             qDebug() << "gambol";

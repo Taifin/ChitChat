@@ -7,8 +7,7 @@ namespace Ui {
 class game_selection;
 }
 
-class game_selection : public QWidget
-{
+class game_selection : public QWidget {
     Q_OBJECT
 
 public:
@@ -29,4 +28,4 @@ private:
     Ui::game_selection *ui;
 };
 
-#endif // GAME_SELECTION_H
+#endif  // GAME_SELECTION_H

@@ -10,13 +10,11 @@ class client_socket : public network::tcp_socket {
     Q_OBJECT
 
 public:
-
     client_socket(const QHostAddress &host,
                   quint16 port,
                   QTcpSocket *ser,
                   network::queries_keeper *keeper,
                   QObject *parent);
-
 };
 
 class client_processor : public network::query_processor {
