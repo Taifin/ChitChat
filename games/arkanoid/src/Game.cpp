@@ -1,16 +1,21 @@
 #include "include/Game.h"
 
-Game::Game(QWidget *parent) : QMainWindow(parent) {
+Game::Game() {
     prepare_menu_scene();
     prepare_game_scene();
     prepare_end_scene();
     game_view->setScene(start_scene);
-    game_view->show();
     game_view->setFixedSize(Config::FIELD_WIDTH + 50,
                             Config::FIELD_HEIGHT + 50);
 }
 
-Game::~Game() = default;
+Game::~Game() {
+    delete p;
+    delete b;
+    delete movement_timer;
+    delete score_widget;
+    delete lives_widget;
+};
 
 void Game::destroy_brick(QGraphicsItem *brick) {
     brick->setVisible(false);
@@ -116,4 +121,12 @@ void Game::prepare_end_scene() {
 
 void Game::show_menu() {
     game_view->setScene(start_scene);
+}
+
+void Game::start() {
+    game_view->show();
+}
+
+extern "C" Q_DECL_EXPORT ChitChat_game* get_game() {
+    return reinterpret_cast<ChitChat_game*>(new Game());
 }

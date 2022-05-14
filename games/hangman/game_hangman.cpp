@@ -6,8 +6,8 @@
 #include <vector>
 #include "ui_game_hangman.h"
 
-game_hangman::game_hangman(QWidget *parent)
-    : QWidget(parent), ui(new Ui::game_hangman) {
+game_hangman::game_hangman()
+    : ui(new Ui::game_hangman) {
     ui->setupUi(this);
     setWindowTitle("HangMan");
 
@@ -169,4 +169,11 @@ std::string game_hangman::random_word() {
                                    "wehyrtgseyh"};
     std::mt19937 mt(time(nullptr));
     return words[mt() % words.size()];
+}
+void game_hangman::start() {
+    this->show();
+}
+
+extern "C" Q_DECL_EXPORT ChitChat_game* get_game() {
+    return reinterpret_cast<ChitChat_game *>(new game_hangman());
 }

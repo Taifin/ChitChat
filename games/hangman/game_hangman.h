@@ -4,17 +4,19 @@
 #include <QPainter>
 #include <QToolButton>
 #include <QWidget>
+#include "abstract_game.h"
 
 namespace Ui {
 class game_hangman;
 }
 
-class game_hangman : public QWidget {
+class Q_DECL_EXPORT game_hangman : ChitChat_game {
     Q_OBJECT
 
 public:
     QPainter painter;
-    explicit game_hangman(QWidget *parent = nullptr);
+    explicit game_hangman();
+    void start() override;
     ~game_hangman();
 
 private:
