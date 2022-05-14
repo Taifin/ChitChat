@@ -4,6 +4,7 @@
 #include <QObject>
 #include "client_socket.h"
 #include "registration.h"
+#include "model.h"
 
 namespace Ui {
 class login;
@@ -14,11 +15,15 @@ class login : public QDialog {
 
 public:
     explicit login(QWidget *parent = nullptr);
+    explicit login(model *current_session);
 
     ~login();
 
 signals:
     void show_main_window();
+    void show_registration_window();
+    void run_send_request(const std::string &message);
+    void run_initialize(std::string,std::string);
 
 private slots:
 
@@ -40,7 +45,9 @@ private slots:
 
 private:
     Ui::login *ui;
-    registration registration_m;
+    model *current_seccion = nullptr;
+    client_processor *processor = nullptr;
+
 };
 
 #endif  // LOGIN_H

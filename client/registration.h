@@ -16,8 +16,10 @@ public:
 
 signals:
     void show_login_window_again();
+    void run_send_request(const std::string &message);
 
 private slots:
+
     void on_back_button_clicked();
 
     void on_confirm_button_clicked();
@@ -27,8 +29,6 @@ private slots:
     void successful_registration();
 
     void duplicate();
-
-    // void error();
 
 private:
     Ui::registration *ui;

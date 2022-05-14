@@ -1,12 +1,10 @@
 #include "registration.h"
+#include "ui_registration.h"
 #include <vector>
 #include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
 
-extern QTcpSocket *remote_server;
-
-extern client_processor processor;
 
 registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
@@ -21,12 +19,7 @@ registration::registration(QWidget *parent)
     ui->pikachu_label->setPixmap(QPixmap(":/images/pikachu_sprite.png"));
     ui->miku_label->setPixmap(QPixmap(":/images/miku_sprite.png"));
     ui->mushroom_label->setPixmap(QPixmap(":/images/mushroom_sprite.png"));
-    ui->stormtroopers_label->setPixmap(
-        QPixmap(":/images/stormtroopers_sprite.png"));
-
-    connect(&processor, SIGNAL(run_successful_registration()), this,
-            SLOT(successful_registration()));
-    connect(&processor, SIGNAL(run_duplicate()), this, SLOT(duplicate()));
+    ui->stormtroopers_label->setPixmap(QPixmap(":/images/stormtroopers_sprite.png"));
 }
 
 registration::~registration() {
@@ -47,10 +40,9 @@ void registration::on_confirm_button_clicked() {
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
     } else {
-        processor.prepare_query("register," + login + "," + password,
-                                remote_server);
-        // TODO: передавать на сервер информацию о выборе
-        if (ui->finn_radio_button->isChecked()) {
+        emit run_send_request("register," + login + "," + password);
+        //TODO: передавать на сервер информацию о выборе
+        if (ui->finn_radio_button->isChecked()){
             qDebug() << "finn";
         } else if (ui->gambol_radio_button->isChecked()) {
             qDebug() << "gambol";

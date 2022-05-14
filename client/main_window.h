@@ -5,7 +5,8 @@
 #include <QMainWindow>
 #include "login.h"
 #include "room.h"
-#include "sprite.h"
+#include "model.h"
+#include "game_selection.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,7 +22,20 @@ public:
 
     main_window(QWidget *parent = nullptr);
 
+    void set_user_skin(const std::string &skin);
+
+    client_user current_user;
+    std::map<std::string, client_user> users_in_the_room;
+
+    model *current_session = nullptr;
+
+    void set_user_sprite();
+
+
     ~main_window();
+
+signals:
+    void run_send_request(const std::string &message);
 
 private slots:
     void on_change_avatar_button_clicked();
@@ -42,12 +56,12 @@ private slots:
 
     void show_curren_sprite();
 
+
+
 private:
     Ui::main_window *ui;
-    login login_m;
     room *scene;
     QGraphicsView *view;
-    sprite_of_object *game_machine = new sprite_of_object("game_machine");
-    sprite *sprite_of_current_user;
+
 };
 #endif  // MAIN_WINDOW_H
