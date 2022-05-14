@@ -43,6 +43,9 @@ set(CLIENT_SOURCES
         client/client_user.cpp
         client/room.h
         client/room.cpp
+        client/view.h
+        client/view.cpp
+        client/game_selection.cpp
         resources/resources.qrc
         )
 
@@ -52,6 +55,7 @@ set(SERVER_SOURCES
         server/state.cpp
         server/database.cpp
         shared/socket.cpp
+        shared/user.h
         )
 
 set(ARKANOID_SOURCES
