@@ -129,6 +129,6 @@ void Game::start() {
     game_view->show();
 }
 
-extern "C" Q_DECL_EXPORT ChitChat_game* get_game() {
-    return reinterpret_cast<ChitChat_game*>(new Game());
+extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {
+    return reinterpret_cast<ChitChat_game *>(new Game());
 }

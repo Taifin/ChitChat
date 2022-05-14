@@ -6,8 +6,7 @@
 #include <vector>
 #include "ui_game_hangman.h"
 
-game_hangman::game_hangman()
-    : ui(new Ui::game_hangman) {
+game_hangman::game_hangman() : ui(new Ui::game_hangman) {
     ui->setupUi(this);
     setWindowTitle("HangMan");
 
@@ -174,6 +173,6 @@ void game_hangman::start() {
     this->show();
 }
 
-extern "C" Q_DECL_EXPORT ChitChat_game* get_game() {
+extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {
     return reinterpret_cast<ChitChat_game *>(new game_hangman());
 }
