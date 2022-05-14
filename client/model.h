@@ -4,22 +4,28 @@
 #include <QApplication>
 #include "client_socket.h"
 #include "client_user.h"
-#include "main_window.h"
 #include "shared/socket.h"
 
-class model
-{
+static quint16 PORT = 60000;
+
+class model : public QObject {
+     Q_OBJECT
+
 public:
     model();
     QTcpSocket *remote_server = new QTcpSocket();
-    //client_user current_user("noname", "default_password");
-    //std::map<std::string, client_user> users_in_the_room;
-    //network::queries_keeper *keeper =
-      //  new network::queries_keeper;  //Нужно delete keeper;
+    network::queries_keeper *keeper =  new network::queries_keeper;
 
-    //client_socket socket(QHostAddress::Any, 60000, remote_server, keeper, nullptr);
-    //client_processor processor(keeper, socket);
+    client_socket socket;
+    client_processor processor;
+
     void set_curren_user(std::string name, std::string password);
+
+
+    ~model();
+
+private slots:
+    void send_request(const std::string &message);
 
 };
 

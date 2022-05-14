@@ -12,33 +12,10 @@
 #include "room.h"
 
 
-extern QTcpSocket *remote_server;
-
-extern client_user current_user;
-extern std::map<std::string, client_user> users_in_the_room;
-extern client_processor processor;
-
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
+
     scene = new room();
-
-    remote_server->connectToHost(QHostAddress("194.169.163.120"), 1235);
-
-    qRegisterMetaType<std::vector<std::string>>("std::vector<std::string>");
-    connect(&login_m, SIGNAL(show_main_window()), this,
-            SLOT(show_after_auth()));
-
-    connect(&processor, SIGNAL(run_already_connected()), this,
-            SLOT(already_connected()));
-    connect(&processor, SIGNAL(run_connect_with_room(std::vector<std::string>)),
-            this, SLOT(connect_with_room(std::vector<std::string>)));
-    connect(&processor, SIGNAL(run_change_position(std::string,int,int)),
-            this, SLOT(user_changed_position(std::string,int,int)));
-    connect(&processor, SIGNAL(run_disconnect_roommate(const std::string &)),
-            this, SLOT(roommate_disconnect(const std::string &)));
-    connect(&processor, SIGNAL(run_connect_roommate(const std::string &)), this,
-            SLOT(roommate_connect(const std::string &)));
-
 
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
@@ -50,10 +27,7 @@ main_window::main_window(QWidget *parent)
     view->x(),
     view->setScene(scene);
     scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
-}
 
-void main_window::start() {
-    login_m.show();
 }
 
 void main_window::show_after_auth() {
@@ -64,18 +38,15 @@ void main_window::show_after_auth() {
 main_window::~main_window() {
     delete scene;
 
-    processor.prepare_query("disconnect," + current_user.name() + "," +
-                                current_user.pwd() + "," +
-                                std::to_string(current_user.get_x()) + "," +
-                                std::to_string(current_user.get_y()),
+    emit run_send_request("disconnect," + current_user.name() + "," +
+                     current_user.pwd() + "," +
+                     std::to_string(current_user.get_x()) + "," +
+                     std::to_string(current_user.get_y()));
 
-                            remote_server);
 }
 
 void main_window::on_connect_button_clicked() {
-    processor.prepare_query(
-        "connect," + current_user.name() + "," + current_user.pwd(),
-        remote_server);
+    run_send_request("connect," + current_user.name() + "," + current_user.pwd());
     ui->change_avatar_button->hide();
 }
 
@@ -88,7 +59,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     scene->clear();
     scene->addItem(game_machine);
     game_machine->setPos(100, 70);
-    current_user.set_user_sprite();
+    set_user_sprite();
 
     scene->set_curren_user_sprite(current_user.user_sprite);
 
@@ -118,7 +89,6 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     scene->addItem(current_user.user_sprite->name_display);
 
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
-    this->sprite_of_current_user = current_user.user_sprite;
 
     //current_user.user_sprite->setFocusPolicy(QT::StrongFocus);
     current_user.user_sprite->setFocus();    
@@ -152,9 +122,13 @@ void main_window::show_curren_sprite()
     QGraphicsTextItem *text = new QGraphicsTextItem("Your character");
     scene->addItem(text);
     text->setPos(200, 100);
-    QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(QPixmap(":/images/"+ QString(current_user.skin.c_str()) + "_sprite.png"));
+    QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(QPixmap(":/images/"+ QString(current_user.get_skin().c_str()) + "_sprite.png"));
     scene->addItem(user_skin);
     user_skin->setPos(250, 220);
+}
+
+void main_window::set_user_skin(const std::string &skin){
+    current_user.skin = skin;
 }
 
 void main_window::on_change_avatar_button_clicked()
@@ -174,3 +148,9 @@ void main_window::on_change_avatar_button_clicked()
     }
 }
 
+void main_window::set_user_sprite()
+{
+    current_user.user_sprite = new sprite(current_user.name(), current_user.get_skin());
+    connect(current_user.user_sprite, SIGNAL(run_send_request(const std::string &)), current_session,
+            SLOT(send_request(const std::string &)));
+}

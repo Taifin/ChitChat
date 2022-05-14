@@ -39,7 +39,10 @@ set(PROJECT_SOURCES
             client/client_user.cpp
             client/room.h
             client/room.cpp
+            client/view.h
+            client/view.cpp
             resources/resources.qrc
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

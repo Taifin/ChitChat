@@ -4,13 +4,10 @@
 #include <QGraphicsScene>
 #include "client_socket.h"
 #include "client_user.h"
-
-extern QTcpSocket *remote_server;
-extern client_processor processor;
-extern client_user current_user;
+#include "view.h"
+#include "sprite.h"
 
 sprite::sprite(const std::string &name, std::string skin) : name(name) {
-
     setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
@@ -75,6 +72,7 @@ bool is_colliding(sprite *walker){
     return false;
 }
 
+
 void change_position(int step_size, sprite *walker, directions dir) {
     int x = walker->x();
     int y = walker->y();
@@ -99,10 +97,8 @@ void change_position(int step_size, sprite *walker, directions dir) {
     walker->name_display->setPos(walker->name_display->x() + walker->x() - x, walker->name_display->y() + walker->y() - y);
     x = walker->x();
     y = walker->y();
-    processor.prepare_query("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y), remote_server);
+    emit walker->run_send_request("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y));
     qDebug() << std::to_string(walker->x()).c_str() << std::to_string(walker->y()).c_str();
-
-
 }
 
 sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin)
@@ -112,8 +108,10 @@ sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin)
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    current_user.skin = skin;
+    //Здесь нужно отправить датаграмму на изменение скина;-
+    //current_view.main_process.set_user_skin(skin);
     emit this->add_curren_sprite();
+
 }
 
 sprite_of_object::sprite_of_object(std::string object) : QGraphicsPixmapItem(QPixmap(":/images/"+ QString(object.c_str()) + ".png"))
