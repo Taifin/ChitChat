@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "room.h"
 #include "model.h"
+#include "game_selection.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -62,8 +63,6 @@ private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
-    sprite_of_object *game_machine = new sprite_of_object("game_machine");
-
 
 };
 #endif  // MAIN_WINDOW_H

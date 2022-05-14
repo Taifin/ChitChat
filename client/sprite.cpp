@@ -48,7 +48,7 @@ void sprite::change_skin(const std::string &skin)
 }
 
 bool is_colliding(sprite *walker){
-    QGraphicsTextItem *text = new QGraphicsTextItem("click on cntl+z to start a game");
+    QGraphicsTextItem *text = new QGraphicsTextItem("click on cntl+g to start a game");
     QGraphicsScene *scene = walker->scene();
     QList<QGraphicsItem *> colliding_items = walker->collidingItems();
     for (int i = 0, n = colliding_items.size(); i < n; ++i){
@@ -90,10 +90,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
             walker->setPos(x - step_size, y);
             break;
     }
-    if (is_colliding(walker)){
-        walker->setPos(x, y);
-        return;
-    }
+    is_colliding(walker);
     walker->name_display->setPos(walker->name_display->x() + walker->x() - x, walker->name_display->y() + walker->y() - y);
     x = walker->x();
     y = walker->y();

@@ -57,8 +57,8 @@ void main_window::already_connected() {
 void main_window::connect_with_room(std::vector<std::string> data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     scene->clear();
-    scene->addItem(game_machine);
-    game_machine->setPos(100, 70);
+    scene->addItem(scene->game_machine);
+    scene->game_machine->setPos(100, 70);
     set_user_sprite();
 
     scene->set_curren_user_sprite(current_user.user_sprite);

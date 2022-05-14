@@ -42,6 +42,9 @@ set(PROJECT_SOURCES
             client/view.h
             client/view.cpp
             resources/resources.qrc
+            client/game_selection.h
+            client/game_selection.cpp
+            client/game_selection.ui
 
 )
 

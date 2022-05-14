@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>game_selection</class>
+ <widget class="QWidget" name="game_selection">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 224, 237);
+border-color: rgb(173, 127, 168);
+border-top-color: rgb(173, 127, 168);</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>26</x>
+     <y>50</y>
+     <width>351</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 700 13pt &quot;Source Code Pro&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Choose a game you want to play</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="back_to_room_button">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>230</y>
+     <width>301</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 10pt &quot;Source Code Pro&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Back to the room</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>109</x>
+     <y>100</y>
+     <width>181</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="hangman_button">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string>HangMan</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="arkanoid_button">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Arkanoid</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
