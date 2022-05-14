@@ -13,7 +13,6 @@ class Q_DECL_EXPORT ChitChat_game : public QMainWindow {
     Q_OBJECT
 
 public:
-
     virtual void start() = 0;
 };
 
