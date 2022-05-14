@@ -64,16 +64,15 @@ void main_window::show_after_auth() {
 
 main_window::~main_window() {
     delete scene;
-    delete ui;
+
+    processor.prepare_query("disconnect," + current_user.name() + "," +
+                                current_user.pwd() + "," +
+                                std::to_string(current_user.get_x()) + "," +
+                                std::to_string(current_user.get_y()),
+
+                            remote_server);
 }
 
-processor.prepare_query("disconnect," + current_user.name() + "," +
-                            current_user.pwd() + "," +
-                            std::to_string(current_user.get_x()) + "," +
-                            std::to_string(current_user.get_y()),
-
-                        remote_server);
-}
 
 void main_window::on_connect_button_clicked() {
     processor.prepare_query(

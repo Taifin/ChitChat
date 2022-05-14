@@ -3,7 +3,6 @@
 #include <thread>
 #include "client_socket.h"
 #include "client_user.h"
-#include "database.h"
 #include "main_window.h"
 #include "shared/socket.h"
 
