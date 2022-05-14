@@ -73,7 +73,6 @@ main_window::~main_window() {
                             remote_server);
 }
 
-
 void main_window::on_connect_button_clicked() {
     processor.prepare_query(
         "connect," + current_user.name() + "," + current_user.pwd(),

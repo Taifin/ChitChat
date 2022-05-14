@@ -49,8 +49,7 @@ void sprite::change_skin(const std::string &skin) {
 }
 
 bool is_colliding(sprite *walker) {
-    auto *text =
-        new QGraphicsTextItem("click on cntl+z to start a game");
+    auto *text = new QGraphicsTextItem("click on cntl+z to start a game");
     QGraphicsScene *scene = walker->scene();
     QList<QGraphicsItem *> colliding_items = walker->collidingItems();
     for (int i = 0, n = colliding_items.size(); i < n; ++i) {
