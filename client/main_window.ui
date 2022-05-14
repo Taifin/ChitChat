@@ -14,7 +14,9 @@
    <string>main_window</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(117, 80, 123);</string>
+   <string notr="true">background-color: rgb(255, 224, 237);
+border-color: rgb(173, 127, 168);
+border-top-color: rgb(173, 127, 168);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="layoutDirection">
