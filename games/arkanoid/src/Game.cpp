@@ -1,5 +1,7 @@
 #include "include/Game.h"
 
+// TODO: stop game after window is closed
+
 Game::Game() {
     prepare_menu_scene();
     prepare_game_scene();
