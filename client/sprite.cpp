@@ -1,7 +1,7 @@
 #include "sprite.h"
-#include <QKeyEvent>
 #include <QGraphicsEffect>
 #include <QGraphicsScene>
+#include <QKeyEvent>
 #include "client_socket.h"
 #include "client_user.h"
 #include "view.h"
@@ -16,22 +16,22 @@ sprite::sprite(const std::string &name, std::string skin) : name(name) {
 void sprite::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_Up:
-            if (pos().y() > 0){
+            if (pos().y() > 0) {
                 change_position(STEP_SIZE, this, directions::UP);
             }
             break;
         case Qt::Key_Down:
-            if (pos().y() < 475){
+            if (pos().y() < 475) {
                 change_position(STEP_SIZE, this, directions::DOWN);
             }
             break;
         case Qt::Key_Left:
-            if (pos().x() > 0){
+            if (pos().x() > 0) {
                 change_position(STEP_SIZE, this, directions::LEFT);
             }
             break;
         case Qt::Key_Right:
-            if (pos().x() < 525){
+            if (pos().x() < 525) {
                 change_position(STEP_SIZE, this, directions::RIGHT);
             }
             break;
@@ -42,29 +42,27 @@ sprite::~sprite() {
     delete name_display;
 }
 
-void sprite::change_skin(const std::string &skin)
-{
-    setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
+void sprite::change_skin(const std::string &skin) {
+    setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
 }
 
 bool is_colliding(sprite *walker){
     QGraphicsTextItem *text = new QGraphicsTextItem("click on cntl+g to start a game");
     QGraphicsScene *scene = walker->scene();
     QList<QGraphicsItem *> colliding_items = walker->collidingItems();
-    for (int i = 0, n = colliding_items.size(); i < n; ++i){
-        if (typeid(*(colliding_items[i])) == typeid(sprite_of_object)){
-            QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+    for (int i = 0, n = colliding_items.size(); i < n; ++i) {
+        if (typeid(*(colliding_items[i])) == typeid(sprite_of_object)) {
+            auto *effect = new QGraphicsColorizeEffect();
             effect->setColor(Qt::black);
             colliding_items[i]->setGraphicsEffect(effect);
             scene->addItem(text);
             return true;
-        }
-        else{
+        } else {
             colliding_items[i]->setGraphicsEffect(NULL);
         }
     }
     QList<QGraphicsItem *> items = scene->items();
-    for (auto x : items){
+    for (auto x : items) {
         x->setGraphicsEffect(NULL);
     }
     scene->addItem(text);
@@ -96,11 +94,11 @@ void change_position(int step_size, sprite *walker, directions dir) {
     y = walker->y();
     emit walker->run_send_request("move," + walker->name + "," + std::to_string(x) + "," + std::to_string(y));
     qDebug() << std::to_string(walker->x()).c_str() << std::to_string(walker->y()).c_str();
+
 }
 
-sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin)
-{
-    setPixmap(QPixmap(":/images/"+ QString(skin.c_str()) + "_sprite.png"));
+sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
+    setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
 }
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -111,7 +109,8 @@ void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 }
 
-sprite_of_object::sprite_of_object(std::string object) : QGraphicsPixmapItem(QPixmap(":/images/"+ QString(object.c_str()) + ".png"))
-{
+sprite_of_object::sprite_of_object(std::string object)
+    : QGraphicsPixmapItem(
+          QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;
 }

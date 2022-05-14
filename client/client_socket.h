@@ -55,7 +55,6 @@ signals:
     void run_disconnect_roommate(const std::string &);
 
     void run_connect_roommate(const std::string &);
-
 };
 
 #endif  // CLIENT_SOCKET_H

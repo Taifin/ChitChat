@@ -4,17 +4,12 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QObject>
-#include <unordered_map>
 #include <QtGui>
+#include <unordered_map>
 
 static int STEP_SIZE = 5;
 
-enum class directions {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
+enum class directions { UP, DOWN, LEFT, RIGHT };
 
 class sprite : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT

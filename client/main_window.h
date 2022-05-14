@@ -4,7 +4,6 @@
 #include <QGraphicsScene>
 #include <QMainWindow>
 #include "login.h"
-#include "sprite.h"
 #include "room.h"
 #include "model.h"
 #include "game_selection.h"

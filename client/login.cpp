@@ -3,8 +3,8 @@
 #include <QMetaType>
 #include "client_socket.h"
 #include "main_window.h"
-#include "ui_login.h"
 #include "shared/user.h"
+#include "ui_login.h"
 
 login::login(QWidget *parent) : QDialog(parent), ui(new Ui::login) {
     ui->setupUi(this);

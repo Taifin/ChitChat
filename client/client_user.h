@@ -1,8 +1,8 @@
 #ifndef CLIENT_USER_H
 #define CLIENT_USER_H
 
-#include "sprite.h"
 #include "shared/user.h"
+#include "sprite.h"
 
 class client_user : public user {
 
@@ -18,7 +18,6 @@ public:
     ~client_user();
 
 private:
-
 };
 
 #endif  // CLIENT_USER_H

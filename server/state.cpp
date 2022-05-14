@@ -13,7 +13,10 @@ bool state::connect_user(const server_user &new_user) {
 }
 
 void state::update_coords(const std::string &username, int x, int y) {
-    connected_users.at(username).set_coords(x, y);
+    if (connected_users.count(username))
+        connected_users.at(username).set_coords(x, y);
+    else
+        qDebug() << "user" << username.c_str() << "is not in the room";
 }
 std::vector<server_user> state::get_users() {
     std::vector<server_user> users;

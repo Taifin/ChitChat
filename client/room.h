@@ -5,13 +5,11 @@
 #include "sprite.h"
 #include "game_selection.h"
 
-class room : public QGraphicsScene
-{
+class room : public QGraphicsScene {
 public:
     room();
     void keyPressEvent(QKeyEvent *event) override;
     void set_curren_user_sprite(sprite *spr);
-
     sprite_of_object *game_machine = new sprite_of_object("game_machine");
 
 private:
@@ -20,4 +18,4 @@ private:
 
 };
 
-#endif // ROOM_H
+#endif  // ROOM_H

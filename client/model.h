@@ -29,4 +29,4 @@ private slots:
 
 };
 
-#endif // MODEL_H
+#endif  // MODEL_H
