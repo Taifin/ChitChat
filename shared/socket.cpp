@@ -18,7 +18,7 @@ void query_processor::wait_next_query() {
 
 tcp_socket::tcp_socket(const QHostAddress &host,
                        quint16 port,
-                       queries_keeper *keeper1,
+                       queries_keeper<> *keeper1,
                        QObject *parent) {
     server = new QTcpServer(this);
     server->listen(host, port);
@@ -57,7 +57,7 @@ void tcp_socket::read() {
     keeper->query_available.notify_one();
 }
 
-query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
+query_processor::query_processor(queries_keeper<> *keeper, tcp_socket &socket)
     : keeper(keeper), socket(socket) {
     connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
 }

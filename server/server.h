@@ -31,7 +31,7 @@ class server_socket : public network::tcp_socket {
 public:
     explicit server_socket(const QHostAddress &host,
                            quint16 port,
-                           network::queries_keeper *keeper1,
+                           network::queries_keeper<> *keeper1,
                            QObject *parent = nullptr)
         : network::tcp_socket(host, port, keeper1) {
     }
@@ -76,7 +76,7 @@ public:
     void greet();
     /// Debugging: sends message in return.
 
-    server_processor(network::queries_keeper *pKeeper,
+    server_processor(network::queries_keeper<> *pKeeper,
                      network::tcp_socket &socket);
 };
 

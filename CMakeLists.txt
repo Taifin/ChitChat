@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Multimedia REQUIRED)
 include_directories(client)
 include_directories(shared)
 include_directories(server)
@@ -48,14 +48,16 @@ set(CLIENT_SOURCES
         client/view.cpp
         client/game_selection.cpp
         resources/resources.qrc
-        )
+        client/voice_manager.cpp client/voice_manager.h)
 
 set(SERVER_SOURCES
         server/server.cpp
-        server_testing.cpp
+        run_server.cpp
         server/state.cpp
         server/database.cpp
+        server/voice_manager.cpp
         shared/socket.cpp
+        shared/socket.h
         shared/user.h
         )
 
@@ -75,13 +77,19 @@ set(HANGMAN_SOURCES
         shared/abstract_game.h)
 
 add_executable(ChitChatClient ${CLIENT_SOURCES} )
-target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network -pthread)
+target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
-target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
+target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread)
 
 add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
 target_link_libraries(Arkanoid Qt5::Widgets)
 
 add_library(Hangman SHARED ${HANGMAN_SOURCES})
 target_link_libraries(Hangman Qt5::Widgets)
+
+add_executable(voice_server audio_server.cpp server/voice_manager.cpp)
+target_link_libraries(voice_server Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)
+
+add_executable(voice_client audio_testing.cpp client/voice_manager.cpp)
+target_link_libraries(voice_client Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)

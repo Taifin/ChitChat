@@ -116,7 +116,7 @@ void server_processor::disconnect() {
         }
     }
 }
-server_processor::server_processor(network::queries_keeper *pKeeper,
+server_processor::server_processor(network::queries_keeper<> *pKeeper,
                                    network::tcp_socket &socket)
     : query_processor(pKeeper, socket) {
 }
