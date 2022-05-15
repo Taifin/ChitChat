@@ -9,12 +9,12 @@ namespace server {
 class manager : public QObject {
     Q_OBJECT
 public:
-//    network::queries_keeper<QByteArray> *keeper;
+    network::queries_keeper<QByteArray> *keeper;
     QTcpServer *server;
     QList<QTcpSocket *> sockets;
     manager(const QHostAddress &address,
-            quint16 i
-//            network::queries_keeper<QByteArray> *pKeeper
+            quint16 i,
+            network::queries_keeper<QByteArray> *pKeeper
             );
 public slots:
     void read();
@@ -22,7 +22,7 @@ public slots:
 
     void disconnect_one();
 
-//    void send();
+    void send();
 };
 
 class processor : public QObject {
@@ -31,8 +31,8 @@ public:
     explicit processor(server::manager &socket,
                        network::queries_keeper<QByteArray> *keeper);
     void wait_next_query();
-//    void process();
-//    void prepare_query(const QByteArray &q, QTcpSocket *cli);
+    void process();
+    void prepare_query(const QByteArray &q, QTcpSocket *cli);
 
 private:
     network::queries_keeper<QByteArray> *keeper;

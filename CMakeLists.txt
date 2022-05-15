@@ -48,16 +48,14 @@ set(CLIENT_SOURCES
         client/view.cpp
         client/game_selection.cpp
         resources/resources.qrc
-        client/voice_manager.cpp client/voice_manager.h)
+        )
 
 set(SERVER_SOURCES
         server/server.cpp
         run_server.cpp
         server/state.cpp
         server/database.cpp
-        server/voice_manager.cpp
         shared/socket.cpp
-        shared/socket.h
         shared/user.h
         )
 
