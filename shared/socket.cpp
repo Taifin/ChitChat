@@ -5,7 +5,7 @@
 namespace network {
 
 void query_processor::prepare_query(const std::string &q, QTcpSocket *cli) {
-    keeper->prepared_queries.push({q, cli});
+    keeper->prepared_queries.push({q.c_str(), cli});
     emit prepared();
 }
 
@@ -18,7 +18,7 @@ void query_processor::wait_next_query() {
 
 tcp_socket::tcp_socket(const QHostAddress &host,
                        quint16 port,
-                       queries_keeper<> *keeper1,
+                       queries_keeper *keeper1,
                        QObject *parent) {
     server = new QTcpServer(this);
     server->listen(host, port);
@@ -45,7 +45,7 @@ void tcp_socket::send() {
     auto q = keeper->prepared_queries.front();
     keeper->prepared_queries.pop();
     qDebug() << "Sending...";
-    q.second->write(q.first.c_str());
+    q.second->write(q.first);
     q.second->waitForReadyRead(25);
 }
 
@@ -53,11 +53,11 @@ void tcp_socket::read() {
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     QByteArray data = sender->readAll();
     std::unique_lock lock(keeper->queries_mutex);
-    keeper->parsed_queries.push({data.toStdString(), sender});
+    keeper->parsed_queries.push({data, sender});
     keeper->query_available.notify_one();
 }
 
-query_processor::query_processor(queries_keeper<> *keeper, tcp_socket &socket)
+query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
     : keeper(keeper), socket(socket) {
     connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
 }
@@ -72,5 +72,8 @@ void tcp_socket::connect_one() {
 void tcp_socket::disconnect_one() {
     auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
     sockets.removeOne(socket);
+}
+QList<QTcpSocket *> tcp_socket::get_sockets() const {
+    return sockets;
 }
 }  // namespace network

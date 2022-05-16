@@ -31,7 +31,7 @@ class server_socket : public network::tcp_socket {
 public:
     explicit server_socket(const QHostAddress &host,
                            quint16 port,
-                           network::queries_keeper<> *keeper1,
+                           network::queries_keeper *keeper1,
                            QObject *parent = nullptr)
         : network::tcp_socket(host, port, keeper1) {
     }
@@ -76,8 +76,16 @@ public:
     void greet();
     /// Debugging: sends message in return.
 
-    server_processor(network::queries_keeper<> *pKeeper,
+    server_processor(network::queries_keeper *pKeeper,
                      network::tcp_socket &socket);
+};
+
+class audio_processor : public network::query_processor {
+public:
+    explicit audio_processor(network::queries_keeper *keeper, network::tcp_socket &socket);
+
+    void process() override;
+
 };
 
 }  // namespace sv

@@ -11,7 +11,7 @@ client_socket::client_socket(const QHostAddress &host,
 }
 
 void client_processor::process() {
-    std::vector<std::string> data = parse(keeper->parsed_queries.front().first);
+    std::vector<std::string> data = parse(keeper->parsed_queries.front().first.toStdString());
     std::string status = data[0];
     keeper->parsed_queries.pop();
 

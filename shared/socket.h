@@ -19,10 +19,9 @@ struct client {
     int port;
 };
 
-template <class T = std::string>
 struct queries_keeper {
-    std::queue<std::pair<T, QTcpSocket *>> parsed_queries;
-    std::queue<std::pair<T, QTcpSocket *>> prepared_queries;
+    std::queue<std::pair<QByteArray, QTcpSocket *>> parsed_queries;
+    std::queue<std::pair<QByteArray, QTcpSocket *>> prepared_queries;
     std::condition_variable query_available;
     std::mutex queries_mutex;
 };
@@ -31,18 +30,20 @@ class tcp_socket : public QObject {
     Q_OBJECT
 
 protected:
-    queries_keeper<> *keeper;
+    queries_keeper *keeper;
     QTcpServer *server;
     QList<QTcpSocket *> sockets;
 
 public:
     explicit tcp_socket(const QHostAddress &host,
                         quint16 port,
-                        queries_keeper<> *keeper1,
+                        queries_keeper *keeper1,
                         QObject *parent = nullptr);
 
     void wait_for_processed();
     /// Sends "msg" to client.
+
+    QList<QTcpSocket *> get_sockets() const;
 
 signals:
 
@@ -64,13 +65,13 @@ class query_processor : public QObject {
     Q_OBJECT
 
 protected:
-    queries_keeper<> *keeper;
+    queries_keeper *keeper;
     tcp_socket &socket;
     std::vector<std::string> data;
     QTcpSocket *to;
 
 public:
-    explicit query_processor(queries_keeper<> *keeper, tcp_socket &socket);
+    explicit query_processor(queries_keeper *keeper, tcp_socket &socket);
 
     static std::vector<std::string> parse(const std::string &raw_data);
 

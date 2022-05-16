@@ -8,7 +8,7 @@ void server_processor::process() {
     while (!keeper->parsed_queries.empty()) {
         auto query = keeper->parsed_queries.front();
         keeper->parsed_queries.pop();
-        data = parse(query.first);
+        data = parse(query.first.toStdString());
         to = query.second;
         try {
             switch (commands.at(data[0])) {
@@ -116,7 +116,7 @@ void server_processor::disconnect() {
         }
     }
 }
-server_processor::server_processor(network::queries_keeper<> *pKeeper,
+server_processor::server_processor(network::queries_keeper *pKeeper,
                                    network::tcp_socket &socket)
     : query_processor(pKeeper, socket) {
 }
@@ -126,6 +126,22 @@ void server_processor::new_user_connected() {
         if (u.name() != data[1]) {
             prepare_query("new," + data[1] + "\n", u.client);
         }
+    }
+}
+
+sv::audio_processor::audio_processor(network::queries_keeper *keeper, network::tcp_socket &socket)
+    : network::query_processor(keeper, socket) {
+}
+
+void sv::audio_processor::process() {
+    while (!keeper->parsed_queries.empty()) {
+        for (auto &sock : socket.get_sockets()) {
+            if (sock != keeper->parsed_queries.front().second) {
+                prepare_query(
+                    keeper->parsed_queries.front().first.toStdString(), sock);
+            }
+        }
+        keeper->parsed_queries.pop();
     }
 }
 
