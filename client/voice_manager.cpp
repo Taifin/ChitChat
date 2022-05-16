@@ -15,7 +15,7 @@ void client::manager::read() {
 
 client::manager::manager(const QHostAddress &host,
                          quint16 port,
-                         network::queries_keeper<QByteArray> *keeper,
+                         network::queries_keeper *keeper,
                          QObject *parent) {
     socket = new QTcpSocket(this);
     socket->connectToHost(host, port);
@@ -33,7 +33,7 @@ QTcpSocket *client::manager::get_socket() {
     return socket;
 }
 
-client::processor::processor(client::manager& socket, network::queries_keeper<QByteArray> *keeper) : socket(socket), keeper(keeper) {
+client::processor::processor(client::manager& socket, network::queries_keeper *keeper) : socket(socket), keeper(keeper) {
     format.setSampleRate(16000);
     format.setChannelCount(1);
     format.setSampleSize(16);

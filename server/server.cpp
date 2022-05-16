@@ -135,7 +135,7 @@ sv::audio_processor::audio_processor(network::queries_keeper *keeper, network::t
 
 void sv::audio_processor::process() {
     while (!keeper->parsed_queries.empty()) {
-        for (auto &sock : socket.get_sockets()) {
+        for (auto &sock : socket.get_connected_sockets()) {
             if (sock != keeper->parsed_queries.front().second) {
                 prepare_query(
                     keeper->parsed_queries.front().first.toStdString(), sock);

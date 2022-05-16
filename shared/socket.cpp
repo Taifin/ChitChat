@@ -73,7 +73,7 @@ void tcp_socket::disconnect_one() {
     auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
     sockets.removeOne(socket);
 }
-QList<QTcpSocket *> tcp_socket::get_sockets() const {
+QList<QTcpSocket *> tcp_socket::get_connected_sockets() const {
     return sockets;
 }
 }  // namespace network

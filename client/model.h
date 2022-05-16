@@ -13,6 +13,7 @@ class model : public QObject {
 
 public:
     model();
+    // TODO: aboba
     QTcpSocket *remote_server = new QTcpSocket();
     network::queries_keeper *keeper = new network::queries_keeper;
 

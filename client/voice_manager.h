@@ -7,12 +7,14 @@
 #include "QIODevice"
 #include "socket.h"
 
+// TODO: initialize voice module only after successful connection
+
 namespace client {
 
 class manager : public QObject {
     Q_OBJECT
 private:
-    network::queries_keeper<QByteArray> *keeper;
+    network::queries_keeper *keeper;
     QTcpSocket *socket;
     QAudioFormat format;
 public slots:
@@ -21,7 +23,7 @@ public slots:
 public:
     explicit manager(const QHostAddress &host,
                      quint16 port,
-                     network::queries_keeper<QByteArray> *keeper,
+                     network::queries_keeper *keeper,
                      QObject *parent = nullptr);
 
     QTcpSocket *get_socket();
@@ -30,13 +32,13 @@ public:
 class processor : public QObject {
     Q_OBJECT
 public:
-    explicit processor(client::manager &socket, network::queries_keeper<QByteArray> *keeper);
+    explicit processor(client::manager &socket, network::queries_keeper *keeper);
     void wait_next_query();
     void process();
     void prepare_query(const QByteArray &q, QTcpSocket *cli);
 
 private:
-    network::queries_keeper<QByteArray>* keeper;
+    network::queries_keeper* keeper;
     QAudioFormat format;
     QAudioInput *audioInput;
     manager &socket;

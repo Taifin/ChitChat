@@ -19,6 +19,7 @@ struct client {
     int port;
 };
 
+// TODO: safety
 struct queries_keeper {
     std::queue<std::pair<QByteArray, QTcpSocket *>> parsed_queries;
     std::queue<std::pair<QByteArray, QTcpSocket *>> prepared_queries;
@@ -31,6 +32,7 @@ class tcp_socket : public QObject {
 
 protected:
     queries_keeper *keeper;
+    // TODO: remove server from base class
     QTcpServer *server;
     QList<QTcpSocket *> sockets;
 
@@ -43,7 +45,7 @@ public:
     void wait_for_processed();
     /// Sends "msg" to client.
 
-    QList<QTcpSocket *> get_sockets() const;
+    [[nodiscard]] QList<QTcpSocket *> get_connected_sockets() const;
 
 signals:
 
