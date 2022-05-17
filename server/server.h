@@ -28,6 +28,7 @@
 namespace sv {
 
 class server_socket : public network::tcp_socket {
+    Q_OBJECT
     QTcpServer* server;
     QList<QTcpSocket*> sockets;
 

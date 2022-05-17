@@ -21,7 +21,7 @@ add_compile_definitions(SHARED)
 #add_compile_definitions(NOLOCAL)
 
 set(CLIENT_SOURCES
-        client/main.cpp
+#        client/main.cpp
         client/model.h
         client/model.cpp
         client/main_window.cpp
@@ -52,7 +52,7 @@ set(CLIENT_SOURCES
 
 set(SERVER_SOURCES
         server/server.cpp
-        run_server.cpp
+#        run_server.cpp
         server/state.cpp
         server/database.cpp
         shared/socket.cpp
@@ -86,8 +86,8 @@ target_link_libraries(Arkanoid Qt5::Widgets)
 add_library(Hangman SHARED ${HANGMAN_SOURCES})
 target_link_libraries(Hangman Qt5::Widgets)
 
-add_executable(voice_server audio_server.cpp server/voice_manager.cpp)
-target_link_libraries(voice_server Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)
+add_executable(voice_server audio_server.cpp ${SERVER_SOURCES})
+target_link_libraries(voice_server Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread -lpqxx -lpq)
 
-add_executable(voice_client audio_testing.cpp client/voice_manager.cpp)
+add_executable(voice_client audio_testing.cpp client/voice_manager.cpp ${CLIENT_SOURCES})
 target_link_libraries(voice_client Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)

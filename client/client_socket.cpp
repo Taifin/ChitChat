@@ -5,7 +5,7 @@ client_socket::client_socket(const QHostAddress &host,
                              quint16 port,
                              QTcpSocket *ser,
                              network::queries_keeper *keeper,
-                             QObject *parent = nullptr)
+                             QObject *parent)
     : tcp_socket(host, port, keeper, parent) {
     connect(ser, SIGNAL(readyRead()), this, SLOT(read()));
 }

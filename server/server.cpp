@@ -135,6 +135,7 @@ sv::audio_processor::audio_processor(network::queries_keeper *keeper,
 }
 
 void sv::server_socket::connect_one() {
+    qDebug() << "New connection";
     QTcpSocket *new_socket = server->nextPendingConnection();
     connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
     connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));

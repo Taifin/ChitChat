@@ -12,26 +12,11 @@
 
 namespace client {
 
-class manager : public client_socket {
-private:
-    QTcpSocket *socket;
-    QAudioFormat format;
-
-public:
-    explicit manager(const QHostAddress &host,
-                     quint16 port,
-                     QTcpSocket* ser,
-                     network::queries_keeper *keeper,
-                     QObject *parent);
-
-    QTcpSocket *get_socket();
-};
-
 class processor : public network::query_processor {
     Q_OBJECT
 public:
     explicit processor(network::queries_keeper *keeper1,
-                       network::tcp_socket &socket1);
+                       network::tcp_socket &socket1, QTcpSocket* tcpSocket);
     void process() override;
 
 private:

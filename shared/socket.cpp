@@ -47,6 +47,7 @@ void tcp_socket::send() {
 }
 
 void tcp_socket::read() {
+    qDebug() << "New msg";
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     QByteArray data = sender->readAll();
     std::unique_lock lock(keeper->queries_mutex);

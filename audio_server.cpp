@@ -1,13 +1,13 @@
-#include "server/voice_manager.h"
+#include "server/server.h"
 #include "QApplication"
 #include "thread"
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
-    auto *keeper = new network::queries_keeper<QByteArray>();
-    server::manager m(QHostAddress::LocalHost, 1234, keeper);
+    auto *keeper = new network::queries_keeper();
+    sv::server_socket m(QHostAddress::LocalHost, 1234, keeper);
 
-    server::processor processor(m, keeper);
+    sv::audio_processor processor(keeper, m);
     std::thread t([&processor]() {
         while (true) {
             processor.wait_next_query();
