@@ -8,9 +8,10 @@
 #include <QTimer>
 #include <QTime>
 
-static int TIME_TO_GO = 10;
+static int TIME_TO_GO = 43;
 
 class room : public QGraphicsScene {
+    Q_OBJECT
 public:
     room();
     void keyPressEvent(QKeyEvent *event) override;
@@ -18,11 +19,11 @@ public:
     sprite_of_object *game_machine = new sprite_of_object("game_machine");
 
     void dont_let_to_move(){
-        timer->start(TIME_TO_GO);
         can_move = false;
+        timer->start(TIME_TO_GO);
     }
 
-private slots:
+public slots:
     void let_to_move(){
         can_move = true;
     }
@@ -31,7 +32,7 @@ private:
     sprite *current_user_sprite;
     game_selection choose_game;
     bool can_move = true;
-    QTimer *timer = new QTimer();
+    QTimer *timer;
 };
 
 #endif  // ROOM_H
