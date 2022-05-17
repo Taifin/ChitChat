@@ -52,7 +52,7 @@ set(CLIENT_SOURCES
 
 set(SERVER_SOURCES
         server/server.cpp
-        server_testing.cpp
+        run_server.cpp
         server/state.cpp
         server/database.cpp
         shared/socket.cpp
