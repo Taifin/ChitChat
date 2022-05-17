@@ -1,9 +1,9 @@
 #ifndef VIEW_H
 #define VIEW_H
 #include <QObject>
+#include "login.h"
 #include "main_window.h"
 #include "model.h"
-#include "login.h"
 #include "registration.h"
 
 class view : public QObject {
@@ -24,4 +24,4 @@ public:
     ~view() = default;
 };
 
-#endif // VIEW_H
+#endif  // VIEW_H

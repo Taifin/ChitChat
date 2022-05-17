@@ -3,10 +3,10 @@
 
 #include <QGraphicsScene>
 #include <QMainWindow>
-#include "login.h"
-#include "room.h"
-#include "model.h"
 #include "game_selection.h"
+#include "login.h"
+#include "model.h"
+#include "room.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,7 +30,6 @@ public:
     model *current_session = nullptr;
 
     void set_user_sprite();
-
 
     ~main_window();
 
@@ -56,12 +55,9 @@ private slots:
 
     void show_curren_sprite();
 
-
-
 private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
-
 };
 #endif  // MAIN_WINDOW_H

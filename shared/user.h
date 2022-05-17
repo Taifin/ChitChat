@@ -11,13 +11,12 @@ struct point {
     int y;
 };
 
-class user : public QObject{
+class user : public QObject {
     Q_OBJECT
 
     std::string username;
     std::string password;
     point coords;
-
 
 public:
     std::string skin = "miku";
@@ -27,6 +26,14 @@ public:
           password(std::move(upwd)),
           coords({x, y}){};
 
+    user(const user &other)
+        : username(other.username),
+          password(other.password),
+          coords(other.coords),
+          skin(other.skin) {
+    }
+
+    virtual ~user() = default;
 
     [[nodiscard]] const std::string &name() const {
         return username;
@@ -59,7 +66,7 @@ public:
         return *this;
     }
 
-    std::string get_name(){
+    std::string get_name() {
         return username;
     }
 
@@ -67,21 +74,20 @@ public:
         username = name;
     }
 
-    std::string get_skin(){
+    [[nodiscard]] std::string get_skin() const {
         return skin;
     }
 
-    void set_skin(const std::string &skin_type){
+    void set_skin(const std::string &skin_type) {
         skin = skin_type;
     }
 
 private slots:
-    void initialize(std::string name, std::string skin_type){
+    void initialize(const std::string &name, const std::string &skin_type) {
         set_skin(skin_type);
         set_name(name);
         qDebug() << get_skin().c_str() << get_name().c_str();
     }
-
 };
 
 #endif  // CHITCHAT_USER_H

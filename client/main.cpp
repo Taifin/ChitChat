@@ -7,9 +7,7 @@
 #include "shared/socket.h"
 #include "view.h"
 
-
 int main(int argc, char *argv[]) {
-
     QApplication a(argc, argv);
 
     view current_view;
@@ -21,9 +19,7 @@ int main(int argc, char *argv[]) {
     });
     t.detach();
 
-
     current_view.start();
 
     return a.exec();
-
 }

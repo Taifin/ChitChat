@@ -26,7 +26,6 @@ public:
 
     void change_skin(const std::string &skin);
 
-
 signals:
     void run_send_request(const std::string &message);
 };
@@ -40,11 +39,10 @@ public:
     sprite_for_choice(const std::string &skin);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     std::string skin;
-    //current_user_sprite;
+    // current_user_sprite;
 
 signals:
     void add_curren_sprite();
-
 };
 
 class sprite_of_object : public QObject, public QGraphicsPixmapItem {

@@ -2,13 +2,15 @@
 #define GAME_SELECTION_H
 
 #include <QWidget>
+#include "QFileInfo"
+#include "QLibrary"
+#include "abstract_game.h"
 
 namespace Ui {
 class game_selection;
 }
 
-class game_selection : public QWidget
-{
+class Q_DECL_IMPORT game_selection : public QWidget {
     Q_OBJECT
 
 public:
@@ -18,15 +20,17 @@ public:
 
 private slots:
     void on_back_to_room_button_clicked();
-
-private slots:
     void on_arkanoid_button_clicked();
-
-private slots:
     void on_hangman_button_clicked();
+
+    void start_game(const std::string &name);
+
+signals:
+    void game_chosen(const std::string &name);
 
 private:
     Ui::game_selection *ui;
+    QLibrary *game = nullptr;
 };
 
-#endif // GAME_SELECTION_H
+#endif  // GAME_SELECTION_H

@@ -3,8 +3,8 @@
 #include <QDialog>
 #include <QObject>
 #include "client_socket.h"
-#include "registration.h"
 #include "model.h"
+#include "registration.h"
 
 namespace Ui {
 class login;
@@ -23,7 +23,7 @@ signals:
     void show_main_window();
     void show_registration_window();
     void run_send_request(const std::string &message);
-    void run_initialize(std::string,std::string);
+    void run_initialize(std::string, std::string);
 
 private slots:
 
@@ -47,7 +47,6 @@ private:
     Ui::login *ui;
     model *current_seccion = nullptr;
     client_processor *processor = nullptr;
-
 };
 
 #endif  // LOGIN_H
