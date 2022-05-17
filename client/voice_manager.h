@@ -5,48 +5,40 @@
 #include "QAudioInput"
 #include "QAudioOutput"
 #include "QIODevice"
+#include "client_socket.h"
 #include "socket.h"
 
 // TODO: initialize voice module only after successful connection
 
 namespace client {
 
-class manager : public QObject {
-    Q_OBJECT
+class manager : public client_socket {
 private:
-    network::queries_keeper *keeper;
     QTcpSocket *socket;
     QAudioFormat format;
-public slots:
-    void read();
 
 public:
     explicit manager(const QHostAddress &host,
                      quint16 port,
+                     QTcpSocket* ser,
                      network::queries_keeper *keeper,
-                     QObject *parent = nullptr);
+                     QObject *parent);
 
     QTcpSocket *get_socket();
 };
 
-class processor : public QObject {
+class processor : public network::query_processor {
     Q_OBJECT
 public:
-    explicit processor(client::manager &socket, network::queries_keeper *keeper);
-    void wait_next_query();
-    void process();
-    void prepare_query(const QByteArray &q, QTcpSocket *cli);
+    explicit processor(network::queries_keeper *keeper1,
+                       network::tcp_socket &socket1);
+    void process() override;
 
 private:
-    network::queries_keeper* keeper;
     QAudioFormat format;
     QAudioInput *audioInput;
-    manager &socket;
     QAudioOutput *audioOutput;
     QIODevice *device;
-
-signals:
-    void prepared();
 
 };
 

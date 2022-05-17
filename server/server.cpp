@@ -129,13 +129,40 @@ void server_processor::new_user_connected() {
     }
 }
 
-sv::audio_processor::audio_processor(network::queries_keeper *keeper, network::tcp_socket &socket)
+sv::audio_processor::audio_processor(network::queries_keeper *keeper,
+                                     network::tcp_socket &socket)
     : network::query_processor(keeper, socket) {
+}
+
+void sv::server_socket::connect_one() {
+    QTcpSocket *new_socket = server->nextPendingConnection();
+    connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
+    connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
+    sockets.push_back(new_socket);
+}
+
+void sv::server_socket::disconnect_one() {
+    auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
+    sockets.removeOne(socket);
+}
+QList<QTcpSocket *> sv::server_socket::get_connected_sockets() const {
+    return sockets;
+}
+server_socket::server_socket(const QHostAddress &host,
+                             quint16 port,
+                             network::queries_keeper *keeper1,
+                             QObject *parent)
+    : tcp_socket(host, port, keeper1, parent) {
+    server = new QTcpServer();
+    server->listen(host, port);
+    qDebug() << "Server listening on" << host << port;
+    connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
 }
 
 void sv::audio_processor::process() {
     while (!keeper->parsed_queries.empty()) {
-        for (auto &sock : socket.get_connected_sockets()) {
+        for (auto &sock :
+             dynamic_cast<server_socket &>(socket).get_connected_sockets()) {
             if (sock != keeper->parsed_queries.front().second) {
                 prepare_query(
                     keeper->parsed_queries.front().first.toStdString(), sock);

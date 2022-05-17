@@ -28,13 +28,21 @@
 namespace sv {
 
 class server_socket : public network::tcp_socket {
+    QTcpServer* server;
+    QList<QTcpSocket*> sockets;
+
 public:
     explicit server_socket(const QHostAddress &host,
                            quint16 port,
                            network::queries_keeper *keeper1,
-                           QObject *parent = nullptr)
-        : network::tcp_socket(host, port, keeper1) {
-    }
+                           QObject *parent = nullptr);
+
+    [[nodiscard]] QList<QTcpSocket*> get_connected_sockets() const;
+
+public slots:
+    void connect_one();
+
+    void disconnect_one();
 };
 
 class server_processor : public network::query_processor {
