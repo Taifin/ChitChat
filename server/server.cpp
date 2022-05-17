@@ -156,6 +156,7 @@ server_socket::server_socket(const QHostAddress &host,
     : tcp_socket(host, port, keeper1, parent) {
     server = new QTcpServer();
     server->listen(host, port);
+    qDebug() << server->serverAddress() << server->serverPort();
     qDebug() << "Server listening on" << host << port;
     connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
 }
