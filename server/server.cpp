@@ -79,6 +79,9 @@ void server_processor::greet() {
 }
 
 void server_processor::update_layout() {
+    for (auto & i : data) {
+        qDebug() << i.c_str();
+    }
     assert(data.size() == 4);
     qDebug() << "entered in move";
     model::state::update_coords(data[1], std::stoi(data[2]),
