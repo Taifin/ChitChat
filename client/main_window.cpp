@@ -156,3 +156,23 @@ void main_window::set_user_sprite() {
             SIGNAL(run_send_request(const std::string &)), current_session,
             SLOT(send_request(const std::string &)));
 }
+
+void main_window::on_headphones_check_stateChanged(int arg1)
+{
+    if (arg1) {
+        //включить
+    } else {
+        //выключить
+    }
+}
+
+
+void main_window::on_microphone_check_stateChanged(int arg1)
+{
+    if (arg1) {
+        //включить
+    } else {
+        //выключить
+    }
+}
+

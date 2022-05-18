@@ -37,6 +37,15 @@ signals:
     void run_send_request(const std::string &message);
 
 private slots:
+    void on_microphone_check_stateChanged(int arg1);
+
+private slots:
+    void on_headphones_check_stateChanged(int arg1);
+
+private slots:
+    void on_checkBox_2_stateChanged(int arg1);
+
+private slots:
     void on_change_avatar_button_clicked();
 
     void show_after_auth();
