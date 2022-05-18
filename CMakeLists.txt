@@ -21,7 +21,7 @@ add_compile_definitions(SHARED)
 #add_compile_definitions(NOLOCAL)
 
 set(CLIENT_SOURCES
-#        client/main.cpp
+        client/main.cpp
         client/model.h
         client/model.cpp
         client/main_window.cpp
@@ -47,6 +47,7 @@ set(CLIENT_SOURCES
         client/view.h
         client/view.cpp
         client/game_selection.cpp
+        client/voice_manager.cpp
         resources/resources.qrc
         )
 
