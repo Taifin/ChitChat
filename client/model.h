@@ -5,6 +5,7 @@
 #include "client_socket.h"
 #include "client_user.h"
 #include "shared/socket.h"
+#include "voice_manager.h"
 
 static quint16 PORT = 60000;
 
@@ -19,6 +20,7 @@ public:
 
     client_socket socket;
     client_processor processor;
+    client::processor audio_processor;
 
     void set_curren_user(std::string name, std::string password);
 
