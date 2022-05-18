@@ -79,7 +79,7 @@ void server_processor::greet() {
 }
 
 void server_processor::update_layout() {
-    for (auto & i : data) {
+    for (auto &i : data) {
         qDebug() << i.c_str() << "Same request" << data.size();
     }
     qDebug() << "======== ASSERTION HERE ========";
