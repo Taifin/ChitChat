@@ -86,6 +86,3 @@ target_link_libraries(Arkanoid Qt5::Widgets)
 
 add_library(Hangman SHARED ${HANGMAN_SOURCES})
 target_link_libraries(Hangman Qt5::Widgets)
-
-add_executable(voice_client audio_testing.cpp client/voice_manager.cpp ${CLIENT_SOURCES})
-target_link_libraries(voice_client Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)
