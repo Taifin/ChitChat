@@ -30,6 +30,7 @@ tcp_socket::tcp_socket(const QHostAddress &host,
 std::vector<std::string> query_processor::parse(const std::string &raw_data) {
     std::vector<std::string> parsed;
     std::istringstream raw_query(raw_data);
+    qDebug() << raw_data.c_str();
     std::string token;
     while (std::getline(raw_query, token, ',')) {
         parsed.push_back(token);
