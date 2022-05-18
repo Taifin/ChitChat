@@ -24,6 +24,17 @@ private:
     QAudioInput *audioInput;
     QAudioOutput *audioOutput;
     QIODevice *device;
+    QTcpSocket *audio_socket;
+    bool muted;
+
+public slots:
+    void input_audio_on();
+
+    void input_audio_off();
+
+    void output_audio_on();
+
+    void output_audio_off();
 
 };
 
