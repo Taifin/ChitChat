@@ -30,7 +30,6 @@ tcp_socket::tcp_socket(const QHostAddress &host,
 std::vector<std::string> query_processor::parse(const std::string &raw_data) {
     std::vector<std::string> parsed;
     std::istringstream raw_query(raw_data);
-    qDebug() << raw_data.c_str();
     std::string token;
     while (std::getline(raw_query, token, ',')) {
         parsed.push_back(token);
@@ -53,6 +52,7 @@ void tcp_socket::send() {
 void tcp_socket::read() {
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     QByteArray data = sender->readAll();
+    // TODO: on many simultaneous requests they can glue together
     std::unique_lock lock(keeper->queries_mutex);
     keeper->parsed_queries.push({data.toStdString(), sender});
     keeper->query_available.notify_one();
