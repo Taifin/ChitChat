@@ -64,7 +64,7 @@ void registration::on_confirm_button_clicked() {
 }
 
 void registration::successful_registration() {
-    this->hide();
+    this->close();
     emit show_login_window_again();
 }
 

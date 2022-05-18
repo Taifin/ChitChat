@@ -22,7 +22,7 @@ public:
 
     ~sprite();
 
-    QGraphicsTextItem *name_display = new QGraphicsTextItem;
+    QGraphicsSimpleTextItem *name_display = new QGraphicsSimpleTextItem;
 
     void change_skin(const std::string &skin);
 

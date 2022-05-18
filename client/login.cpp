@@ -43,7 +43,7 @@ void login::successful_login(const std::string &name) {
     // current_user.set_name(name);
 
     //Сделать получение спринта
-    this->hide();
+    this->close();
     emit run_initialize(name, "pikachu");
     emit show_main_window();
 

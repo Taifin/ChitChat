@@ -58,8 +58,10 @@ view::view() {
     connect(&login_process, SIGNAL(run_initialize(std::string, std::string)),
             &main_process.current_user,
             SLOT(initialize(std::string, std::string)));
+
 }
 
 void view::start() {
     login_process.show();
 }
+

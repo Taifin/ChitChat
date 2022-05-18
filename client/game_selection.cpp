@@ -14,19 +14,22 @@ game_selection::~game_selection() {
 }
 
 void game_selection::on_hangman_button_clicked() {
-    this->hide();
+    this->close();
+    //this->hide();
     qDebug() << "HangMan";
     emit(game_chosen("Hangman"));
 }
 
 void game_selection::on_arkanoid_button_clicked() {
-    this->hide();
+    this->close();
+    //this->hide();
     qDebug() << "Arkanoid";
     emit(game_chosen("Arkanoid"));
 }
 
 void game_selection::on_back_to_room_button_clicked() {
-    this->hide();
+    this->close();
+    //this->hide();
 }
 
 void game_selection::start_game(const std::string &name) {

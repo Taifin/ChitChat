@@ -10,6 +10,7 @@
 #include "room.h"
 #include "sprite.h"
 #include <QGraphicsDropShadowEffect>
+#include <QCoreApplication>
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
@@ -33,11 +34,11 @@ void main_window::show_after_auth() {
 
 main_window::~main_window() {
     delete scene;
-
     emit run_send_request("disconnect," + current_user.name() + "," +
                           current_user.pwd() + "," +
                           std::to_string(current_user.get_x()) + "," +
                           std::to_string(current_user.get_y()));
+
 }
 
 void main_window::on_connect_button_clicked() {
@@ -68,7 +69,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
             users_in_the_room[data[i]].set_user_sprite();
             users_in_the_room[data[i]].user_sprite->setPos(stoi(data[i + 1]),
                                                            stoi(data[i + 2]));
-            users_in_the_room[data[i]].user_sprite->name_display->setPlainText(
+            users_in_the_room[data[i]].user_sprite->name_display->setText(
                 QString(users_in_the_room[data[i]].name().c_str()));
             users_in_the_room[data[i]].user_sprite->name_display->setPos(
                 stoi(data[i + 1]), stoi(data[i + 2]) - 20);
@@ -78,7 +79,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
         }
     }
 
-    current_user.user_sprite->name_display->setPlainText(
+    current_user.user_sprite->name_display->setText(
         QString(current_user.name().c_str()));
     current_user.user_sprite->name_display->setPos(0, -20);
 
@@ -107,7 +108,7 @@ void main_window::roommate_connect(const std::string &roommate_name) {
     client_user u(roommate_name, "pwd", 0, 0);
     users_in_the_room[roommate_name] = u;
     users_in_the_room[roommate_name].set_user_sprite();
-    users_in_the_room[roommate_name].user_sprite->name_display->setPlainText(
+    users_in_the_room[roommate_name].user_sprite->name_display->setText(
         QString(roommate_name.c_str()));
     users_in_the_room[roommate_name].user_sprite->name_display->setPos(0, -20);
     scene->addItem(users_in_the_room[roommate_name].user_sprite);
@@ -116,32 +117,24 @@ void main_window::roommate_connect(const std::string &roommate_name) {
 
 void main_window::show_curren_sprite() {
     scene->clear();
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
-    effect->setOffset(-1, -1);
-    effect->setColor(Qt::black);
+
     QGraphicsSimpleTextItem *text = new QGraphicsSimpleTextItem("Your character");
-    QPen pen;  // creates a default pen
+    QPen pen;
 
     pen.setStyle(Qt::SolidLine);
-    pen.setWidth(3);
-    pen.setBrush(Qt::white);
+    pen.setWidth(1);
+    pen.setBrush(Qt::black);
     pen.setCapStyle(Qt::RoundCap);
     pen.setJoinStyle(Qt::RoundJoin);
+    pen.setColor(Qt::white);
     text->setPen(pen);
-    //text->
-    //text->setDefaultTextColor(Qt::white);
 
 
-    QFont font("Source Code Pro", 30, QFont::Bold);
+    QFont font("Source Code Pro", 28, QFont::Bold);
     text->setFont(font);
     scene->addItem(text);
-    //text->setGraphicsEffect(effect);
-    QPainter painter(this);
 
-
-    text->setPos(130, 150);
-
-    text->shape();
+    text->setPos(140, 160);
 
     QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
         QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
@@ -149,6 +142,15 @@ void main_window::show_curren_sprite() {
     scene->addItem(user_skin);
     user_skin->setPos(250, 220);
 }
+/*
+void main_window::closeEvent(QCloseEvent *e)
+{
+    qApp->closeAllWindows();
+    e->accept();
+    qDebug() << "aboba";
+    qApp->quit();
+    qApp->exec();
+}*/
 
 void main_window::set_user_skin(const std::string &skin) {
     current_user.skin = skin;
@@ -158,17 +160,23 @@ void main_window::on_change_avatar_button_clicked() {
     // view->setEnabled(true);
     scene->clear();
 
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
-    effect->setOffset(-1, -1);
-    effect->setColor(Qt::white);
+    QPen pen;
 
-    QGraphicsTextItem *text =
-        new QGraphicsTextItem("Select a character by clicking on it");
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::black);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    pen.setColor(Qt::white);
+
+    QGraphicsSimpleTextItem *text =
+        new QGraphicsSimpleTextItem("Select a character by clicking on it");
     QFont font("Source Code Pro", 18, QFont::Bold);
     text->setFont(font);
     scene->addItem(text);
     text->setPos(70, 80);
-    text->setGraphicsEffect(effect);
+    text->setPen(pen);
+
     std::vector<std::string> characters = {
         "finn",  "gambol",        "miku",   "mushroom", "rafael",
         "sonic", "stormtroopers", "kermit", "pikachu"};

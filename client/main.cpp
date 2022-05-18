@@ -17,9 +17,10 @@ int main(int argc, char *argv[]) {
             current_view.current_session.processor.wait_next_query();
         }
     });
-    t.detach();
+//    t.detach();
 
     current_view.start();
+
 
     return a.exec();
 }

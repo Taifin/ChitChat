@@ -55,6 +55,8 @@ private slots:
 
     void show_curren_sprite();
 
+    //void closeEvent(QCloseEvent *e);
+
 private:
     Ui::main_window *ui;
     room *scene;

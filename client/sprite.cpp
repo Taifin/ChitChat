@@ -9,6 +9,19 @@
 
 sprite::sprite(const std::string &name, std::string skin) : name(name) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
+    QPen pen;
+
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::white);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    pen.setColor(Qt::black);
+
+    QFont font("Source Code Pro", 12);
+    name_display->setFont(font);
+    name_display->setPos(70, 80);
+    name_display->setPen(pen);
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
 }
@@ -94,7 +107,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
     x = walker->x();
     y = walker->y();
     emit walker->run_send_request("move," + walker->name + "," +
-                                  std::to_string(x) + "," + std::to_string(y));
+                                  std::to_string(x) + "," + std::to_string(y) + "\n");
     qDebug() << std::to_string(walker->x()).c_str()
              << std::to_string(walker->y()).c_str();
 }
