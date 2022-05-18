@@ -46,6 +46,7 @@ void login::successful_login(const std::string &name) {
     this->hide();
     emit run_initialize(name, "pikachu");
     emit show_main_window();
+
 }
 
 void login::wrong_password() {

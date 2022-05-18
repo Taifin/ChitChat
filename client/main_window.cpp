@@ -9,6 +9,7 @@
 #include "client_user.h"
 #include "room.h"
 #include "sprite.h"
+#include <QGraphicsDropShadowEffect>
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::main_window) {
@@ -115,9 +116,33 @@ void main_window::roommate_connect(const std::string &roommate_name) {
 
 void main_window::show_curren_sprite() {
     scene->clear();
-    QGraphicsTextItem *text = new QGraphicsTextItem("Your character");
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
+    effect->setOffset(-1, -1);
+    effect->setColor(Qt::black);
+    QGraphicsSimpleTextItem *text = new QGraphicsSimpleTextItem("Your character");
+    QPen pen;  // creates a default pen
+
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(3);
+    pen.setBrush(Qt::white);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    text->setPen(pen);
+    //text->
+    //text->setDefaultTextColor(Qt::white);
+
+
+    QFont font("Source Code Pro", 30, QFont::Bold);
+    text->setFont(font);
     scene->addItem(text);
-    text->setPos(200, 100);
+    //text->setGraphicsEffect(effect);
+    QPainter painter(this);
+
+
+    text->setPos(130, 150);
+
+    text->shape();
+
     QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
         QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
                 "_sprite.png"));
@@ -132,10 +157,18 @@ void main_window::set_user_skin(const std::string &skin) {
 void main_window::on_change_avatar_button_clicked() {
     // view->setEnabled(true);
     scene->clear();
+
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
+    effect->setOffset(-1, -1);
+    effect->setColor(Qt::white);
+
     QGraphicsTextItem *text =
         new QGraphicsTextItem("Select a character by clicking on it");
+    QFont font("Source Code Pro", 18, QFont::Bold);
+    text->setFont(font);
     scene->addItem(text);
-    text->setPos(200, 100);
+    text->setPos(70, 80);
+    text->setGraphicsEffect(effect);
     std::vector<std::string> characters = {
         "finn",  "gambol",        "miku",   "mushroom", "rafael",
         "sonic", "stormtroopers", "kermit", "pikachu"};
