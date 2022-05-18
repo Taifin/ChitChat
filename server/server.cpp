@@ -80,7 +80,7 @@ void server_processor::greet() {
 
 void server_processor::update_layout() {
     for (auto & i : data) {
-        qDebug() << i.c_str() << "Same request";
+        qDebug() << i.c_str() << "Same request" << data.size();
     }
     qDebug() << "======== ASSERTION HERE ========";
     assert(data.size() == 4);
