@@ -34,7 +34,7 @@ void login::on_log_in_button_clicked() {
         timer->start(TIME_FOR_MESSAGE);
     }
     else if (password.length() == 0){
-        ui->information_label->setText("You haven't entered a login");
+        ui->information_label->setText("You haven't entered a password");
         timer->start(TIME_FOR_MESSAGE);
     }
     else{
