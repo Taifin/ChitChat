@@ -3,6 +3,7 @@
 #include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
+#include <QTimer>
 
 registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
@@ -19,6 +20,9 @@ registration::registration(QWidget *parent)
     ui->mushroom_label->setPixmap(QPixmap(":/images/mushroom_sprite.png"));
     ui->stormtroopers_label->setPixmap(
         QPixmap(":/images/stormtroopers_sprite.png"));
+
+    timer =  new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 }
 
 registration::~registration() {
@@ -38,7 +42,15 @@ void registration::on_confirm_button_clicked() {
 
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
-    } else {
+    } else if (login.length() == 0){
+        ui->information_label->setText("You haven't entered a login");
+        timer->start(TIME_FOR_MESSAGE);
+    }
+    else if (password.length() < 6){
+        ui->information_label->setText("This password is too short. (At least 6 symbols)");
+        timer->start(TIME_FOR_MESSAGE);
+    }
+    else {
         emit run_send_request("register," + login + "," + password);
         // TODO: передавать на сервер информацию о выборе
         if (ui->finn_radio_button->isChecked()) {
@@ -71,6 +83,12 @@ void registration::successful_registration() {
 void registration::duplicate() {
     ui->information_label->setText(
         "Name already in use. Please choose another one");
+    timer->start(TIME_FOR_MESSAGE);
+}
+
+void registration::remove_message()
+{
+    ui->information_label->clear();
 }
 
 void registration::on_show_password_check_stateChanged(int arg1) {

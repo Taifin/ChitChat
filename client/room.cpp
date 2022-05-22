@@ -56,3 +56,12 @@ void room::keyPressEvent(QKeyEvent *event) {
 void room::set_curren_user_sprite(sprite *spr) {
     current_user_sprite = spr;
 }
+
+void room::dont_let_to_move(){
+    can_move = false;
+    timer->start(TIME_TO_GO);
+}
+
+void room::let_to_move(){
+    can_move = true;
+}

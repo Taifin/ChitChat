@@ -9,6 +9,8 @@
 login::login(QWidget *parent) : QDialog(parent), ui(new Ui::login) {
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    timer =  new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 }
 
 login::~login() {
@@ -27,7 +29,17 @@ void login::on_log_in_button_clicked() {
     std::string login, password;
     login = (ui->login_line_edit->text().toStdString());
     password = ui->password_line_edit->text().toStdString();
-    emit run_send_request("login," + login + "," + password);
+    if (login.length() == 0){
+        ui->information_label->setText("You haven't entered a login");
+        timer->start(TIME_FOR_MESSAGE);
+    }
+    else if (password.length() == 0){
+        ui->information_label->setText("You haven't entered a login");
+        timer->start(TIME_FOR_MESSAGE);
+    }
+    else{
+        emit run_send_request("login," + login + "," + password);
+    }
 }
 
 void login::on_create_new_account_button_clicked() {
@@ -51,12 +63,20 @@ void login::successful_login(const std::string &name) {
 
 void login::wrong_password() {
     ui->information_label->setText("Wrong password");
+    timer->start(TIME_FOR_MESSAGE);
 }
 
 void login::no_user() {
     ui->information_label->setText("User is not found");
+    timer->start(TIME_FOR_MESSAGE);
 }
 
 void login::error() {
     ui->information_label->setText("Something go wrong");
+    timer->start(TIME_FOR_MESSAGE);
+}
+
+void login::remove_message()
+{
+    ui->information_label->clear();
 };

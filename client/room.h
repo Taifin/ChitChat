@@ -18,15 +18,10 @@ public:
     void set_curren_user_sprite(sprite *spr);
     sprite_of_object *game_machine = new sprite_of_object("game_machine");
 
-    void dont_let_to_move(){
-        can_move = false;
-        timer->start(TIME_TO_GO);
-    }
+    void dont_let_to_move();
 
 public slots:
-    void let_to_move(){
-        can_move = true;
-    }
+    void let_to_move();
 
 private:
     sprite *current_user_sprite;

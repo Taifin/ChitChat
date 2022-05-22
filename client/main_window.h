@@ -7,6 +7,9 @@
 #include "login.h"
 #include "model.h"
 #include "room.h"
+#include <QGraphicsDropShadowEffect>
+#include <QCoreApplication>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,15 +26,20 @@ public:
     main_window(QWidget *parent = nullptr);
 
     void set_user_skin(const std::string &skin);
+    void set_sprite_name(sprite *sprite);
 
     client_user current_user;
     std::map<std::string, client_user> users_in_the_room;
+
 
     model *current_session = nullptr;
 
     void set_user_sprite();
 
     ~main_window();
+
+public slots:
+    void remove_message();
 
 signals:
     void run_send_request(const std::string &message);
@@ -61,5 +69,8 @@ private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
+    QTimer *timer;
+    int TIME_FOR_MESSAGE = 1500;
+    QFont font;
 };
 #endif  // MAIN_WINDOW_H
