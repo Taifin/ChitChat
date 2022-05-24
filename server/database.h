@@ -40,7 +40,7 @@ public:
     /// database locally (and ensure that your default postgres user in $PGUSER
     /// has all rights).
 
-    static bool create_user(user *new_user);
+    static bool create_user(const user &new_user);
     /// true if user is created, false if duplicate
 
     template <typename... Args>

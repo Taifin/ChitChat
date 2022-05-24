@@ -17,7 +17,7 @@
 /// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
 /// | login        | login,username,password                     | ok: allowed,username,skin; bad:denied,username; no_user_found: none,username; error: dberror |
 /// | register     | register,username,password                  | ok: created,username; duplicate: rexists,username                                            |
-/// | connect      | connect,username,password                   | ok: connected,user1,x1,y1,user2,x2,y2...; duplicate: cexists,username                        |
+/// | connect      | connect,username,password                   | ok: connected,user1,x1,y1,skin1,user2,x2,y2,skin2...; duplicate: cexists,username            |
 /// | hello        | hello,username                              | Hello, username, I'm Server God!                                                             |
 /// | move         | move,username,x,y                           | move,username,x,y                                                                            |
 /// | disconnect   | disconnect,username,pwd,skin,x,y            | disconnected,username                                                                        |

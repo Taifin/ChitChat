@@ -31,7 +31,7 @@ void database::debug_create_table() {
         "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
     w.commit();
 }
-bool database::create_user(user *new_user) {
+bool database::create_user(const user &new_user) {
     bool exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
                        new_user->name())[0][0]
