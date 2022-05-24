@@ -118,8 +118,9 @@ void server_processor::translate_users_data() {
 
 void server_processor::disconnect() {
     //    assert(data.size() == 5);
-    model::state::disconnect_user(server_user(
-        data[1], data[2], "kermit", to, std::stoi(data[3]), std::stoi(data[4])));
+    model::state::disconnect_user(server_user(data[1], data[2], "kermit", to,
+                                              std::stoi(data[3]),
+                                              std::stoi(data[4])));
     for (const auto &u : model::state::get_users()) {
         prepare_query("disconnected," + data[1] + "\n", u.client);
     }
