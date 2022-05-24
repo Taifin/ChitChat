@@ -62,7 +62,7 @@ void server_processor::authorize_user() {
 
 void server_processor::register_user() {
     assert(data.size() == 3);
-    user new_user(data[1], data[2], "kermit");
+    user new_user(data[1], data[2], data[3]);
     if (model::database::create_user(&new_user)) {
         prepare_query("created," + data[1] + "\n", to);
     } else {
