@@ -23,6 +23,7 @@
 /// | disconnect   | disconnect,username,pwd,skin,x,y            | disconnected,username                                                                        |
 /// | change skin  | change,skin,username,new_skin               | changed,skin,username                                                                        |
 /// | change score | change,*game_name*_score,username,new_score | changed,score,username                                                                       |
+/// | sprite       | sprite,username                             | sprite,username                                                                              |
 /// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
 // clang-format on
 
