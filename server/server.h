@@ -49,7 +49,7 @@ private:
         GREET,
         MOVE,
         DISCONNECT,
-        SKIN,
+        SPRITE,
         CHANGE
     };
     std::map<std::string, e_commands> commands{
@@ -59,7 +59,7 @@ private:
         {"hello", e_commands::GREET},
         {"move", e_commands::MOVE},
         {"disconnect", e_commands::DISCONNECT},
-        {"skin", e_commands::SKIN},
+        {"sprite", e_commands::SPRITE},
         {"change", e_commands::CHANGE}};
 
 public:

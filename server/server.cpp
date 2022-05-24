@@ -30,7 +30,7 @@ void server_processor::process() {
                 case e_commands::DISCONNECT:
                     disconnect();
                     break;
-                case e_commands::SKIN:
+                case e_commands::SPRITE:
                     get_sprite();
                     break;
                 case e_commands::CHANGE:
