@@ -53,6 +53,7 @@ void tcp_socket::read() {
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     QByteArray data = sender->readAll();
     // TODO: on many simultaneous requests they can glue together
+    qDebug() << "Reading...";
     std::unique_lock lock(keeper->queries_mutex);
     keeper->parsed_queries.push({data.toStdString(), sender});
     keeper->query_available.notify_one();

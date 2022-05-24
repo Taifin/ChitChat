@@ -30,6 +30,12 @@ void server_processor::process() {
                 case e_commands::DISCONNECT:
                     disconnect();
                     break;
+                case e_commands::SKIN:
+                    get_sprite();
+                    break;
+                case e_commands::CHANGE:
+                    change_data();
+                    break;
             }
         } catch (std::out_of_range &e) {
             prepare_query("Unknown command " + data[0] + "\n", query.second);
@@ -41,7 +47,8 @@ void server_processor::authorize_user() {
     assert(data.size() == 3);
     try {
         if (model::database::authorize(data[1], data[2])) {
-            prepare_query("allowed," + data[1] + "\n", to);
+            auto user = model::database::get_user_data(data[1]);
+            prepare_query("allowed," + user.name() + "," + user.get_skin() + "\n", to);
         } else {
             prepare_query("denied," + data[1] + "\n", to);
         }
@@ -54,7 +61,7 @@ void server_processor::authorize_user() {
 
 void server_processor::register_user() {
     assert(data.size() == 3);
-    user new_user(data[1], data[2]);
+    user new_user(data[1], data[2], "kermit");
     if (model::database::create_user(&new_user)) {
         prepare_query("created," + data[1] + "\n", to);
     } else {
@@ -64,7 +71,7 @@ void server_processor::register_user() {
 
 void server_processor::connect_user() {
     assert(data.size() == 3);
-    server_user new_user{data[1], data[2], to};
+    server_user new_user{data[1], data[2], "kermit", to};
     if (model::state::connect_user(new_user)) {
         translate_users_data();
         new_user_connected();
@@ -98,7 +105,7 @@ void server_processor::translate_users_data() {
     // TODO
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
-                     std::to_string(u.get_coords().y) + ",";
+                     std::to_string(u.get_coords().y) + "," + u.get_skin() + ",";
     }
     if (all_users.back() == ',')
         all_users.pop_back();
@@ -110,11 +117,9 @@ void server_processor::translate_users_data() {
 void server_processor::disconnect() {
     assert(data.size() == 5);
     model::state::disconnect_user(server_user(
-        data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
+        data[1], data[2], data[3], to, std::stoi(data[4]), std::stoi(data[5])));
     for (const auto &u : model::state::get_users()) {
-        if (u.name() != data[1]) {
-            prepare_query("disconnected," + data[1] + "\n", u.client);
-        }
+        prepare_query("disconnected," + data[1] + "\n", u.client);
     }
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
@@ -128,6 +133,16 @@ void server_processor::new_user_connected() {
             prepare_query("new," + data[1] + "\n", u.client);
         }
     }
+}
+
+void server_processor::get_sprite() {
+    auto user = model::database::get_user_data(data[1]);
+    prepare_query("sprite," + data[1] + " " + user.get_skin() + "\n", to);
+}
+
+void server_processor::change_data() {
+    model::database::change_values(data[2], data[1], data[3]);
+    prepare_query("changed," + data[1] + "," + data[2] + "," + data[3] + "\n", to);
 }
 
 }  // namespace sv

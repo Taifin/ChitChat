@@ -59,7 +59,7 @@ public:
     /// Checks if user's password stored in database matches given_password. If
     /// no such user found, no_user_found is thrown.
 
-    static user get_user_data(user *user_);
+    static user get_user_data(const std::string& username);
     /// Returns object of User class with fields initialized with data from
     /// user's filed from database. If no user in records, no_user_found is
     /// thrown.
@@ -70,6 +70,9 @@ public:
     /// Connection params in postgresql format required (see
     /// https://www.postgresql.org/docs/10/libpq-connect.html#LIBPQ-CONNSTRING),
     /// exceptions are handled.
+    static void change_values(const std::string &username,
+                       const std::string &column_name,
+                       const std::string &new_value);
 };
 }  // namespace model
 #endif  // CHITCHAT_DATABASE_H
