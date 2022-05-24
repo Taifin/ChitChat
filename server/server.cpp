@@ -48,7 +48,8 @@ void server_processor::authorize_user() {
     try {
         if (model::database::authorize(data[1], data[2])) {
             auto user = model::database::get_user_data(data[1]);
-            prepare_query("allowed," + user.name() + "," + user.get_skin() + "\n", to);
+            prepare_query(
+                "allowed," + user.name() + "," + user.get_skin() + "\n", to);
         } else {
             prepare_query("denied," + data[1] + "\n", to);
         }
@@ -105,7 +106,8 @@ void server_processor::translate_users_data() {
     // TODO
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
-                     std::to_string(u.get_coords().y) + "," + u.get_skin() + ",";
+                     std::to_string(u.get_coords().y) + "," + u.get_skin() +
+                     ",";
     }
     if (all_users.back() == ',')
         all_users.pop_back();
@@ -142,7 +144,8 @@ void server_processor::get_sprite() {
 
 void server_processor::change_data() {
     model::database::change_values(data[2], data[1], data[3]);
-    prepare_query("changed," + data[1] + "," + data[2] + "," + data[3] + "\n", to);
+    prepare_query("changed," + data[1] + "," + data[2] + "," + data[3] + "\n",
+                  to);
 }
 
 }  // namespace sv
