@@ -61,7 +61,7 @@ void server_processor::authorize_user() {
 }
 
 void server_processor::register_user() {
-//    assert(data.size() == 3);
+    //    assert(data.size() == 3);
     user new_user(data[1], data[2], data[3]);
     if (model::database::create_user(new_user)) {
         prepare_query("created," + data[1] + "\n", to);
@@ -71,7 +71,7 @@ void server_processor::register_user() {
 }
 
 void server_processor::connect_user() {
-//    assert(data.size() == 3);
+    //    assert(data.size() == 3);
     server_user new_user{data[1], data[2], "kermit", to};
     if (model::state::connect_user(new_user)) {
         translate_users_data();
@@ -117,7 +117,7 @@ void server_processor::translate_users_data() {
 }
 
 void server_processor::disconnect() {
-//    assert(data.size() == 5);
+    //    assert(data.size() == 5);
     model::state::disconnect_user(server_user(
         data[1], data[2], data[3], to, std::stoi(data[4]), std::stoi(data[5])));
     for (const auto &u : model::state::get_users()) {
