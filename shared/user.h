@@ -21,7 +21,11 @@ class user : public QObject {
 public:
     std::string skin = "miku";
 
-    explicit user(std::string uname, std::string upwd, std::string skin_name, int x = 0, int y = 0)
+    explicit user(std::string uname,
+                  std::string upwd,
+                  std::string skin_name,
+                  int x = 0,
+                  int y = 0)
         : username(std::move(uname)),
           password(std::move(upwd)),
           skin(skin_name),
