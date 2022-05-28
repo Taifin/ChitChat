@@ -47,7 +47,7 @@ void main_window::already_connected() {
     ui->statusbar->showMessage("Wait dude, you're already in the room");
 }
 
-void main_window::connect_with_room(std::vector<std::string> data) {
+void main_window::connect_with_room(const ChitChatMessage::Query &data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     scene->clear();
     scene->addItem(scene->game_machine);
@@ -58,20 +58,14 @@ void main_window::connect_with_room(std::vector<std::string> data) {
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
-    for (int i = 1; i < data.size(); i += 3) {
-        if (data[i] != current_user.get_name()) {
-            client_user u(data[i], "psw", stoi(data[i + 1]), stoi(data[i + 2]));
-            users_in_the_room[data[i]] = u;
-            users_in_the_room[data[i]].set_user_sprite();
-            users_in_the_room[data[i]].user_sprite->setPos(stoi(data[i + 1]),
-                                                           stoi(data[i + 2]));
-            users_in_the_room[data[i]].user_sprite->name_display->setPlainText(
-                QString(users_in_the_room[data[i]].get_name().c_str()));
-            users_in_the_room[data[i]].user_sprite->name_display->setPos(
-                stoi(data[i + 1]), stoi(data[i + 2]) - 20);
-            scene->addItem(users_in_the_room[data[i]].user_sprite);
-            scene->addItem(
-                users_in_the_room[data[i]].user_sprite->name_display);
+    for (const auto& user : data.users()) {
+        if (user.name() != current_user.get_name()) {
+            client_user u;
+            u.parse(user);
+            initialize_user(u);
+            users_in_the_room.insert({u.get_name(), u});
+            scene->addItem(u.user_sprite);
+            scene->addItem(u.user_sprite->name_display);
         }
     }
 
@@ -100,15 +94,13 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
     users_in_the_room.erase(roommate_name);
 }
 
-void main_window::roommate_connect(const std::string &roommate_name) {
-    client_user u(roommate_name, "get_password", 0, 0);
-    users_in_the_room[roommate_name] = u;
-    users_in_the_room[roommate_name].set_user_sprite();
-    users_in_the_room[roommate_name].user_sprite->name_display->setPlainText(
-        QString(roommate_name.c_str()));
-    users_in_the_room[roommate_name].user_sprite->name_display->setPos(0, -20);
-    scene->addItem(users_in_the_room[roommate_name].user_sprite);
-    scene->addItem(users_in_the_room[roommate_name].user_sprite->name_display);
+void main_window::roommate_connect(const ChitChatMessage::Query &roommate_data) {
+    client_user u;
+    u.parse(roommate_data);
+    initialize_user(u);
+    users_in_the_room.insert({u.get_name(), u});
+    scene->addItem(u.user_sprite);
+    scene->addItem(u.user_sprite->name_display);
 }
 
 void main_window::show_curren_sprite() {
@@ -124,7 +116,7 @@ void main_window::show_curren_sprite() {
 }
 
 void main_window::set_user_skin(const std::string &skin) {
-    current_user.skin = skin;
+    current_user.set_skin(skin);
 }
 
 void main_window::on_change_avatar_button_clicked() {
@@ -167,4 +159,10 @@ void main_window::on_microphone_check_stateChanged(int arg1) {
     } else {
         emit turn_mic_off();
     }
+}
+void main_window::initialize_user(client_user& u) {
+    u.set_user_sprite();
+    u.user_sprite->setPos(u.get_x(), u.get_y());
+    u.user_sprite->name_display->setPlainText(u.get_name().c_str());
+    u.user_sprite->name_display->setPos(u.get_x(), u.get_y() - 20);
 }

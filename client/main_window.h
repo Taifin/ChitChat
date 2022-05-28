@@ -7,6 +7,7 @@
 #include "login.h"
 #include "model.h"
 #include "room.h"
+#include "message.pb.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,7 +21,7 @@ class main_window : public QMainWindow {
 public:
     void start();
 
-    main_window(QWidget *parent = nullptr);
+    explicit main_window(QWidget *parent = nullptr);
 
     void set_user_skin(const std::string &skin);
 
@@ -31,7 +32,7 @@ public:
 
     void set_user_sprite();
 
-    ~main_window();
+    ~main_window() override;
 
 signals:
     void run_send_request(const std::string &message);
@@ -53,13 +54,13 @@ private slots:
 
     void already_connected();
 
-    void connect_with_room(std::vector<std::string> data);
+    void connect_with_room(const ChitChatMessage::Query &data);
 
     void user_changed_position(const std::string &name, int x, int y);
 
     void roommate_disconnect(const std::string &roommate_name);
 
-    void roommate_connect(const std::string &roommate_name);
+    void roommate_connect(const ChitChatMessage::Query &roommate_data);
 
     void show_curren_sprite();
 
@@ -71,5 +72,7 @@ private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
+
+    void initialize_user(client_user& u);
 };
 #endif  // MAIN_WINDOW_H

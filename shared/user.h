@@ -18,7 +18,7 @@ class user : public QObject {
     std::string username;
     std::string password;
     std::string skin = "miku";
-    point coords;
+    point coords{0, 0};
 
 public:
     explicit user(std::string uname,
@@ -38,10 +38,9 @@ public:
           skin(other.skin) {
     }
 
-    user() {
-    }
+    user() = default;
 
-    virtual ~user() = default;
+    ~user() override = default;
 
     [[nodiscard]] const std::string &get_name() const {
         return username;
@@ -49,10 +48,6 @@ public:
 
     [[nodiscard]] const std::string &get_password() const {
         return password;
-    }
-
-    [[nodiscard]] point get_coords() const {
-        return coords;
     }
 
     [[nodiscard]] int get_x() const {
@@ -74,6 +69,7 @@ public:
     void set_skin(const std::string& skin_name) {
         skin = skin_name;
     }
+
     [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::RequestType type) const {
         ChitChatMessage::Query query;
         ChitChatMessage::Query_User user;
@@ -105,6 +101,13 @@ public:
         password = query.user().password();
         skin = query.user().skin();
         coords = {query.user().x_coord(), query.user().y_coord()};
+    }
+
+    void parse(const ChitChatMessage::Query_User& user) {
+        username = user.name();
+        password = user.password();
+        skin = user.skin();
+        coords = {user.x_coord(), user.y_coord()};
     }
 
 private slots:

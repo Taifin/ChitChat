@@ -39,8 +39,8 @@ view::view() {
     connect(&current_session.processor, SIGNAL(run_already_connected()),
             &main_process, SLOT(already_connected()));
     connect(&current_session.processor,
-            SIGNAL(run_connect_with_room(std::vector<std::string>)),
-            &main_process, SLOT(connect_with_room(std::vector<std::string>)));
+            SIGNAL(run_connect_with_room(ChitChatMessage::Query)),
+            &main_process, SLOT(connect_with_room(ChitChatMessage::Query)));
     connect(&current_session.processor,
             SIGNAL(run_change_position(std::string, int, int)), &main_process,
             SLOT(user_changed_position(std::string, int, int)));
