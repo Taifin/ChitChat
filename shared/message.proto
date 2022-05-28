@@ -1,0 +1,29 @@
+syntax = "proto2";
+
+package ChitChatMessage;
+
+message Query {
+  message User {
+    required string name = 1;
+    optional string password = 2 [default = "pwd"];
+    optional string skin = 3 [default = "kermit"];
+    optional int32 x_coord = 4 [default = 0];
+    optional int32 y_coord = 5 [default = 0];
+  }
+
+  enum RequestType {
+    LOGIN = 0;
+    REGISTER = 1;
+    CONNECT = 3;
+    MOVE = 4;
+    DISCONNECT = 5;
+    CHANGE_SKIN = 6;
+    CHANGE_SCORE = 7;
+    GET_SKIN = 8;
+    HELLO = 9;
+  }
+
+  required RequestType rType = 1;
+  required User user = 2;
+
+}
