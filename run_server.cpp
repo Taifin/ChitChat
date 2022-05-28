@@ -8,7 +8,8 @@ int main(int argc, char *argv[]) {
     auto *audio_keeper = new network::queries_keeper;
 #ifdef LOCAL
     sv::server_socket receiver(QHostAddress::LocalHost, 1235, keeper);
-    sv::server_socket audio_receiver(QHostAddress::LocalHost, 1236, audio_keeper);
+    sv::server_socket audio_receiver(QHostAddress::LocalHost, 1236,
+                                     audio_keeper);
 #else
     sv::server_socket receiver(QHostAddress::Any, 1235, keeper);
     sv::server_socket audio_receiver(QHostAddress::Any, 1236, audio_keeper);

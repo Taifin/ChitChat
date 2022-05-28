@@ -182,7 +182,7 @@ void sv::audio_processor::process() {
         keeper->parsed_queries.pop();
     }
 }
-  
+
 void server_processor::get_sprite() {
     auto user = model::database::get_user_data(data[1]);
     prepare_query("sprite," + data[1] + " " + user.get_skin() + "\n", to);

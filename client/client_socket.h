@@ -15,7 +15,6 @@ public:
                   QTcpSocket *ser,
                   network::queries_keeper *keeper,
                   QObject *parent = nullptr);
-
 };
 
 class client_processor : public network::query_processor {

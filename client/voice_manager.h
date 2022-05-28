@@ -16,7 +16,8 @@ class processor : public network::query_processor {
     Q_OBJECT
 public:
     explicit processor(network::queries_keeper *keeper1,
-                       network::tcp_socket &socket1, QTcpSocket* tcpSocket);
+                       network::tcp_socket &socket1,
+                       QTcpSocket *tcpSocket);
     void process() override;
 
 private:
@@ -35,7 +36,6 @@ public slots:
     void output_audio_on();
 
     void output_audio_off();
-
 };
 
 }  // namespace client

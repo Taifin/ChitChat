@@ -44,7 +44,6 @@ signals:
 
     void turn_head_off();
 
-
 private slots:
     void on_change_avatar_button_clicked();
 
@@ -56,7 +55,7 @@ private slots:
 
     void connect_with_room(std::vector<std::string> data);
 
-    void user_changed_position(const std::string& name, int x, int y);
+    void user_changed_position(const std::string &name, int x, int y);
 
     void roommate_disconnect(const std::string &roommate_name);
 
