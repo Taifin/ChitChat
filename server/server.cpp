@@ -1,127 +1,126 @@
 #include "server.h"
-#include <cassert>
 #include "state.h"
 
 namespace server {
 
+using namespace ChitChatMessage;
+typedef Query::RequestType requestType;
+typedef Query::FeedbackType feedbackType;
+
 void server_processor::process() {
     while (keeper->parsed_size() > 0) {
-        auto query = keeper->pop_parsed();
-        data = parse(query.first.toStdString());
-        to = query.second;
-        try {
-            switch (commands.at(data[0])) {
-                case e_commands::LOGIN:
-                    authorize_user();
-                    break;
-                case e_commands::REGISTER:
-                    register_user();
-                    break;
-                case e_commands::CONNECT:
-                    connect_user();
-                    break;
-                case e_commands::GREET:
-                    greet();
-                    break;
-                case e_commands::MOVE:
-                    update_layout();
-                    break;
-                case e_commands::DISCONNECT:
-                    disconnect();
-                    break;
-                case e_commands::SPRITE:
-                    get_sprite();
-                    break;
-                case e_commands::CHANGE:
-                    change_data();
-                    break;
-            }
-        } catch (std::out_of_range &e) {
-            prepare_query("Unknown command " + data[0] + "\n", query.second);
+        auto raw_query = keeper->pop_parsed();
+        query.ParseFromString(raw_query.first.toStdString());
+        user_in_process.parse(query);  // TODO: c-tor
+        user_in_process.client = raw_query.second;
+        to = raw_query.second;
+        switch (query.rtype()) {
+            case requestType::Query_RequestType_LOGIN:
+                authorize_user();
+                break;
+            case requestType::Query_RequestType_REGISTER:
+                register_user();
+                break;
+            case requestType::Query_RequestType_CONNECT:
+                connect_user();
+                break;
+            case requestType::Query_RequestType_MOVE:
+                update_layout();
+                break;
+            case requestType::Query_RequestType_DISCONNECT:
+                disconnect();
+                break;
+            case requestType::Query_RequestType_GET_SKIN:
+                get_sprite();
+                break;
+            case requestType::Query_RequestType_CHANGE_SKIN:
+                change_skin();
+                break;
+            case requestType::Query_RequestType_CHANGE_SCORE:
+                change_score();
+                break;
         }
     }
 }
 
 void server_processor::authorize_user() {
-    assert(data.size() == 3);
     try {
-        if (model::database::authorize(data[1], data[2])) {
-            auto user = model::database::get_user_data(data[1]);
-            prepare_query(
-                "allowed," + user.name() + "," + user.get_skin() + "\n", to);
+        if (model::database::authorize(query.user().name(),
+                                       query.user().password())) {
+            user_in_process.set_skin(
+                model::database::get_user_data(query.user().name()).get_skin());
+            prepare_query(user_in_process.serialize(
+                              feedbackType::Query_FeedbackType_LOGIN_ALLOWED),
+                          to);
         } else {
-            prepare_query("denied," + data[1] + "\n", to);
+            prepare_query(user_in_process.serialize(
+                              feedbackType::Query_FeedbackType_LOGIN_DENIED),
+                          to);
         }
     } catch (model::no_user_found &) {
-        prepare_query("none," + data[1] + "\n", to);
+        prepare_query(user_in_process.serialize(
+                          feedbackType::Query_FeedbackType_NO_USER_FOUND),
+                      to);
     } catch (model::database_error &) {
-        prepare_query("dberror\n", to);
+        prepare_query(user_in_process.serialize(
+                          feedbackType::Query_FeedbackType_DATABASE_ERROR),
+                      to);
     }
 }
 
 void server_processor::register_user() {
-    //    assert(data.size() == 3);
-    user new_user(data[1], data[2], data[3]);
-    if (model::database::create_user(new_user)) {
-        prepare_query("created," + data[1] + "\n", to);
+    if (model::database::create_user(user_in_process)) {
+        prepare_query(user_in_process.serialize(
+                          feedbackType::Query_FeedbackType_USER_CREATED),
+                      to);
     } else {
-        prepare_query("rexists," + data[1] + "\n", to);
+        prepare_query(user_in_process.serialize(
+                          feedbackType::Query_FeedbackType_USER_DUPLICATE),
+                      to);
     }
 }
 
 void server_processor::connect_user() {
-    //    assert(data.size() == 3);
-    server_user new_user{data[1], data[2], "kermit", to};
-    if (model::state::connect_user(new_user)) {
+    if (model::state::connect_user(user_in_process)) {
         translate_users_data();
         new_user_connected();
     } else {
-        prepare_query("cexists," + data[1] + "\n", to);
+        prepare_query(user_in_process.serialize(
+                          feedbackType::Query_FeedbackType_CONNECTION_EXISTS),
+                      to);
     }
 }
 
-void server_processor::greet() {
-    assert(data.size() == 2);
-    prepare_query("Hello, " + data[1] + ", I'm Server God!\n", to);
-}
-
 void server_processor::update_layout() {
-    // assert(data.size() == 4);
-    // many move requests can glue together and only first of them will be
-    // processed
-    model::state::update_coords(data[1], std::stoi(data[2]),
-                                std::stoi(data[3]));
+    model::state::update_coords(user_in_process);
     for (const auto &u : model::state::get_users()) {
         if (u.client != to) {
-            prepare_query(
-                "move," + data[1] + "," + data[2] + "," + data[3] + "\n",
-                u.client);
+            prepare_query(u.serialize(feedbackType::Query_FeedbackType_MOVED),
+                          u.client);
         }
     }
 }
 
 void server_processor::translate_users_data() {
+    Query all_users_query;
     std::string all_users = "connected,";
-    // TODO
     for (const auto &u : model::state::get_users()) {
-        all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
-                     std::to_string(u.get_coords().y) + "," + u.get_skin() +
-                     ",";
+        auto us = all_users_query.add_users();
+        us->set_name(u.get_name());
+        us->set_password(u.get_password());
+        us->set_skin(u.get_skin());
+        us->set_x_coord(u.get_x());
+        us->set_y_coord(u.get_y());
     }
-    if (all_users.back() == ',')
-        all_users.pop_back();
-    if (!all_users.empty())
-        all_users += "\n";
-    prepare_query(all_users, to);
+    prepare_query(all_users_query, to);
 }
 
 void server_processor::disconnect() {
-    //    assert(data.size() == 5);
-    model::state::disconnect_user(server_user(data[1], data[2], "kermit", to,
-                                              std::stoi(data[3]),
-                                              std::stoi(data[4])));
+    model::state::disconnect_user(user_in_process);
     for (const auto &u : model::state::get_users()) {
-        prepare_query("disconnected," + data[1] + "\n", u.client);
+        prepare_query(user_in_process.serialize(
+                          feedbackType::Query_FeedbackType_DISCONNECTED),
+                      u.client);
     }
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
@@ -131,8 +130,11 @@ server_processor::server_processor(network::queries_keeper *pKeeper,
 
 void server_processor::new_user_connected() {
     for (const auto &u : model::state::get_users()) {
-        if (u.name() != data[1]) {
-            prepare_query("new," + data[1] + "\n", u.client);
+        if (u.get_name() != user_in_process.get_name()) {
+            prepare_query(
+                user_in_process.serialize(
+                    feedbackType::Query_FeedbackType_NEW_USER_CONNECTED),
+                u.client);
         }
     }
 }
@@ -177,7 +179,7 @@ void server::audio_processor::process() {
              dynamic_cast<server_socket &>(socket).get_connected_sockets()) {
             auto query = keeper->front_parsed();
             if (sock != query.second) {
-                prepare_query(query.first.toStdString(), sock);
+                prepare_query(query.first, sock);
             }
         }
         keeper->pop_parsed();
@@ -185,13 +187,25 @@ void server::audio_processor::process() {
 }
 
 void server_processor::get_sprite() {
-    auto user = model::database::get_user_data(data[1]);
-    prepare_query("sprite," + data[1] + " " + user.get_skin() + "\n", to);
+    user_in_process.set_skin(
+        model::database::get_user_data(user_in_process.get_name()).get_skin());
+    prepare_query(
+        user_in_process.serialize(feedbackType::Query_FeedbackType_SKIN), to);
 }
 
-void server_processor::change_data() {
-    model::database::change_values(data[2], data[1], data[3]);
-    prepare_query("changed," + data[1] + "," + data[2] + "," + data[3] + "\n",
+void server_processor::change_skin() {
+    model::database::change_values(user_in_process.get_name(), "skin",
+                                   user_in_process.get_skin());
+    prepare_query(user_in_process.serialize(
+                      feedbackType::Query_FeedbackType_SKIN_CHANGED),
+                  to);
+}
+void server_processor::change_score() {
+    model::database::change_values(user_in_process.get_name(),
+                                   query.game_name() + "_score",
+                                   std::to_string(query.score()));
+    prepare_query(user_in_process.serialize(
+                      feedbackType::Query_FeedbackType_SCORE_CHANGED),
                   to);
 }
 

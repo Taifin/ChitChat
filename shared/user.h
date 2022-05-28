@@ -38,13 +38,16 @@ public:
           skin(other.skin) {
     }
 
+    user() {
+    }
+
     virtual ~user() = default;
 
-    [[nodiscard]] const std::string &name() const {
+    [[nodiscard]] const std::string &get_name() const {
         return username;
     }
 
-    [[nodiscard]] const std::string &pwd() const {
+    [[nodiscard]] const std::string &get_password() const {
         return password;
     }
 
@@ -60,25 +63,17 @@ public:
         return coords.y;
     }
 
-    void set_coords(int x, int y) {
-        coords = {x, y};
-    }
-
-//    user &operator=(const user &other) {
-//        username = other.username;
-//        password = other.password;
-//        coords = other.coords;
-//        return *this;
-//    }
-
-    [[nodiscard]] const std::string& get_name() const {
-        return username;
-    }
-
     [[nodiscard]] std::string get_skin() const {
         return skin;
     }
 
+    void set_coords(int x, int y) {
+        coords = {x, y};
+    }
+
+    void set_skin(const std::string& skin_name) {
+        skin = skin_name;
+    }
     [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::RequestType type) const {
         ChitChatMessage::Query query;
         ChitChatMessage::Query_User user;
@@ -89,6 +84,19 @@ public:
         user.set_y_coord(coords.y);
         query.set_allocated_user(&user);
         query.set_rtype(type);
+        return query;
+    }
+
+    [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::FeedbackType type) const {
+        ChitChatMessage::Query query;
+        ChitChatMessage::Query_User user;
+        user.set_name(username);
+        user.set_password(password);
+        user.set_skin(skin);
+        user.set_x_coord(coords.x);
+        user.set_y_coord(coords.y);
+        query.set_allocated_user(&user);
+        query.set_ftype(type);
         return query;
     }
 

@@ -31,15 +31,15 @@ void main_window::show_after_auth() {
 main_window::~main_window() {
     delete scene;
 
-    emit run_send_request("disconnect," + current_user.name() + "," +
-                          current_user.pwd() + "," +
+    emit run_send_request("disconnect," + current_user.get_name() + "," +
+                          current_user.get_password() + "," +
                           std::to_string(current_user.get_x()) + "," +
                           std::to_string(current_user.get_y()));
 }
 
 void main_window::on_connect_button_clicked() {
-    run_send_request("connect," + current_user.name() + "," +
-                     current_user.pwd());
+    run_send_request("connect," + current_user.get_name() + "," +
+                     current_user.get_password());
     ui->change_avatar_button->hide();
 }
 
@@ -59,14 +59,14 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
     for (int i = 1; i < data.size(); i += 3) {
-        if (data[i] != current_user.name()) {
+        if (data[i] != current_user.get_name()) {
             client_user u(data[i], "psw", stoi(data[i + 1]), stoi(data[i + 2]));
             users_in_the_room[data[i]] = u;
             users_in_the_room[data[i]].set_user_sprite();
             users_in_the_room[data[i]].user_sprite->setPos(stoi(data[i + 1]),
                                                            stoi(data[i + 2]));
             users_in_the_room[data[i]].user_sprite->name_display->setPlainText(
-                QString(users_in_the_room[data[i]].name().c_str()));
+                QString(users_in_the_room[data[i]].get_name().c_str()));
             users_in_the_room[data[i]].user_sprite->name_display->setPos(
                 stoi(data[i + 1]), stoi(data[i + 2]) - 20);
             scene->addItem(users_in_the_room[data[i]].user_sprite);
@@ -76,7 +76,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     }
 
     current_user.user_sprite->name_display->setPlainText(
-        QString(current_user.name().c_str()));
+        QString(current_user.get_name().c_str()));
     current_user.user_sprite->name_display->setPos(0, -20);
 
     scene->addItem(current_user.user_sprite);
@@ -101,7 +101,7 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
 }
 
 void main_window::roommate_connect(const std::string &roommate_name) {
-    client_user u(roommate_name, "pwd", 0, 0);
+    client_user u(roommate_name, "get_password", 0, 0);
     users_in_the_room[roommate_name] = u;
     users_in_the_room[roommate_name].set_user_sprite();
     users_in_the_room[roommate_name].user_sprite->name_display->setPlainText(
@@ -148,7 +148,7 @@ void main_window::on_change_avatar_button_clicked() {
 
 void main_window::set_user_sprite() {
     current_user.user_sprite =
-        new sprite(current_user.name(), current_user.get_skin());
+        new sprite(current_user.get_name(), current_user.get_skin());
     connect(current_user.user_sprite, SIGNAL(run_send_request(std::string)),
             current_session, SLOT(send_request(std::string)));
 }

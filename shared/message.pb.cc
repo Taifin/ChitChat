@@ -35,8 +35,13 @@ struct Query_UserDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Query_UserDefaultTypeInternal _Query_User_default_instance_;
 constexpr Query::Query(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : user_(nullptr)
+  : users_()
+  , game_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , user_(nullptr)
   , rtype_(0)
+
+  , score_(0)
+  , ftype_(-1)
 {}
 struct QueryDefaultTypeInternal {
   constexpr QueryDefaultTypeInternal()
@@ -49,7 +54,7 @@ struct QueryDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT QueryDefaultTypeInternal _Query_default_instance_;
 }  // namespace ChitChatMessage
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_message_2eproto[2];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_message_2eproto[1];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_message_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_message_2eproto = nullptr;
 
 const uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -76,13 +81,21 @@ const uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, rtype_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, ftype_),
   PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, user_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, users_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, score_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, game_name_),
+  2,
+  4,
   1,
+  ~0u,
+  3,
   0,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 11, -1, sizeof(::ChitChatMessage::Query_User)},
-  { 16, 24, -1, sizeof(::ChitChatMessage::Query)},
+  { 16, 28, -1, sizeof(::ChitChatMessage::Query)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -91,20 +104,30 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rmessage.proto\022\017ChitChatMessage\"\334\002\n\005Que"
-  "ry\0221\n\005rType\030\001 \002(\0162\".ChitChatMessage.Quer"
-  "y.RequestType\022)\n\004user\030\002 \002(\0132\033.ChitChatMe"
-  "ssage.Query.User\032i\n\004User\022\014\n\004name\030\001 \002(\t\022\025"
-  "\n\010password\030\002 \001(\t:\003pwd\022\024\n\004skin\030\003 \001(\t:\006ker"
-  "mit\022\022\n\007x_coord\030\004 \001(\005:\0010\022\022\n\007y_coord\030\005 \001(\005"
-  ":\0010\"\211\001\n\013RequestType\022\t\n\005LOGIN\020\000\022\014\n\010REGIST"
-  "ER\020\001\022\013\n\007CONNECT\020\003\022\010\n\004MOVE\020\004\022\016\n\nDISCONNEC"
-  "T\020\005\022\017\n\013CHANGE_SKIN\020\006\022\020\n\014CHANGE_SCORE\020\007\022\014"
-  "\n\010GET_SKIN\020\010\022\t\n\005HELLO\020\t"
+  "\n\rmessage.proto\022\017ChitChatMessage\"\361\005\n\005Que"
+  "ry\0221\n\005rType\030\001 \001(\0162\".ChitChatMessage.Quer"
+  "y.RequestType\0222\n\005fType\030\002 \001(\0162#.ChitChatM"
+  "essage.Query.FeedbackType\022)\n\004user\030\003 \002(\0132"
+  "\033.ChitChatMessage.Query.User\022*\n\005users\030\004 "
+  "\003(\0132\033.ChitChatMessage.Query.User\022\r\n\005scor"
+  "e\030\005 \001(\005\022\021\n\tgame_name\030\006 \001(\t\032i\n\004User\022\014\n\004na"
+  "me\030\001 \002(\t\022\025\n\010password\030\002 \001(\t:\003pwd\022\024\n\004skin\030"
+  "\003 \001(\t:\006kermit\022\022\n\007x_coord\030\004 \001(\005:\0010\022\022\n\007y_c"
+  "oord\030\005 \001(\005:\0010\"~\n\013RequestType\022\t\n\005LOGIN\020\000\022"
+  "\014\n\010REGISTER\020\001\022\013\n\007CONNECT\020\003\022\010\n\004MOVE\020\004\022\016\n\n"
+  "DISCONNECT\020\005\022\017\n\013CHANGE_SKIN\020\006\022\020\n\014CHANGE_"
+  "SCORE\020\007\022\014\n\010GET_SKIN\020\010\"\234\002\n\014FeedbackType\022\032"
+  "\n\rNO_USER_FOUND\020\377\377\377\377\377\377\377\377\377\001\022\021\n\rLOGIN_ALLO"
+  "WED\020\000\022\020\n\014LOGIN_DENIED\020\001\022\020\n\014USER_CREATED\020"
+  "\002\022\022\n\016USER_DUPLICATE\020\003\022\026\n\022CONNECTION_SUCC"
+  "ESS\020\004\022\025\n\021CONNECTION_EXISTS\020\005\022\t\n\005MOVED\020\006\022"
+  "\020\n\014DISCONNECTED\020\007\022\020\n\014SKIN_CHANGED\020\010\022\021\n\rS"
+  "CORE_CHANGED\020\t\022\022\n\016DATABASE_ERROR\020\n\022\010\n\004SK"
+  "IN\020\013\022\026\n\022NEW_USER_CONNECTED\020\014"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_message_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_message_2eproto = {
-  false, false, 383, descriptor_table_protodef_message_2eproto, "message.proto", 
+  false, false, 788, descriptor_table_protodef_message_2eproto, "message.proto", 
   &descriptor_table_message_2eproto_once, nullptr, 0, 2,
   schemas, file_default_instances, TableStruct_message_2eproto::offsets,
   file_level_metadata_message_2eproto, file_level_enum_descriptors_message_2eproto, file_level_service_descriptors_message_2eproto,
@@ -130,7 +153,6 @@ bool Query_RequestType_IsValid(int value) {
     case 6:
     case 7:
     case 8:
-    case 9:
       return true;
     default:
       return false;
@@ -146,10 +168,54 @@ constexpr Query_RequestType Query::DISCONNECT;
 constexpr Query_RequestType Query::CHANGE_SKIN;
 constexpr Query_RequestType Query::CHANGE_SCORE;
 constexpr Query_RequestType Query::GET_SKIN;
-constexpr Query_RequestType Query::HELLO;
 constexpr Query_RequestType Query::RequestType_MIN;
 constexpr Query_RequestType Query::RequestType_MAX;
 constexpr int Query::RequestType_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Query_FeedbackType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
+  return file_level_enum_descriptors_message_2eproto[1];
+}
+bool Query_FeedbackType_IsValid(int value) {
+  switch (value) {
+    case -1:
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+constexpr Query_FeedbackType Query::NO_USER_FOUND;
+constexpr Query_FeedbackType Query::LOGIN_ALLOWED;
+constexpr Query_FeedbackType Query::LOGIN_DENIED;
+constexpr Query_FeedbackType Query::USER_CREATED;
+constexpr Query_FeedbackType Query::USER_DUPLICATE;
+constexpr Query_FeedbackType Query::CONNECTION_SUCCESS;
+constexpr Query_FeedbackType Query::CONNECTION_EXISTS;
+constexpr Query_FeedbackType Query::MOVED;
+constexpr Query_FeedbackType Query::DISCONNECTED;
+constexpr Query_FeedbackType Query::SKIN_CHANGED;
+constexpr Query_FeedbackType Query::SCORE_CHANGED;
+constexpr Query_FeedbackType Query::DATABASE_ERROR;
+constexpr Query_FeedbackType Query::SKIN;
+constexpr Query_FeedbackType Query::NEW_USER_CONNECTED;
+constexpr Query_FeedbackType Query::FeedbackType_MIN;
+constexpr Query_FeedbackType Query::FeedbackType_MAX;
+constexpr int Query::FeedbackType_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 // ===================================================================
@@ -560,14 +626,23 @@ class Query::_Internal {
  public:
   using HasBits = decltype(std::declval<Query>()._has_bits_);
   static void set_has_rtype(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
+    (*has_bits)[0] |= 4u;
+  }
+  static void set_has_ftype(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
   }
   static const ::ChitChatMessage::Query_User& user(const Query* msg);
   static void set_has_user(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_score(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static void set_has_game_name(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
   static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000003) ^ 0x00000003) != 0;
+    return ((has_bits[0] & 0x00000002) ^ 0x00000002) != 0;
   }
 };
 
@@ -577,7 +652,8 @@ Query::_Internal::user(const Query* msg) {
 }
 Query::Query(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  users_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -586,22 +662,38 @@ Query::Query(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 }
 Query::Query(const Query& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _has_bits_(from._has_bits_) {
+      _has_bits_(from._has_bits_),
+      users_(from.users_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  game_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    game_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (from._internal_has_game_name()) {
+    game_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_game_name(), 
+      GetArenaForAllocation());
+  }
   if (from._internal_has_user()) {
     user_ = new ::ChitChatMessage::Query_User(*from.user_);
   } else {
     user_ = nullptr;
   }
-  rtype_ = from.rtype_;
+  ::memcpy(&rtype_, &from.rtype_,
+    static_cast<size_t>(reinterpret_cast<char*>(&ftype_) -
+    reinterpret_cast<char*>(&rtype_)) + sizeof(ftype_));
   // @@protoc_insertion_point(copy_constructor:ChitChatMessage.Query)
 }
 
 inline void Query::SharedCtor() {
+game_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  game_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&user_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&rtype_) -
-    reinterpret_cast<char*>(&user_)) + sizeof(rtype_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&score_) -
+    reinterpret_cast<char*>(&user_)) + sizeof(score_));
+ftype_ = -1;
 }
 
 Query::~Query() {
@@ -613,6 +705,7 @@ Query::~Query() {
 
 inline void Query::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  game_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete user_;
 }
 
@@ -632,12 +725,23 @@ void Query::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  users_.Clear();
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    GOOGLE_DCHECK(user_ != nullptr);
-    user_->Clear();
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      game_name_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      GOOGLE_DCHECK(user_ != nullptr);
+      user_->Clear();
+    }
   }
-  rtype_ = 0;
+  if (cached_has_bits & 0x0000001cu) {
+    ::memset(&rtype_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&score_) -
+        reinterpret_cast<char*>(&rtype_)) + sizeof(score_));
+    ftype_ = -1;
+  }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -649,7 +753,7 @@ const char* Query::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
     uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // required .ChitChatMessage.Query.RequestType rType = 1;
+      // optional .ChitChatMessage.Query.RequestType rType = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
@@ -662,10 +766,57 @@ const char* Query::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
         } else
           goto handle_unusual;
         continue;
-      // required .ChitChatMessage.Query.User user = 2;
+      // optional .ChitChatMessage.Query.FeedbackType fType = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          if (PROTOBUF_PREDICT_TRUE(::ChitChatMessage::Query_FeedbackType_IsValid(val))) {
+            _internal_set_ftype(static_cast<::ChitChatMessage::Query_FeedbackType>(val));
+          } else {
+            ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(2, val, mutable_unknown_fields());
+          }
+        } else
+          goto handle_unusual;
+        continue;
+      // required .ChitChatMessage.Query.User user = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_user(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .ChitChatMessage.Query.User users = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_users(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional int32 score = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _Internal::set_has_score(&has_bits);
+          score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string game_name = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          auto str = _internal_mutable_game_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          #ifndef NDEBUG
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "ChitChatMessage.Query.game_name");
+          #endif  // !NDEBUG
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -701,19 +852,50 @@ uint8_t* Query::_InternalSerialize(
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // required .ChitChatMessage.Query.RequestType rType = 1;
-  if (cached_has_bits & 0x00000002u) {
+  // optional .ChitChatMessage.Query.RequestType rType = 1;
+  if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->_internal_rtype(), target);
   }
 
-  // required .ChitChatMessage.Query.User user = 2;
-  if (cached_has_bits & 0x00000001u) {
+  // optional .ChitChatMessage.Query.FeedbackType fType = 2;
+  if (cached_has_bits & 0x00000010u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_ftype(), target);
+  }
+
+  // required .ChitChatMessage.Query.User user = 3;
+  if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        2, _Internal::user(this), target, stream);
+        3, _Internal::user(this), target, stream);
+  }
+
+  // repeated .ChitChatMessage.Query.User users = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_users_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, this->_internal_users(i), target, stream);
+  }
+
+  // optional int32 score = 5;
+  if (cached_has_bits & 0x00000008u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_score(), target);
+  }
+
+  // optional string game_name = 6;
+  if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_game_name().data(), static_cast<int>(this->_internal_game_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "ChitChatMessage.Query.game_name");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_game_name(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -724,46 +906,54 @@ uint8_t* Query::_InternalSerialize(
   return target;
 }
 
-size_t Query::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:ChitChatMessage.Query)
-  size_t total_size = 0;
-
-  if (_internal_has_user()) {
-    // required .ChitChatMessage.Query.User user = 2;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *user_);
-  }
-
-  if (_internal_has_rtype()) {
-    // required .ChitChatMessage.Query.RequestType rType = 1;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_rtype());
-  }
-
-  return total_size;
-}
 size_t Query::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:ChitChatMessage.Query)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
-    // required .ChitChatMessage.Query.User user = 2;
+  // required .ChitChatMessage.Query.User user = 3;
+  if (_internal_has_user()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *user_);
-
-    // required .ChitChatMessage.Query.RequestType rType = 1;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_rtype());
-
-  } else {
-    total_size += RequiredFieldsByteSizeFallback();
   }
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // repeated .ChitChatMessage.Query.User users = 4;
+  total_size += 1UL * this->_internal_users_size();
+  for (const auto& msg : this->users_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // optional string game_name = 6;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_game_name());
+  }
+
+  if (cached_has_bits & 0x0000001cu) {
+    // optional .ChitChatMessage.Query.RequestType rType = 1;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_rtype());
+    }
+
+    // optional int32 score = 5;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_score());
+    }
+
+    // optional .ChitChatMessage.Query.FeedbackType fType = 2;
+    if (cached_has_bits & 0x00000010u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_ftype());
+    }
+
+  }
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -786,13 +976,23 @@ void Query::MergeFrom(const Query& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  users_.MergeFrom(from.users_);
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_mutable_user()->::ChitChatMessage::Query_User::MergeFrom(from._internal_user());
+      _internal_set_game_name(from._internal_game_name());
     }
     if (cached_has_bits & 0x00000002u) {
+      _internal_mutable_user()->::ChitChatMessage::Query_User::MergeFrom(from._internal_user());
+    }
+    if (cached_has_bits & 0x00000004u) {
       rtype_ = from.rtype_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      score_ = from.score_;
+    }
+    if (cached_has_bits & 0x00000010u) {
+      ftype_ = from.ftype_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -808,6 +1008,8 @@ void Query::CopyFrom(const Query& from) {
 
 bool Query::IsInitialized() const {
   if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(users_))
+    return false;
   if (_internal_has_user()) {
     if (!user_->IsInitialized()) return false;
   }
@@ -816,14 +1018,23 @@ bool Query::IsInitialized() const {
 
 void Query::InternalSwap(Query* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
+  users_.InternalSwap(&other->users_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &game_name_, lhs_arena,
+      &other->game_name_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Query, rtype_)
-      + sizeof(Query::rtype_)
+      PROTOBUF_FIELD_OFFSET(Query, score_)
+      + sizeof(Query::score_)
       - PROTOBUF_FIELD_OFFSET(Query, user_)>(
           reinterpret_cast<char*>(&user_),
           reinterpret_cast<char*>(&other->user_));
+  swap(ftype_, other->ftype_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Query::GetMetadata() const {

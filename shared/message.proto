@@ -20,10 +20,30 @@ message Query {
     CHANGE_SKIN = 6;
     CHANGE_SCORE = 7;
     GET_SKIN = 8;
-    HELLO = 9;
   }
 
-  required RequestType rType = 1;
-  required User user = 2;
+  enum FeedbackType {
+    NO_USER_FOUND = -1;
+    LOGIN_ALLOWED = 0;
+    LOGIN_DENIED = 1;
+    USER_CREATED = 2;
+    USER_DUPLICATE = 3;
+    CONNECTION_SUCCESS = 4;
+    CONNECTION_EXISTS = 5;
+    MOVED = 6;
+    DISCONNECTED = 7;
+    SKIN_CHANGED = 8;
+    SCORE_CHANGED = 9;
+    DATABASE_ERROR = 10;
+    SKIN = 11;
+    NEW_USER_CONNECTED = 12;
+  }
+
+  optional RequestType rType = 1;
+  optional FeedbackType fType = 2;
+  required User user = 3;
+  repeated User users = 4;
+  optional int32 score = 5;
+  optional string game_name = 6;
 
 }

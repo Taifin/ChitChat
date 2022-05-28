@@ -12,6 +12,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "message.pb.h"
 
 namespace network {
 
@@ -68,7 +69,7 @@ class query_processor : public QObject {
 protected:
     queries_keeper *keeper;
     tcp_socket &socket;
-    std::vector<std::string> data;
+    ChitChatMessage::Query query;
     QTcpSocket *to;
 
 public:
@@ -80,7 +81,9 @@ public:
 
     virtual void process() = 0;
 
-    void prepare_query(const std::string &q, QTcpSocket *cli);
+    void prepare_query(const QByteArray &q, QTcpSocket *cli);
+
+    void prepare_query(const ChitChatMessage::Query &q, QTcpSocket *cli);
 
 signals:
 

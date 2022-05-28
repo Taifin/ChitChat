@@ -38,8 +38,16 @@ std::atomic_size_t queries_keeper::parsed_size() const {
     return parsed_queries.size();
 }
 
-void query_processor::prepare_query(const std::string &q, QTcpSocket *cli) {
-    keeper->push_prepared(q.c_str(), cli);
+void query_processor::prepare_query(const QByteArray &q, QTcpSocket *cli) {
+    keeper->push_prepared(q, cli);
+    emit prepared();
+}
+
+void query_processor::prepare_query(const ChitChatMessage::Query &q,
+                                    QTcpSocket *cli) {
+    QByteArray array;
+    q.SerializeToArray(array.data(), sizeof(ChitChatMessage::Query));
+    keeper->push_prepared(array, cli);
     emit prepared();
 }
 
@@ -82,9 +90,7 @@ void tcp_socket::send() {
 void tcp_socket::read() {
     qDebug() << "New msg";
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
-    QByteArray data = sender->read(sizeof(ChitChatMessage::Query));
-    // TODO: on many simultaneous requests they can glue together
-    qDebug() << "Reading...";
+    QByteArray data = sender->read(sizeof(ChitChatMessage::Query)); // TODO: sizeof??
     keeper->push_parsed(data, sender);
 }
 
@@ -92,4 +98,5 @@ query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
     : keeper(keeper), socket(socket) {
     connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
 }
+
 }  // namespace network
