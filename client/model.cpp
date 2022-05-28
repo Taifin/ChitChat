@@ -13,7 +13,7 @@ model::model()
 #endif
 }
 
-void model::send_request(const std::string &message) {
+void model::send_request(ChitChatMessage::Query message) {
     processor.prepare_query(message, data_socket);
 }
 

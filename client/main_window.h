@@ -35,7 +35,7 @@ public:
     ~main_window() override;
 
 signals:
-    void run_send_request(const std::string &message);
+    void run_send_request(const ChitChatMessage::Query &message);
 
     void turn_mic_on();
 

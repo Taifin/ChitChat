@@ -31,15 +31,11 @@ void main_window::show_after_auth() {
 main_window::~main_window() {
     delete scene;
 
-    emit run_send_request("disconnect," + current_user.get_name() + "," +
-                          current_user.get_password() + "," +
-                          std::to_string(current_user.get_x()) + "," +
-                          std::to_string(current_user.get_y()));
+    emit run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
 }
 
 void main_window::on_connect_button_clicked() {
-    run_send_request("connect," + current_user.get_name() + "," +
-                     current_user.get_password());
+    run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
     ui->change_avatar_button->hide();
 }
 

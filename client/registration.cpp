@@ -39,27 +39,37 @@ void registration::on_confirm_button_clicked() {
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
     } else {
-        emit run_send_request("register," + login + "," + password);
+        user u(login, password, "");
         // TODO: передавать на сервер информацию о выборе
         if (ui->finn_radio_button->isChecked()) {
+            u.set_skin("finn");
             qDebug() << "finn";
         } else if (ui->gambol_radio_button->isChecked()) {
+            u.set_skin("gambol");
             qDebug() << "gambol";
         } else if (ui->kermit_radio_button->isChecked()) {
-            qDebug() << "kertmit";
+            u.set_skin("kermit");
+            qDebug() << "kermit";
         } else if (ui->miku_radio_button->isChecked()) {
+            u.set_skin("miku");
             qDebug() << "miku";
         } else if (ui->mushroom_radio_button->isChecked()) {
-            qDebug() << "mushrom";
+            u.set_skin("mushroom");
+            qDebug() << "mushroom";
         } else if (ui->pikachu_radio_button->isChecked()) {
+            u.set_skin("pikachu");
             qDebug() << "pikachu";
         } else if (ui->rafael_radio_button->isChecked()) {
+            u.set_skin("rafael");
             qDebug() << "rafael";
         } else if (ui->sonic_radio_button->isChecked()) {
+            u.set_skin("sonic");
             qDebug() << "sonic";
         } else if (ui->stormtroopers_radio_button->isChecked()) {
+            u.set_skin("rafael");
             qDebug() << "rafael";
         }
+        emit run_send_request(u.serialize(ChitChatMessage::Query_RequestType_REGISTER));
     }
 }
 

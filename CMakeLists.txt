@@ -10,6 +10,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 COMPONENTS Widgets Network Multimedia REQUIRED)
+find_package(Protobuf REQUIRED)
 include_directories(client)
 include_directories(shared)
 include_directories(server)
@@ -18,7 +19,6 @@ include_directories(games/hangman)
 
 add_compile_definitions(LOCAL)
 add_compile_definitions(SHARED)
-
 set(CLIENT_SOURCES
         client/main.cpp
         client/model.h

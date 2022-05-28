@@ -53,7 +53,7 @@ void client_processor::process() {
         case ChitChatMessage::Query_FeedbackType_SKIN:
             break;
         case ChitChatMessage::Query_FeedbackType_NEW_USER_CONNECTED:
-            emit run_connect_roommate(query.user().name());
+            emit run_connect_roommate(query);
             break;
     }
 }

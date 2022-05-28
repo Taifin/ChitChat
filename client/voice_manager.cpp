@@ -23,12 +23,12 @@ client::processor::processor(network::queries_keeper *keeper1,
 }
 
 void client::processor::process() {
-    while (!keeper->parsed_queries.empty()) {
+    while (keeper->parsed_size() > 0) {
         if (!muted) {
-            device->write(keeper->parsed_queries.front().first.data(),
-                          keeper->parsed_queries.front().first.size());
+            device->write(keeper->front_parsed().first.data(),
+                          keeper->front_parsed().first.size());
         }
-        keeper->parsed_queries.pop();
+        keeper->pop_parsed();
     }
 }
 void client::processor::input_audio_on() {

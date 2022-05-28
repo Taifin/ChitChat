@@ -52,7 +52,7 @@ signals:
 
     void run_disconnect_roommate(std::string);
 
-    void run_connect_roommate(std::string);
+    void run_connect_roommate(ChitChatMessage::Query);
 };
 
 #endif  // CLIENT_SOCKET_H

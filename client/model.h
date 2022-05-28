@@ -6,6 +6,7 @@
 #include "client_user.h"
 #include "shared/socket.h"
 #include "voice_manager.h"
+#include "message.pb.h"
 
 static quint16 PORT = 1235;
 
@@ -29,7 +30,7 @@ public:
     ~model();
 
 private slots:
-    void send_request(const std::string &message);
+    void send_request(ChitChatMessage::Query message);
 };
 
 #endif  // MODEL_H

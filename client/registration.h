@@ -2,6 +2,7 @@
 #define REGISTRATION_H
 
 #include <QDialog>
+#include "message.pb.h"
 
 namespace Ui {
 class registration;
@@ -12,11 +13,11 @@ class registration : public QDialog {
 
 public:
     explicit registration(QWidget *parent = nullptr);
-    ~registration();
+    ~registration() override;
 
 signals:
     void show_login_window_again();
-    void run_send_request(const std::string &message);
+    void run_send_request(const ChitChatMessage::Query& message);
 
 private slots:
 

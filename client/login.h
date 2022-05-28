@@ -22,7 +22,7 @@ public:
 signals:
     void show_main_window();
     void show_registration_window();
-    void run_send_request(const std::string &message);
+    void run_send_request(ChitChatMessage::Query message);
     void run_initialize(std::string, std::string);
 
 private slots:

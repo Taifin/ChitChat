@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>game_selection</class>
- <widget class="QWidget" get_name="game_selection">
-  <property get_name="geometry">
+ <widget class="QWidget" name="game_selection">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,16 +10,16 @@
     <height>300</height>
    </rect>
   </property>
-  <property get_name="windowTitle">
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property get_name="styleSheet">
+  <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 224, 237);
 border-color: rgb(173, 127, 168);
 border-top-color: rgb(173, 127, 168);</string>
   </property>
-  <widget class="QLabel" get_name="label">
-   <property get_name="geometry">
+  <widget class="QLabel" name="label">
+   <property name="geometry">
     <rect>
      <x>26</x>
      <y>50</y>
@@ -27,18 +27,18 @@ border-top-color: rgb(173, 127, 168);</string>
      <height>21</height>
     </rect>
    </property>
-   <property get_name="styleSheet">
+   <property name="styleSheet">
     <string notr="true">font: 700 13pt &quot;Source Code Pro&quot;;</string>
    </property>
-   <property get_name="text">
+   <property name="text">
     <string>Choose a game you want to play</string>
    </property>
-   <property get_name="alignment">
+   <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" get_name="back_to_room_button">
-   <property get_name="geometry">
+  <widget class="QPushButton" name="back_to_room_button">
+   <property name="geometry">
     <rect>
      <x>50</x>
      <y>230</y>
@@ -46,16 +46,16 @@ border-top-color: rgb(173, 127, 168);</string>
      <height>25</height>
     </rect>
    </property>
-   <property get_name="styleSheet">
+   <property name="styleSheet">
     <string notr="true">selection-background-color: rgb(173, 127, 168);
 font: 700 10pt &quot;Source Code Pro&quot;;</string>
    </property>
-   <property get_name="text">
+   <property name="text">
     <string>Back to the room</string>
    </property>
   </widget>
-  <widget class="QWidget" get_name="verticalLayoutWidget">
-   <property get_name="geometry">
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
     <rect>
      <x>109</x>
      <y>100</y>
@@ -63,25 +63,25 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
      <height>101</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" get_name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" get_name="hangman_button">
-      <property get_name="styleSheet">
+     <widget class="QPushButton" name="hangman_button">
+      <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(173, 127, 168);
 font: 700 11pt &quot;Source Code Pro&quot;;</string>
       </property>
-      <property get_name="text">
+      <property name="text">
        <string>HangMan</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" get_name="arkanoid_button">
-      <property get_name="styleSheet">
+     <widget class="QPushButton" name="arkanoid_button">
+      <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(173, 127, 168);
 font: 700 11pt &quot;Source Code Pro&quot;;</string>
       </property>
-      <property get_name="text">
+      <property name="text">
        <string>Arkanoid</string>
       </property>
      </widget>

@@ -1,7 +1,6 @@
 #include "login.h"
 #include <QLineEdit>
 #include <QMetaType>
-#include "client_socket.h"
 #include "main_window.h"
 #include "shared/user.h"
 #include "ui_login.h"
@@ -27,7 +26,9 @@ void login::on_log_in_button_clicked() {
     std::string login, password;
     login = (ui->login_line_edit->text().toStdString());
     password = ui->password_line_edit->text().toStdString();
-    emit run_send_request("login," + login + "," + password);
+    user u(login, password, "aboba");
+    ChitChatMessage::Query aboba = u.serialize(ChitChatMessage::Query_RequestType_LOGIN);
+    emit run_send_request(aboba);
 }
 
 void login::on_create_new_account_button_clicked() {
@@ -58,4 +59,4 @@ void login::no_user() {
 
 void login::error() {
     ui->information_label->setText("Something go wrong");
-};
+}
