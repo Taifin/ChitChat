@@ -27,11 +27,11 @@
 /// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
 // clang-format on
 
-namespace sv {
+namespace server {
 
 class server_socket : public network::tcp_socket {
     Q_OBJECT
-    QTcpServer *server;
+    QTcpServer *tcp_server;
     QList<QTcpSocket *> sockets;
 
 public:

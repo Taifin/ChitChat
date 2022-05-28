@@ -15,12 +15,25 @@
 
 namespace network {
 
-// TODO: safety
-struct queries_keeper {
+class queries_keeper {
     std::queue<std::pair<QByteArray, QTcpSocket *>> parsed_queries;
     std::queue<std::pair<QByteArray, QTcpSocket *>> prepared_queries;
-    std::condition_variable query_available;
+
+public:
     std::mutex queries_mutex;
+    std::condition_variable query_available;
+
+    void push_parsed(const QByteArray &data, QTcpSocket *sender);
+
+    void push_prepared(const QByteArray &q, QTcpSocket *cli);
+
+    std::pair<QByteArray, QTcpSocket *> front_parsed();
+
+    std::pair<QByteArray, QTcpSocket *> pop_parsed();
+
+    std::pair<QByteArray, QTcpSocket *> pop_prepared();
+
+    [[nodiscard]] std::atomic_size_t parsed_size() const;
 };
 
 class tcp_socket : public QObject {
@@ -38,8 +51,6 @@ public:
 
     void wait_for_processed();
     /// Sends "msg" to client.
-
-signals:
 
 public slots:
 

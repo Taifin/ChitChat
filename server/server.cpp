@@ -2,12 +2,11 @@
 #include <cassert>
 #include "state.h"
 
-namespace sv {
+namespace server {
 
 void server_processor::process() {
-    while (!keeper->parsed_queries.empty()) {
-        auto query = keeper->parsed_queries.front();
-        keeper->parsed_queries.pop();
+    while (keeper->parsed_size() > 0) {
+        auto query = keeper->pop_parsed();
         data = parse(query.first.toStdString());
         to = query.second;
         try {
@@ -138,48 +137,50 @@ void server_processor::new_user_connected() {
     }
 }
 
-sv::audio_processor::audio_processor(network::queries_keeper *keeper,
-                                     network::tcp_socket &socket)
+server::audio_processor::audio_processor(network::queries_keeper *keeper,
+                                         network::tcp_socket &socket)
     : network::query_processor(keeper, socket) {
 }
 
-void sv::server_socket::connect_one() {
+void server::server_socket::connect_one() {
     qDebug() << "New connection";
-    QTcpSocket *new_socket = server->nextPendingConnection();
+    QTcpSocket *new_socket = tcp_server->nextPendingConnection();
     connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
     connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
     sockets.push_back(new_socket);
 }
 
-void sv::server_socket::disconnect_one() {
+void server::server_socket::disconnect_one() {
     auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
     sockets.removeOne(socket);
 }
-QList<QTcpSocket *> sv::server_socket::get_connected_sockets() const {
+
+QList<QTcpSocket *> server::server_socket::get_connected_sockets() const {
     return sockets;
 }
+
 server_socket::server_socket(const QHostAddress &host,
                              quint16 port,
                              network::queries_keeper *keeper1,
                              QObject *parent)
     : tcp_socket(host, port, keeper1, parent) {
-    server = new QTcpServer();
-    server->listen(host, port);
-    qDebug() << server->serverAddress() << server->serverPort();
+    tcp_server = new QTcpServer();
+    tcp_server->listen(host, port);
+    qDebug() << tcp_server->serverAddress() << tcp_server->serverPort();
     qDebug() << "Server listening on" << host << port;
-    connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
+    connect(tcp_server, SIGNAL(newConnection()), this, SLOT(connect_one()));
 }
 
-void sv::audio_processor::process() {
-    while (!keeper->parsed_queries.empty()) {
+void server::audio_processor::process() {
+    while (keeper->parsed_size() > 0) {
         for (auto &sock :
              dynamic_cast<server_socket &>(socket).get_connected_sockets()) {
-            if (sock != keeper->parsed_queries.front().second) {
-                prepare_query(
-                    keeper->parsed_queries.front().first.toStdString(), sock);
+            auto query = keeper->front_parsed();
+            if (sock != query.second) {
+                prepare_query(query.first.toStdString(), sock);
             }
         }
-        keeper->parsed_queries.pop();
+        keeper->pop_parsed();
     }
 }
 
@@ -194,4 +195,4 @@ void server_processor::change_data() {
                   to);
 }
 
-}  // namespace sv
+}  // namespace server
