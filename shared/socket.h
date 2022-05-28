@@ -14,25 +14,21 @@
 #include <vector>
 
 namespace network {
-struct client {
-    QHostAddress address;
-    int port;
-};
 
+// TODO: safety
 struct queries_keeper {
-    std::queue<std::pair<std::string, QTcpSocket *>> parsed_queries;
-    std::queue<std::pair<std::string, QTcpSocket *>> prepared_queries;
+    std::queue<std::pair<QByteArray, QTcpSocket *>> parsed_queries;
+    std::queue<std::pair<QByteArray, QTcpSocket *>> prepared_queries;
     std::condition_variable query_available;
     std::mutex queries_mutex;
 };
 
 class tcp_socket : public QObject {
+    // TODO: class only for methods read() and send()?
     Q_OBJECT
 
 protected:
     queries_keeper *keeper;
-    QTcpServer *server;
-    QList<QTcpSocket *> sockets;
 
 public:
     explicit tcp_socket(const QHostAddress &host,
@@ -51,10 +47,6 @@ public slots:
     /// While socket has pending datagrams, reads them into "queries", where
     /// they are stored as {data, from} pairs. The function is called
     /// automatically when readyRead() signal is emitted.
-
-    void connect_one();
-
-    void disconnect_one();
 
     void send();
 };

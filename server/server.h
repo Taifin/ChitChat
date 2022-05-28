@@ -30,13 +30,22 @@
 namespace sv {
 
 class server_socket : public network::tcp_socket {
+    Q_OBJECT
+    QTcpServer* server;
+    QList<QTcpSocket*> sockets;
+
 public:
     explicit server_socket(const QHostAddress &host,
                            quint16 port,
                            network::queries_keeper *keeper1,
-                           QObject *parent = nullptr)
-        : network::tcp_socket(host, port, keeper1) {
-    }
+                           QObject *parent = nullptr);
+
+    [[nodiscard]] QList<QTcpSocket*> get_connected_sockets() const;
+
+public slots:
+    void connect_one();
+
+    void disconnect_one();
 };
 
 class server_processor : public network::query_processor {
@@ -95,6 +104,14 @@ public:
 
     server_processor(network::queries_keeper *pKeeper,
                      network::tcp_socket &socket);
+};
+
+class audio_processor : public network::query_processor {
+public:
+    explicit audio_processor(network::queries_keeper *keeper, network::tcp_socket &socket);
+
+    void process() override;
+
 };
 
 }  // namespace sv

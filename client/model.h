@@ -5,19 +5,24 @@
 #include "client_socket.h"
 #include "client_user.h"
 #include "shared/socket.h"
+#include "voice_manager.h"
 
-static quint16 PORT = 60000;
+static quint16 PORT = 1235;
 
 class model : public QObject {
     Q_OBJECT
 
 public:
     model();
-    QTcpSocket *remote_server = new QTcpSocket();
+    // TODO: aboba
+    QTcpSocket *data_socket = new QTcpSocket(this);
+    QTcpSocket *audio_socket = new QTcpSocket(this);
     network::queries_keeper *keeper = new network::queries_keeper;
+    network::queries_keeper *audio_keeper = new network::queries_keeper;
 
     client_socket socket;
     client_processor processor;
+    client::processor audio_processor;
 
     void set_curren_user(std::string name, std::string password);
 

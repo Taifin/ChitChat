@@ -14,7 +14,8 @@ public:
                   quint16 port,
                   QTcpSocket *ser,
                   network::queries_keeper *keeper,
-                  QObject *parent);
+                  QObject *parent = nullptr);
+
 };
 
 class client_processor : public network::query_processor {

@@ -5,7 +5,7 @@
 namespace network {
 
 void query_processor::prepare_query(const std::string &q, QTcpSocket *cli) {
-    keeper->prepared_queries.push({q, cli});
+    keeper->prepared_queries.push({q.c_str(), cli});
     emit prepared();
 }
 
@@ -20,11 +20,8 @@ tcp_socket::tcp_socket(const QHostAddress &host,
                        quint16 port,
                        queries_keeper *keeper1,
                        QObject *parent) {
-    server = new QTcpServer(this);
-    server->listen(host, port);
-    qDebug() << "Started listening at:" << server->serverPort();
+    qDebug() << "Socket created!";
     keeper = keeper1;
-    connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
 }
 
 std::vector<std::string> query_processor::parse(const std::string &raw_data) {
@@ -45,34 +42,23 @@ void tcp_socket::send() {
     auto q = keeper->prepared_queries.front();
     keeper->prepared_queries.pop();
     qDebug() << "Sending...";
-    q.second->write(q.first.c_str());
+    q.second->write(q.first);
     q.second->waitForReadyRead(25);
 }
 
 void tcp_socket::read() {
+    qDebug() << "New msg";
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     QByteArray data = sender->readAll();
     // TODO: on many simultaneous requests they can glue together
     qDebug() << "Reading...";
     std::unique_lock lock(keeper->queries_mutex);
-    keeper->parsed_queries.push({data.toStdString(), sender});
+    keeper->parsed_queries.push({data, sender});
     keeper->query_available.notify_one();
 }
 
 query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
     : keeper(keeper), socket(socket) {
     connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
-}
-
-void tcp_socket::connect_one() {
-    QTcpSocket *new_socket = server->nextPendingConnection();
-    connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
-    connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
-    sockets.push_back(new_socket);
-}
-
-void tcp_socket::disconnect_one() {
-    auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
-    sockets.removeOne(socket);
 }
 }  // namespace network

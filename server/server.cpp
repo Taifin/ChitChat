@@ -8,7 +8,7 @@ void server_processor::process() {
     while (!keeper->parsed_queries.empty()) {
         auto query = keeper->parsed_queries.front();
         keeper->parsed_queries.pop();
-        data = parse(query.first);
+        data = parse(query.first.toStdString());
         to = query.second;
         try {
             switch (commands.at(data[0])) {
@@ -138,6 +138,51 @@ void server_processor::new_user_connected() {
     }
 }
 
+sv::audio_processor::audio_processor(network::queries_keeper *keeper,
+                                     network::tcp_socket &socket)
+    : network::query_processor(keeper, socket) {
+}
+
+void sv::server_socket::connect_one() {
+    qDebug() << "New connection";
+    QTcpSocket *new_socket = server->nextPendingConnection();
+    connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
+    connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
+    sockets.push_back(new_socket);
+}
+
+void sv::server_socket::disconnect_one() {
+    auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
+    sockets.removeOne(socket);
+}
+QList<QTcpSocket *> sv::server_socket::get_connected_sockets() const {
+    return sockets;
+}
+server_socket::server_socket(const QHostAddress &host,
+                             quint16 port,
+                             network::queries_keeper *keeper1,
+                             QObject *parent)
+    : tcp_socket(host, port, keeper1, parent) {
+    server = new QTcpServer();
+    server->listen(host, port);
+    qDebug() << server->serverAddress() << server->serverPort();
+    qDebug() << "Server listening on" << host << port;
+    connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
+}
+
+void sv::audio_processor::process() {
+    while (!keeper->parsed_queries.empty()) {
+        for (auto &sock :
+             dynamic_cast<server_socket &>(socket).get_connected_sockets()) {
+            if (sock != keeper->parsed_queries.front().second) {
+                prepare_query(
+                    keeper->parsed_queries.front().first.toStdString(), sock);
+            }
+        }
+        keeper->parsed_queries.pop();
+    }
+}
+  
 void server_processor::get_sprite() {
     auto user = model::database::get_user_data(data[1]);
     prepare_query("sprite," + data[1] + " " + user.get_skin() + "\n", to);
