@@ -86,6 +86,17 @@ font: 700 11pt &quot;Source Code Pro&quot;;</string>
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="rating_button">
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgb(173, 127, 168);
+font: 700 11pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Rating</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>

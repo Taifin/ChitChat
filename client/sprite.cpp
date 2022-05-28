@@ -22,8 +22,6 @@ sprite::sprite(const std::string &name, std::string skin) : name(name) {
     name_display->setFont(font);
     name_display->setPos(70, 80);
     name_display->setPen(pen);
-    // name_display->setPlainText(QString("a"));
-    // name_display->setPlainText(QString("aa"));
 }
 
 void sprite::keyPressEvent(QKeyEvent *event) {
@@ -107,9 +105,8 @@ void change_position(int step_size, sprite *walker, directions dir) {
     x = walker->x();
     y = walker->y();
     emit walker->run_send_request("move," + walker->name + "," +
-                                  std::to_string(x) + "," + std::to_string(y) + "\n");
-    qDebug() << std::to_string(walker->x()).c_str()
-             << std::to_string(walker->y()).c_str();
+                                  std::to_string(x) + "," + std::to_string(y) +
+                                  "\n");
 }
 
 sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
@@ -117,8 +114,8 @@ sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
 }
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    emit run_send_skin(skin);
     //Здесь нужно отправить датаграмму на изменение скина;-
-    // current_view.main_process.set_user_skin(skin);
     emit this->add_curren_sprite();
 }
 

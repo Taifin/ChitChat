@@ -1,12 +1,15 @@
 #include "game_selection.h"
 #include "QDebug"
 #include "ui_game_selection.h"
+#include <QScreen>
 
 game_selection::game_selection(QWidget *parent)
     : QWidget(parent), ui(new Ui::game_selection) {
     ui->setupUi(this);
     connect(this, SIGNAL(game_chosen(const std::string &)), this,
             SLOT(start_game(const std::string &)));
+    this->setWindowTitle("ChitChat");
+    move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
 }
 
 game_selection::~game_selection() {
@@ -49,3 +52,10 @@ void game_selection::start_game(const std::string &name) {
         qDebug() << game->errorString();
     }
 }
+
+void game_selection::on_rating_button_clicked()
+{
+    games_rating.show();
+    this->close();
+}
+

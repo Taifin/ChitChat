@@ -43,6 +43,7 @@ public:
 
 signals:
     void add_curren_sprite();
+    void run_send_skin(const std::string &message);
 };
 
 class sprite_of_object : public QObject, public QGraphicsPixmapItem {

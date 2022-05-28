@@ -11,6 +11,7 @@ model::model()
 }
 
 void model::send_request(const std::string &message) {
+    qDebug() << message.c_str();
     processor.prepare_query(message, remote_server);
 }
 

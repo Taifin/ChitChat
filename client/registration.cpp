@@ -52,25 +52,24 @@ void registration::on_confirm_button_clicked() {
     }
     else {
         emit run_send_request("register," + login + "," + password);
-        // TODO: передавать на сервер информацию о выборе
         if (ui->finn_radio_button->isChecked()) {
-            qDebug() << "finn";
+            emit run_send_request("register," + login + "," + password + "," + "finn");
         } else if (ui->gambol_radio_button->isChecked()) {
-            qDebug() << "gambol";
+            emit run_send_request("register," + login + "," + password + "," + "gambol");
         } else if (ui->kermit_radio_button->isChecked()) {
-            qDebug() << "kertmit";
+            emit run_send_request("register," + login + "," + password + "," + "kermit");
         } else if (ui->miku_radio_button->isChecked()) {
-            qDebug() << "miku";
+            emit run_send_request("register," + login + "," + password + "," + "miku");
         } else if (ui->mushroom_radio_button->isChecked()) {
-            qDebug() << "mushrom";
+            emit run_send_request("register," + login + "," + password + "," + "myshroom");
         } else if (ui->pikachu_radio_button->isChecked()) {
-            qDebug() << "pikachu";
+            emit run_send_request("register," + login + "," + password + "," + "pikachu");
         } else if (ui->rafael_radio_button->isChecked()) {
-            qDebug() << "rafael";
+            emit run_send_request("register," + login + "," + password + "," + "rafael");
         } else if (ui->sonic_radio_button->isChecked()) {
-            qDebug() << "sonic";
+            emit run_send_request("register," + login + "," + password + "," + "sonic");
         } else if (ui->stormtroopers_radio_button->isChecked()) {
-            qDebug() << "rafael";
+            emit run_send_request("register," + login + "," + password + "," + "stormtroopers");
         }
     }
 }

@@ -1,15 +1,15 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <QCoreApplication>
+#include <QGraphicsDropShadowEffect>
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <QTimer>
 #include "game_selection.h"
 #include "login.h"
 #include "model.h"
 #include "room.h"
-#include <QGraphicsDropShadowEffect>
-#include <QCoreApplication>
-#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,7 +30,6 @@ public:
 
     client_user current_user;
     std::map<std::string, client_user> users_in_the_room;
-
 
     model *current_session = nullptr;
 
@@ -63,7 +62,10 @@ private slots:
 
     void show_curren_sprite();
 
-    //void closeEvent(QCloseEvent *e);
+    void send_skin(const std::string &skin);
+    ;
+
+    // void closeEvent(QCloseEvent *e);
 
 private:
     Ui::main_window *ui;
@@ -72,5 +74,7 @@ private:
     QTimer *timer;
     int TIME_FOR_MESSAGE = 1500;
     QFont font;
+    QPen pen;
+    QBrush brush;
 };
 #endif  // MAIN_WINDOW_H

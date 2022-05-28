@@ -10,12 +10,15 @@
 #include "room.h"
 #include "sprite.h"
 
-
 main_window::main_window(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::main_window), font("Source Code Pro", 28, QFont::Bold) {
+    : QMainWindow(parent),
+      ui(new Ui::main_window),
+      font("Source Code Pro", 13, QFont::Bold) {
     scene = new room();
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    move(QGuiApplication::screens().at(0)->geometry().center() -
+         frameGeometry().center());
     view = ui->room_view;
     view->setFixedSize(600, 550);
     qDebug() << view->y() << " " << view->x() << " " << view->width() << " "
@@ -25,9 +28,21 @@ main_window::main_window(QWidget *parent)
     view->x(), view->setScene(scene);
     scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
 
-    timer =  new QTimer();
+    timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::blue);
+    // pen.setCapStyle(Qt::RoundCap);
+    // pen.setJoinStyle(Qt::RoundJoin);
+    // pen.setColor(Qt::green);
+    brush.setColor(Qt::white);
+    brush.setStyle(Qt::SolidPattern);
+
+    ui->statusbar->setStyleSheet(
+        "QStatusBar{padding-left:8px;background:rgba(255,0,0,255);color:black;"
+        "font-weight:bold;}");
 }
 
 void main_window::show_after_auth() {
@@ -41,18 +56,23 @@ main_window::~main_window() {
                           current_user.pwd() + "," +
                           std::to_string(current_user.get_x()) + "," +
                           std::to_string(current_user.get_y()));
-
 }
 
-void main_window::remove_message()
-{
+void main_window::remove_message() {
     ui->statusbar->clearMessage();
 }
 
 void main_window::on_connect_button_clicked() {
-    run_send_request("connect," + current_user.name() + "," +
-                     current_user.pwd());
-    ui->change_avatar_button->hide();
+    if (ui->connect_button->text() == "connect") {
+        run_send_request("connect," + current_user.name() + "," +
+                         current_user.pwd());
+        ui->change_avatar_button->hide();
+        ui->connect_button->setText("disconnect");
+    } else if (ui->connect_button->text() == "disconnect") {
+        run_send_request("disconnect," + current_user.name() + "," +
+                         current_user.pwd());
+        ui->connect_button->setText("connect");
+    }
 }
 
 void main_window::already_connected() {
@@ -60,11 +80,15 @@ void main_window::already_connected() {
     timer->start(TIME_FOR_MESSAGE);
 }
 
-void main_window::set_sprite_name(sprite *sprite){
+void main_window::set_sprite_name(sprite *sprite) {
     QFontMetrics fm(font);
     int wide = fm.width(sprite->name_display->text());
     qDebug() << (wide) << sprite->x();
-    sprite->name_display->setPos(sprite->x()+36 - (wide/5), sprite->y()-20);
+    sprite->name_display->setPos(sprite->x() + 36 - (wide / 2),
+                                 sprite->y() - 20);
+    sprite->name_display->setPen(pen);
+    sprite->name_display->setBrush(brush);
+    sprite->name_display->setFont(font);
 }
 
 void main_window::connect_with_room(std::vector<std::string> data) {
@@ -78,7 +102,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
-    for (int i = 1; i < data.size(); i += 3) {
+    for (int i = 1; i < data.size(); i += 4) {
         if (data[i] != current_user.name()) {
             client_user u(data[i], "psw", stoi(data[i + 1]), stoi(data[i + 2]));
             users_in_the_room[data[i]] = u;
@@ -88,8 +112,9 @@ void main_window::connect_with_room(std::vector<std::string> data) {
             users_in_the_room[data[i]].user_sprite->name_display->setText(
                 QString(users_in_the_room[data[i]].name().c_str()));
             set_sprite_name(users_in_the_room[data[i]].user_sprite);
-            //users_in_the_room[data[i]].user_sprite->name_display->setPos(
-                //stoi(data[i + 1]), stoi(data[i + 2]) - 20);
+            users_in_the_room[data[i]].user_sprite->change_skin(data[i + 3]);
+            // users_in_the_room[data[i]].user_sprite->name_display->setPos(
+            // stoi(data[i + 1]), stoi(data[i + 2]) - 20);
             scene->addItem(users_in_the_room[data[i]].user_sprite);
             scene->addItem(
                 users_in_the_room[data[i]].user_sprite->name_display);
@@ -99,7 +124,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     current_user.user_sprite->name_display->setText(
         QString(current_user.name().c_str()));
     set_sprite_name(current_user.user_sprite);
-    //current_user.user_sprite->name_display->setPos(0, -20);
+    // current_user.user_sprite->name_display->setPos(0, -20);
 
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
@@ -112,7 +137,8 @@ void main_window::connect_with_room(std::vector<std::string> data) {
 
 void main_window::user_changed_position(std::string name, int x, int y) {
     users_in_the_room[name].user_sprite->setPos(x, y);
-    users_in_the_room[name].user_sprite->name_display->setPos(x, y - 20);
+    set_sprite_name(users_in_the_room[name].user_sprite);
+    // users_in_the_room[name].user_sprite->name_display->setPos(x, y - 20);
 }
 
 void main_window::roommate_disconnect(const std::string &roommate_name) {
@@ -122,16 +148,17 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
     users_in_the_room.erase(roommate_name);
 }
 
-
-
 void main_window::roommate_connect(const std::string &roommate_name) {
     client_user u(roommate_name, "pwd", 0, 0);
     users_in_the_room[roommate_name] = u;
     users_in_the_room[roommate_name].set_user_sprite();
     users_in_the_room[roommate_name].user_sprite->name_display->setText(
         QString(roommate_name.c_str()));
+
     set_sprite_name(users_in_the_room[roommate_name].user_sprite);
-    //users_in_the_room[roommate_name].user_sprite->name_display->setPos(0, -20);
+
+    // users_in_the_room[roommate_name].user_sprite->name_display->setPos(0,
+    // -20);
     scene->addItem(users_in_the_room[roommate_name].user_sprite);
     scene->addItem(users_in_the_room[roommate_name].user_sprite->name_display);
 }
@@ -139,17 +166,10 @@ void main_window::roommate_connect(const std::string &roommate_name) {
 void main_window::show_curren_sprite() {
     scene->clear();
 
-    QGraphicsSimpleTextItem *text = new QGraphicsSimpleTextItem("Your character");
-    QPen pen;
+    QGraphicsSimpleTextItem *text =
+        new QGraphicsSimpleTextItem("Your character");
 
-    pen.setStyle(Qt::SolidLine);
-    pen.setWidth(1);
-    pen.setBrush(Qt::black);
-    pen.setCapStyle(Qt::RoundCap);
-    pen.setJoinStyle(Qt::RoundJoin);
-    pen.setColor(Qt::white);
-    text->setPen(pen);
-
+    QFont font("Source Code Pro", 28, QFont::Bold);
 
     text->setFont(font);
     scene->addItem(text);
@@ -163,6 +183,10 @@ void main_window::show_curren_sprite() {
     user_skin->setPos(250, 220);
 }
 
+void main_window::send_skin(const std::string &skin) {
+    run_send_request("change,skin," + current_user.name() + "," + skin);
+}
+
 void main_window::set_user_skin(const std::string &skin) {
     current_user.skin = skin;
 }
@@ -170,6 +194,10 @@ void main_window::set_user_skin(const std::string &skin) {
 void main_window::on_change_avatar_button_clicked() {
     // view->setEnabled(true);
     scene->clear();
+
+    QGraphicsSimpleTextItem *text =
+        new QGraphicsSimpleTextItem("Select a character by clicking on it");
+    QFont font("Source Code Pro", 18, QFont::Bold);
 
     QPen pen;
 
@@ -179,10 +207,8 @@ void main_window::on_change_avatar_button_clicked() {
     pen.setCapStyle(Qt::RoundCap);
     pen.setJoinStyle(Qt::RoundJoin);
     pen.setColor(Qt::white);
+    text->setPen(pen);
 
-    QGraphicsSimpleTextItem *text =
-        new QGraphicsSimpleTextItem("Select a character by clicking on it");
-    QFont font("Source Code Pro", 18, QFont::Bold);
     text->setFont(font);
     scene->addItem(text);
     text->setPos(70, 80);
@@ -195,6 +221,8 @@ void main_window::on_change_avatar_button_clicked() {
         sprite_for_choice *skin = new sprite_for_choice(characters[i]);
         connect(skin, SIGNAL(add_curren_sprite()), this,
                 SLOT(show_curren_sprite()));
+        connect(skin, SIGNAL(run_send_skin(const std::string &)), this,
+                SLOT(send_skin(const std::string &)));
         scene->addItem(skin);
 
         skin->setPos(150 + ((i % 3) * 100), 120 + ((i / 3) * 100));
@@ -208,6 +236,3 @@ void main_window::set_user_sprite() {
             SIGNAL(run_send_request(const std::string &)), current_session,
             SLOT(send_request(const std::string &)));
 }
-
-
-

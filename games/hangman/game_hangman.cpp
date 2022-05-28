@@ -5,6 +5,7 @@
 #include <random>
 #include <vector>
 #include "ui_game_hangman.h"
+#include <QScreen>
 
 game_hangman::game_hangman() : ui(new Ui::game_hangman) {
     ui->setupUi(this);
@@ -41,8 +42,17 @@ game_hangman::game_hangman() : ui(new Ui::game_hangman) {
     std::string theme_str = "Theme: " + theme;
     ui->theme->setText(theme_str.c_str());
 
-    start_button = new QToolButton(this);
-    exit_button = new QToolButton(this);
+
+    //QPixmap bkgnd(":/image/background.png");
+    //bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, QColor(197, 240, 250));
+    this->setPalette(palette);
+
+    move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
+
+    //start_button = new QToolButton(this);
+    //exit_button = new QToolButton(this);
 }
 
 game_hangman::~game_hangman() {
@@ -164,8 +174,8 @@ void game_hangman::letter_clicked() {
 
 std::string game_hangman::random_word() {
     std::vector<std::string> words{"aboba",      "calculus", "algorithm",
-                                   "hangman",    "mem",      "gbhnteyrgt",
-                                   "wehyrtgseyh"};
+                                   "hangman",    "mem"
+                                   };
     std::mt19937 mt(time(nullptr));
     return words[mt() % words.size()];
 }
