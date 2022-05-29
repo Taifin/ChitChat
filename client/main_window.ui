@@ -126,6 +126,20 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QCheckBox" name="headphones_check">
+         <property name="text">
+          <string>headphones</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="microphone_check">
+         <property name="text">
+          <string>microphone</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>

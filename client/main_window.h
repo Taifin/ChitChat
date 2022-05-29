@@ -43,6 +43,14 @@ public slots:
 signals:
     void run_send_request(const std::string &message);
 
+    void turn_mic_on();
+
+    void turn_mic_off();
+
+    void turn_head_on();
+
+    void turn_head_off();
+
 private slots:
     void on_change_avatar_button_clicked();
 
@@ -54,7 +62,7 @@ private slots:
 
     void connect_with_room(std::vector<std::string> data);
 
-    void user_changed_position(std::string name, int x, int y);
+    void user_changed_position(const std::string &name, int x, int y);
 
     void roommate_disconnect(const std::string &roommate_name);
 
@@ -62,10 +70,11 @@ private slots:
 
     void show_curren_sprite();
 
-    void send_skin(const std::string &skin);
-    ;
+    void on_microphone_check_stateChanged(int arg1);
 
-    // void closeEvent(QCloseEvent *e);
+    void on_headphones_check_stateChanged(int arg1);
+
+    void send_skin(const std::string &skin);
 
 private:
     Ui::main_window *ui;

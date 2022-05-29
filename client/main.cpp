@@ -21,6 +21,5 @@ int main(int argc, char *argv[]) {
 
     current_view.start();
 
-
     return a.exec();
 }

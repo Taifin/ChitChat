@@ -1,9 +1,7 @@
 #include "main_window.h"
-#include <QApplication>
 #include <QMetaType>
 #include <chrono>
 #include <map>
-#include <memory>
 #include <thread>
 #include "./ui_main_window.h"
 #include "client_user.h"
@@ -47,7 +45,7 @@ main_window::main_window(QWidget *parent)
 void main_window::show_after_auth() {
     this->show();
     show_curren_sprite();
-};
+}
 
 main_window::~main_window() {
     delete scene;
@@ -134,7 +132,7 @@ void main_window::connect_with_room(std::vector<std::string> data) {
     current_user.user_sprite->setFocus();
 }
 
-void main_window::user_changed_position(std::string name, int x, int y) {
+void main_window::user_changed_position(const std::string &name, int x, int y) {
     users_in_the_room[name].user_sprite->setPos(x, y);
     set_sprite_name(users_in_the_room[name].user_sprite);
     // users_in_the_room[name].user_sprite->name_display->setPos(x, y - 20);
@@ -164,6 +162,8 @@ void main_window::roommate_connect(const std::string &roommate_name) {
 
 void main_window::show_curren_sprite() {
     scene->clear();
+*user_skin = new QGraphicsPixmapItem(
+
 
     QGraphicsSimpleTextItem *text =
         new QGraphicsSimpleTextItem("Your character");
@@ -176,6 +176,7 @@ void main_window::show_curren_sprite() {
     text->setPos(140, 160);
 
     QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
+
         QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
                 "_sprite.png"));
     scene->addItem(user_skin);
@@ -209,6 +210,7 @@ void main_window::on_change_avatar_button_clicked() {
     text->setPen(pen);
 
     text->setFont(font);
+
     scene->addItem(text);
     text->setPos(70, 80);
     text->setPen(pen);
@@ -217,21 +219,36 @@ void main_window::on_change_avatar_button_clicked() {
         "finn",  "gambol",        "miku",   "mushroom", "rafael",
         "sonic", "stormtroopers", "kermit", "pikachu"};
     for (int i = 0; i < 9; i++) {
-        sprite_for_choice *skin = new sprite_for_choice(characters[i]);
+        auto *skin = new sprite_for_choice(characters[i]);
         connect(skin, SIGNAL(add_curren_sprite()), this,
                 SLOT(show_curren_sprite()));
         connect(skin, SIGNAL(run_send_skin(const std::string &)), this,
                 SLOT(send_skin(const std::string &)));
         scene->addItem(skin);
 
-        skin->setPos(150 + ((i % 3) * 100), 120 + ((i / 3) * 100));
+        skin->setPos(150 + ((i % 3) * 100), 120 + ((i / 3) * 100));  // NOLINT
     }
 }
 
 void main_window::set_user_sprite() {
     current_user.user_sprite =
         new sprite(current_user.name(), current_user.get_skin());
-    connect(current_user.user_sprite,
-            SIGNAL(run_send_request(const std::string &)), current_session,
-            SLOT(send_request(const std::string &)));
+    connect(current_user.user_sprite, SIGNAL(run_send_request(std::string)),
+            current_session, SLOT(send_request(std::string)));
+}
+
+void main_window::on_headphones_check_stateChanged(int arg1) {
+    if (!arg1) {  // if button is unpressed
+        emit turn_head_on();
+    } else {
+        emit turn_head_off();
+    }
+}
+
+void main_window::on_microphone_check_stateChanged(int arg1) {
+    if (!arg1) {  // if button is unpressed
+        emit turn_mic_on();
+    } else {
+        emit turn_mic_off();
+    }
 }

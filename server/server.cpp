@@ -8,7 +8,7 @@ void server_processor::process() {
     while (!keeper->parsed_queries.empty()) {
         auto query = keeper->parsed_queries.front();
         keeper->parsed_queries.pop();
-        data = parse(query.first);
+        data = parse(query.first.toStdString());
         to = query.second;
         try {
             switch (commands.at(data[0])) {
@@ -30,6 +30,12 @@ void server_processor::process() {
                 case e_commands::DISCONNECT:
                     disconnect();
                     break;
+                case e_commands::SPRITE:
+                    get_sprite();
+                    break;
+                case e_commands::CHANGE:
+                    change_data();
+                    break;
             }
         } catch (std::out_of_range &e) {
             prepare_query("Unknown command " + data[0] + "\n", query.second);
@@ -41,7 +47,9 @@ void server_processor::authorize_user() {
     assert(data.size() == 3);
     try {
         if (model::database::authorize(data[1], data[2])) {
-            prepare_query("allowed," + data[1] + "\n", to);
+            auto user = model::database::get_user_data(data[1]);
+            prepare_query(
+                "allowed," + user.name() + "," + user.get_skin() + "\n", to);
         } else {
             prepare_query("denied," + data[1] + "\n", to);
         }
@@ -53,9 +61,9 @@ void server_processor::authorize_user() {
 }
 
 void server_processor::register_user() {
-    assert(data.size() == 3);
-    user new_user(data[1], data[2]);
-    if (model::database::create_user(&new_user)) {
+    //    assert(data.size() == 3);
+    user new_user(data[1], data[2], data[3]);
+    if (model::database::create_user(new_user)) {
         prepare_query("created," + data[1] + "\n", to);
     } else {
         prepare_query("rexists," + data[1] + "\n", to);
@@ -63,8 +71,8 @@ void server_processor::register_user() {
 }
 
 void server_processor::connect_user() {
-    assert(data.size() == 3);
-    server_user new_user{data[1], data[2], to};
+    //    assert(data.size() == 3);
+    server_user new_user{data[1], data[2], "kermit", to};
     if (model::state::connect_user(new_user)) {
         translate_users_data();
         new_user_connected();
@@ -79,8 +87,9 @@ void server_processor::greet() {
 }
 
 void server_processor::update_layout() {
-    assert(data.size() == 4);
-    qDebug() << "entered in move";
+    // assert(data.size() == 4);
+    // many move requests can glue together and only first of them will be
+    // processed
     model::state::update_coords(data[1], std::stoi(data[2]),
                                 std::stoi(data[3]));
     for (const auto &u : model::state::get_users()) {
@@ -97,7 +106,8 @@ void server_processor::translate_users_data() {
     // TODO
     for (const auto &u : model::state::get_users()) {
         all_users += u.name() + "," + std::to_string(u.get_coords().x) + "," +
-                     std::to_string(u.get_coords().y) + ",";
+                     std::to_string(u.get_coords().y) + "," + u.get_skin() +
+                     ",";
     }
     if (all_users.back() == ',')
         all_users.pop_back();
@@ -107,13 +117,12 @@ void server_processor::translate_users_data() {
 }
 
 void server_processor::disconnect() {
-    assert(data.size() == 5);
-    model::state::disconnect_user(server_user(
-        data[1], data[2], to, std::stoi(data[3]), std::stoi(data[4])));
+    //    assert(data.size() == 5);
+    model::state::disconnect_user(server_user(data[1], data[2], "kermit", to,
+                                              std::stoi(data[3]),
+                                              std::stoi(data[4])));
     for (const auto &u : model::state::get_users()) {
-        if (u.name() != data[1]) {
-            prepare_query("disconnected," + data[1] + "\n", u.client);
-        }
+        prepare_query("disconnected," + data[1] + "\n", u.client);
     }
 }
 server_processor::server_processor(network::queries_keeper *pKeeper,
@@ -127,6 +136,62 @@ void server_processor::new_user_connected() {
             prepare_query("new," + data[1] + "\n", u.client);
         }
     }
+}
+
+sv::audio_processor::audio_processor(network::queries_keeper *keeper,
+                                     network::tcp_socket &socket)
+    : network::query_processor(keeper, socket) {
+}
+
+void sv::server_socket::connect_one() {
+    qDebug() << "New connection";
+    QTcpSocket *new_socket = server->nextPendingConnection();
+    connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
+    connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
+    sockets.push_back(new_socket);
+}
+
+void sv::server_socket::disconnect_one() {
+    auto *socket = dynamic_cast<QTcpSocket *>(QObject::sender());
+    sockets.removeOne(socket);
+}
+QList<QTcpSocket *> sv::server_socket::get_connected_sockets() const {
+    return sockets;
+}
+server_socket::server_socket(const QHostAddress &host,
+                             quint16 port,
+                             network::queries_keeper *keeper1,
+                             QObject *parent)
+    : tcp_socket(host, port, keeper1, parent) {
+    server = new QTcpServer();
+    server->listen(host, port);
+    qDebug() << server->serverAddress() << server->serverPort();
+    qDebug() << "Server listening on" << host << port;
+    connect(server, SIGNAL(newConnection()), this, SLOT(connect_one()));
+}
+
+void sv::audio_processor::process() {
+    while (!keeper->parsed_queries.empty()) {
+        for (auto &sock :
+             dynamic_cast<server_socket &>(socket).get_connected_sockets()) {
+            if (sock != keeper->parsed_queries.front().second) {
+                prepare_query(
+                    keeper->parsed_queries.front().first.toStdString(), sock);
+            }
+        }
+        keeper->parsed_queries.pop();
+    }
+}
+
+void server_processor::get_sprite() {
+    auto user = model::database::get_user_data(data[1]);
+    prepare_query("sprite," + data[1] + " " + user.get_skin() + "\n", to);
+}
+
+void server_processor::change_data() {
+    model::database::change_values(data[2], data[1], data[3]);
+    prepare_query("changed," + data[1] + "," + data[2] + "," + data[3] + "\n",
+                  to);
 }
 
 }  // namespace sv

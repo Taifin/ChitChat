@@ -29,7 +29,7 @@ private slots:
 
     void start_game(const std::string &name);
 
-    void show_game_rating(){
+    void show_game_rating() {
         //апгрейднуть рейтинг;
         games_rating.show();
     }

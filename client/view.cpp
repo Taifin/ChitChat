@@ -24,6 +24,15 @@ view::view() {
     connect(&login_process, SIGNAL(show_main_window()), &main_process,
             SLOT(show_after_auth()));
 
+    connect(&main_process, SIGNAL(turn_mic_on()),
+            &current_session.audio_processor, SLOT(input_audio_on()));
+    connect(&main_process, SIGNAL(turn_mic_off()),
+            &current_session.audio_processor, SLOT(input_audio_off()));
+    connect(&main_process, SIGNAL(turn_head_on()),
+            &current_session.audio_processor, SLOT(output_audio_on()));
+    connect(&main_process, SIGNAL(turn_head_off()),
+            &current_session.audio_processor, SLOT(output_audio_off()));
+
     connect(&current_session.processor, SIGNAL(run_already_connected()),
             &main_process, SLOT(already_connected()));
     connect(&current_session.processor,
