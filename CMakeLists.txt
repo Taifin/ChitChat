@@ -47,6 +47,9 @@ set(CLIENT_SOURCES
         client/view.h
         client/view.cpp
         client/game_selection.cpp
+        client/rating.cpp
+        client/rating.h
+        client/rating.ui
         resources/resources.qrc
         )
 
@@ -79,6 +82,9 @@ target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network -pthread)
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
 target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
+
+add_executable(HangmanTest ${HANGMAN_SOURCES} games/hangman/main.cpp)
+target_link_libraries(HangmanTest Qt5::Widgets)
 
 add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
 target_link_libraries(Arkanoid Qt5::Widgets)
