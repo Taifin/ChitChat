@@ -50,4 +50,7 @@ void client_processor::process() {
         qDebug() << "New connection: " << data[1].c_str();
         emit run_connect_roommate(data[1]);
     }
+    if (status == "changed") {
+        emit run_change_skin(data[2]);
+    }
 }

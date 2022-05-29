@@ -1,8 +1,11 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <QCoreApplication>
+#include <QGraphicsDropShadowEffect>
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <QTimer>
 #include "game_selection.h"
 #include "login.h"
 #include "model.h"
@@ -23,6 +26,7 @@ public:
     main_window(QWidget *parent = nullptr);
 
     void set_user_skin(const std::string &skin);
+    void set_sprite_name(sprite *sprite);
 
     client_user current_user;
     std::map<std::string, client_user> users_in_the_room;
@@ -32,6 +36,9 @@ public:
     void set_user_sprite();
 
     ~main_window();
+
+public slots:
+    void remove_message();
 
 signals:
     void run_send_request(const std::string &message);
@@ -67,9 +74,17 @@ private slots:
 
     void on_headphones_check_stateChanged(int arg1);
 
+    void send_skin(const std::string &skin);
+    
+
 private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
+    QTimer *timer;
+    int TIME_FOR_MESSAGE = 1500;
+    QFont font;
+    QPen pen;
+    QBrush brush;
 };
 #endif  // MAIN_WINDOW_H

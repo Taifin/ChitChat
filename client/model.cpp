@@ -15,6 +15,7 @@ model::model()
 
 void model::send_request(const std::string &message) {
     processor.prepare_query(message, data_socket);
+    qDebug() << message.c_str();
 }
 
 model::~model() {

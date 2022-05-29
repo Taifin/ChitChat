@@ -43,10 +43,15 @@ private slots:
 
     void error();
 
+public slots:
+    void remove_message();
+
 private:
     Ui::login *ui;
     model *current_seccion = nullptr;
     client_processor *processor = nullptr;
+    QTimer *timer;
+    int TIME_FOR_MESSAGE = 1500;
 };
 
 #endif  // LOGIN_H
