@@ -1,7 +1,7 @@
 #include "game_selection.h"
+#include <QScreen>
 #include "QDebug"
 #include "ui_game_selection.h"
-#include <QScreen>
 
 game_selection::game_selection(QWidget *parent)
     : QWidget(parent), ui(new Ui::game_selection) {
@@ -9,7 +9,9 @@ game_selection::game_selection(QWidget *parent)
     connect(this, SIGNAL(game_chosen(const std::string &)), this,
             SLOT(start_game(const std::string &)));
     this->setWindowTitle("ChitChat");
-    move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
+    move(QGuiApplication::screens().at(0)->geometry().center() -
+         frameGeometry().center());
+    this->raise();
 }
 
 game_selection::~game_selection() {
@@ -18,21 +20,21 @@ game_selection::~game_selection() {
 
 void game_selection::on_hangman_button_clicked() {
     this->close();
-    //this->hide();
+    // this->hide();
     qDebug() << "HangMan";
     emit(game_chosen("Hangman"));
 }
 
 void game_selection::on_arkanoid_button_clicked() {
     this->close();
-    //this->hide();
+    // this->hide();
     qDebug() << "Arkanoid";
     emit(game_chosen("Arkanoid"));
 }
 
 void game_selection::on_back_to_room_button_clicked() {
     this->close();
-    //this->hide();
+    // this->hide();
 }
 
 void game_selection::start_game(const std::string &name) {
@@ -53,9 +55,8 @@ void game_selection::start_game(const std::string &name) {
     }
 }
 
-void game_selection::on_rating_button_clicked()
-{
+void game_selection::on_rating_button_clicked() {
+    games_rating.update_rating();
     games_rating.show();
     this->close();
 }
-

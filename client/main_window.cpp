@@ -40,9 +40,8 @@ main_window::main_window(QWidget *parent)
     brush.setColor(Qt::white);
     brush.setStyle(Qt::SolidPattern);
 
-    ui->statusbar->setStyleSheet(
-        "QStatusBar{padding-left:8px;background:rgba(255,0,0,255);color:black;"
-        "font-weight:bold;}");
+    ui->statusbar->setStyleSheet("background-color: rgb(169, 231, 245);");
+    this->lower();
 }
 
 void main_window::show_after_auth() {

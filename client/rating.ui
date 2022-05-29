@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 224, 237);
+border-color: rgb(173, 127, 168);
+border-top-color: rgb(173, 127, 168);</string>
+  </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
@@ -25,6 +30,15 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0" colspan="6">
      <widget class="QLabel" name="rating_label">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 700 20pt &quot;Source Code Pro&quot;;</string>
+      </property>
       <property name="text">
        <string>Rating</string>
       </property>
@@ -33,35 +47,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="5">
-     <widget class="QLabel" name="Arkanoid_score">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QLabel" name="HangMan_score">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QLabel" name="HangMan_names">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3" colspan="2">
-     <widget class="QLabel" name="Arkanoid_names">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2" colspan="2">
+    <item row="3" column="2" colspan="2">
      <widget class="QPushButton" name="back_to_room_button">
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(173, 127, 168);
@@ -69,6 +55,91 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
       </property>
       <property name="text">
        <string>Back to the room</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="hangman_score">
+      <property name="styleSheet">
+       <string notr="true">font: 13pt &quot;Source Code Pro&quot;;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QLabel" name="hangman_names">
+      <property name="styleSheet">
+       <string notr="true">font: 13pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QLabel" name="arkanoid_score">
+      <property name="styleSheet">
+       <string notr="true">font: 13pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3" colspan="2">
+     <widget class="QLabel" name="arkanoid_names">
+      <property name="styleSheet">
+       <string notr="true">font: 13pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3">
+     <widget class="QLabel" name="label">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 700 13pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string>HangMan</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3" colspan="3">
+     <widget class="QLabel" name="label_3">
+      <property name="styleSheet">
+       <string notr="true">font: 700 13pt &quot;Source Code Pro&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Arkanoid</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>

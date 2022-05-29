@@ -2,11 +2,11 @@
 #define ROOM_H
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QTime>
+#include <QTimer>
+#include "QTimer"
 #include "game_selection.h"
 #include "sprite.h"
-#include "QTimer"
-#include <QTimer>
-#include <QTime>
 
 static int TIME_TO_GO = 43;
 

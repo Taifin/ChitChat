@@ -1,10 +1,9 @@
 #include "room.h"
 
 room::room() : QGraphicsScene() {
-    timer =  new QTimer();
+    timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(let_to_move()));
 }
-
 
 void room::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
@@ -49,7 +48,7 @@ void room::keyPressEvent(QKeyEvent *event) {
                 change_position(STEP_SIZE, this->current_user_sprite,
                                 directions::RIGHT);
             }
-            break;        
+            break;
     }
 }
 
@@ -57,11 +56,11 @@ void room::set_curren_user_sprite(sprite *spr) {
     current_user_sprite = spr;
 }
 
-void room::dont_let_to_move(){
+void room::dont_let_to_move() {
     can_move = false;
     timer->start(TIME_TO_GO);
 }
 
-void room::let_to_move(){
+void room::let_to_move() {
     can_move = true;
 }
