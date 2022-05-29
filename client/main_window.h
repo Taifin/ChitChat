@@ -75,7 +75,6 @@ private slots:
     void on_headphones_check_stateChanged(int arg1);
 
     void send_skin(const std::string &skin);
-    
 
 private:
     Ui::main_window *ui;

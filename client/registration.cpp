@@ -1,9 +1,9 @@
 #include "registration.h"
+#include <QTimer>
 #include <vector>
 #include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
-#include <QTimer>
 
 registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
@@ -21,7 +21,7 @@ registration::registration(QWidget *parent)
     ui->stormtroopers_label->setPixmap(
         QPixmap(":/images/stormtroopers_sprite.png"));
 
-    timer =  new QTimer();
+    timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 }
 
@@ -42,34 +42,42 @@ void registration::on_confirm_button_clicked() {
 
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
-    } else if (login.length() == 0){
+    } else if (login.length() == 0) {
         ui->information_label->setText("You haven't entered a login");
         timer->start(TIME_FOR_MESSAGE);
-    }
-    else if (password.length() < 6){
-        ui->information_label->setText("This password is too short. (At least 6 symbols)");
+    } else if (password.length() < 6) {
+        ui->information_label->setText(
+            "This password is too short. (At least 6 symbols)");
         timer->start(TIME_FOR_MESSAGE);
-    }
-    else {
+    } else {
         emit run_send_request("register," + login + "," + password);
         if (ui->finn_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "finn");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "finn");
         } else if (ui->gambol_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "gambol");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "gambol");
         } else if (ui->kermit_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "kermit");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "kermit");
         } else if (ui->miku_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "miku");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "miku");
         } else if (ui->mushroom_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "myshroom");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "myshroom");
         } else if (ui->pikachu_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "pikachu");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "pikachu");
         } else if (ui->rafael_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "rafael");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "rafael");
         } else if (ui->sonic_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "sonic");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "sonic");
         } else if (ui->stormtroopers_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," + "stormtroopers");
+            emit run_send_request("register," + login + "," + password + "," +
+                                  "stormtroopers");
         }
     }
 }
@@ -85,8 +93,7 @@ void registration::duplicate() {
     timer->start(TIME_FOR_MESSAGE);
 }
 
-void registration::remove_message()
-{
+void registration::remove_message() {
     ui->information_label->clear();
 }
 

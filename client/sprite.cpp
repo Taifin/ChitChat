@@ -107,7 +107,6 @@ void change_position(int step_size, sprite *walker, directions dir) {
     emit walker->run_send_request("move," + walker->name + "," +
                                   std::to_string(x) + "," + std::to_string(y) +
                                   "\n");
-
 }
 
 sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
