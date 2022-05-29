@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Multimedia REQUIRED)
 include_directories(client)
 include_directories(shared)
 include_directories(server)
@@ -50,12 +50,13 @@ set(CLIENT_SOURCES
         client/rating.cpp
         client/rating.h
         client/rating.ui
+        client/voice_manager.cpp
         resources/resources.qrc
         )
 
 set(SERVER_SOURCES
         server/server.cpp
-        server_testing.cpp
+        run_server.cpp
         server/state.cpp
         server/database.cpp
         shared/socket.cpp
@@ -78,10 +79,10 @@ set(HANGMAN_SOURCES
         shared/abstract_game.h)
 
 add_executable(ChitChatClient ${CLIENT_SOURCES} )
-target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network -pthread)
+target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
-target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network -lpqxx -lpq -pthread)
+target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread)
 
 add_executable(HangmanTest ${HANGMAN_SOURCES} games/hangman/main.cpp)
 target_link_libraries(HangmanTest Qt5::Widgets)

@@ -11,10 +11,12 @@ public:
 
     explicit server_user(std::string uname,
                          std::string upwd,
+                         std::string skin,
                          QTcpSocket *socket,  // NOLINT
                          int x = 0,
                          int y = 0)
-        : user(std::move(uname), std::move(upwd), x, y), client(socket) {
+        : user(std::move(uname), std::move(upwd), std::move(skin), x, y),
+          client(socket) {
     }
 
     bool operator==(const server_user &other) {

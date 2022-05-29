@@ -11,44 +11,66 @@
 #include "socket.h"
 #include "user.h"
 
-/// +------------+-----------------------------+------------------------------------------------------------------------------------------+
-/// | command    |           format            | return |
-/// +------------+-----------------------------+------------------------------------------------------------------------------------------+
-/// | login      | login,username,password     | ok: allowed,username; bad:
-/// denied,username; no_user_found: none,username; error: dberror | | register
-/// | register,username,password  | ok: created,username; duplicate:
-/// rexists,username                                        | | connect    |
-/// connect,username,password   | ok: connected,user1,x1,y1,user2,x2,y2...;
-/// duplicate: cexists,username                    | | greet      |
-/// hello,username              | Hello, username, I'm Server God! | | move |
-/// move,username,x,y           | move,username,x,y | | disconnect |
-/// disconnect,username,pwd,x,y | disconnected |
-/// +------------+-----------------------------+------------------------------------------------------------------------------------------+
+// clang-format off
+/// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
+/// |   command    |                   format                    |                                            return                                            |
+/// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
+/// | login        | login,username,password                     | ok: allowed,username,skin; bad:denied,username; no_user_found: none,username; error: dberror |
+/// | register     | register,username,password                  | ok: created,username; duplicate: rexists,username                                            |
+/// | connect      | connect,username,password                   | ok: connected,user1,x1,y1,skin1,user2,x2,y2,skin2...; duplicate: cexists,username            |
+/// | hello        | hello,username                              | Hello, username, I'm Server God!                                                             |
+/// | move         | move,username,x,y                           | move,username,x,y                                                                            |
+/// | disconnect   | disconnect,username,pwd,skin,x,y            | disconnected,username                                                                        |
+/// | change skin  | change,skin,username,new_skin               | changed,skin,username                                                                        |
+/// | change score | change,*game_name*_score,username,new_score | changed,score,username                                                                       |
+/// | sprite       | sprite,username                             | sprite,username                                                                              |
+/// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
+// clang-format on
 
 namespace sv {
 
 class server_socket : public network::tcp_socket {
+    Q_OBJECT
+    QTcpServer *server;
+    QList<QTcpSocket *> sockets;
+
 public:
     explicit server_socket(const QHostAddress &host,
                            quint16 port,
                            network::queries_keeper *keeper1,
-                           QObject *parent = nullptr)
-        : network::tcp_socket(host, port, keeper1) {
-    }
+                           QObject *parent = nullptr);
+
+    [[nodiscard]] QList<QTcpSocket *> get_connected_sockets() const;
+
+public slots:
+    void connect_one();
+
+    void disconnect_one();
 };
 
 class server_processor : public network::query_processor {
-    Q_OBJECT;
+    Q_OBJECT
 
 private:
-    enum class e_commands { LOGIN, REGISTER, CONNECT, GREET, MOVE, DISCONNECT };
+    enum class e_commands {
+        LOGIN,
+        REGISTER,
+        CONNECT,
+        GREET,
+        MOVE,
+        DISCONNECT,
+        SPRITE,
+        CHANGE
+    };
     std::map<std::string, e_commands> commands{
         {"login", e_commands::LOGIN},
         {"register", e_commands::REGISTER},
         {"connect", e_commands::CONNECT},
         {"hello", e_commands::GREET},
         {"move", e_commands::MOVE},
-        {"disconnect", e_commands::DISCONNECT}};
+        {"disconnect", e_commands::DISCONNECT},
+        {"sprite", e_commands::SPRITE},
+        {"change", e_commands::CHANGE}};
 
 public:
     void process() override;
@@ -73,11 +95,23 @@ public:
 
     void disconnect();
 
+    void get_sprite();
+
+    void change_data();
+
     void greet();
     /// Debugging: sends message in return.
 
     server_processor(network::queries_keeper *pKeeper,
                      network::tcp_socket &socket);
+};
+
+class audio_processor : public network::query_processor {
+public:
+    explicit audio_processor(network::queries_keeper *keeper,
+                             network::tcp_socket &socket);
+
+    void process() override;
 };
 
 }  // namespace sv

@@ -1,19 +1,22 @@
 #include "client_user.h"
 
-client_user::client_user() : user("noname", "defaulpassword") {
+client_user::client_user() : user("noname", "defaulpassword", "miku") {
 }
 
-client_user::client_user(const std::string &uname, const std::string &upwd)
-    : user(uname, upwd) {
+client_user::client_user(const std::string &uname,
+                         const std::string &upwd,
+                         const std::string &skin)
+    : user(uname, upwd, skin) {
     // user_sprite->name_display->setPlainText((QString("uname")));
     // user_sprite->name_display->setPos(30, 30);
 }
 
 client_user::client_user(const std::string &uname,
                          const std::string &upwd,
+                         const std::string &skin,
                          int x,
                          int y)
-    : user(uname, upwd, x, y) {
+    : user(uname, upwd, skin, x, y) {
     // user_sprite->setRect(0, 0, 30, 30);
     // user_sprite->setRect(0, 0, 30, 30);
 }
