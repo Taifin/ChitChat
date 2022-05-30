@@ -47,6 +47,7 @@ void login::on_create_new_account_button_clicked() {
 
 void login::show_login_window() {
     this->show();
+    this->activateWindow();
 }
 
 void login::successful_login(const std::string &name) {

@@ -44,6 +44,7 @@ main_window::main_window(QWidget *parent)
 
 void main_window::show_after_auth() {
     this->show();
+    this->activateWindow();
     show_curren_sprite();
 }
 

@@ -18,9 +18,10 @@ protected:
     client_processor *processor;
     void run() {
         while (true) {
+            qDebug() << "wanna die";
             processor->wait_next_query();
         }
-    };
+    }
 };
 
 class model : public QObject {
