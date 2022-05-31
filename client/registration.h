@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "message.pb.h"
+#include "shared/user.h"
 
 namespace Ui {
 class registration;

@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Widgets Network Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Multimedia Core REQUIRED)
 find_package(Protobuf REQUIRED)
 include_directories(client)
 include_directories(shared)
@@ -84,7 +84,10 @@ add_executable(ChitChatClient ${CLIENT_SOURCES} )
 target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread -lprotobuf)
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
-target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread -lprotobuf)
+target_link_libraries(ChitChatServer Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread -lprotoc -lprotobuf)
+
+add_executable(aboba protoc_testing.cpp shared/message.pb.cc)
+target_link_libraries(aboba Qt5::Widgets Qt5::Network Qt5::Multimedia Qt5::Core -pthread -lprotobuf)
 
 add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
 target_link_libraries(Arkanoid Qt5::Widgets)

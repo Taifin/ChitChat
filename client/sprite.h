@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QtGui>
 #include <unordered_map>
+#include "message.pb.h"
 
 static int STEP_SIZE = 5;
 
@@ -27,7 +28,7 @@ public:
     void change_skin(const std::string &skin);
 
 signals:
-    void run_send_request(const std::string &message);
+    void run_send_request(const ChitChatMessage::Query &message);
 };
 
 void change_position(int step_size, sprite *walker, directions dir);

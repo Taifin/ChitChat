@@ -39,7 +39,7 @@ void registration::on_confirm_button_clicked() {
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
     } else {
-        user u(login, password, "");
+        user u(login, password, "aboba");
         // TODO: передавать на сервер информацию о выборе
         if (ui->finn_radio_button->isChecked()) {
             u.set_skin("finn");

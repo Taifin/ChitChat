@@ -5,10 +5,10 @@ package ChitChatMessage;
 message Query {
   message User {
     required string name = 1;
-    optional string password = 2 [default = "pwd"];
-    optional string skin = 3 [default = "kermit"];
-    optional int32 x_coord = 4 [default = 0];
-    optional int32 y_coord = 5 [default = 0];
+    optional string password = 2;
+    optional string skin = 3;
+    optional int32 x_coord = 4;
+    optional int32 y_coord = 5;
   }
 
   enum RequestType {
@@ -23,25 +23,25 @@ message Query {
   }
 
   enum FeedbackType {
-    NO_USER_FOUND = -1;
-    LOGIN_ALLOWED = 0;
-    LOGIN_DENIED = 1;
-    USER_CREATED = 2;
-    USER_DUPLICATE = 3;
-    CONNECTION_SUCCESS = 4;
-    CONNECTION_EXISTS = 5;
-    MOVED = 6;
-    DISCONNECTED = 7;
-    SKIN_CHANGED = 8;
-    SCORE_CHANGED = 9;
-    DATABASE_ERROR = 10;
-    SKIN = 11;
-    NEW_USER_CONNECTED = 12;
+    NO_USER_FOUND = 0;
+    LOGIN_ALLOWED = 1;
+    LOGIN_DENIED = 2;
+    USER_CREATED = 3;
+    USER_DUPLICATE = 4;
+    CONNECTION_SUCCESS = 5;
+    CONNECTION_EXISTS = 6;
+    MOVED = 7;
+    DISCONNECTED = 8;
+    SKIN_CHANGED = 9;
+    SCORE_CHANGED = 10;
+    DATABASE_ERROR = 11;
+    SKIN = 12;
+    NEW_USER_CONNECTED = 13;
   }
 
   optional RequestType rType = 1;
   optional FeedbackType fType = 2;
-  required User user = 3;
+  optional User user = 3;
   repeated User users = 4;
   optional int32 score = 5;
   optional string game_name = 6;

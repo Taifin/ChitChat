@@ -14,6 +14,7 @@ void server_processor::process() {
         user_in_process.parse(query);  // TODO: c-tor
         user_in_process.client = raw_query.second;
         to = raw_query.second;
+        qDebug() << query.rtype() << query.user().name().c_str();
         switch (query.rtype()) {
             case requestType::Query_RequestType_LOGIN:
                 authorize_user();
@@ -94,8 +95,8 @@ void server_processor::connect_user() {
 void server_processor::update_layout() {
     model::state::update_coords(user_in_process);
     for (const auto &u : model::state::get_users()) {
-        if (u.client != to) {
-            prepare_query(u.serialize(feedbackType::Query_FeedbackType_MOVED),
+        if (u.get_name() != user_in_process.get_name()) { // TODO: operator overload
+            prepare_query(user_in_process.serialize(feedbackType::Query_FeedbackType_MOVED),
                           u.client);
         }
     }
@@ -103,7 +104,7 @@ void server_processor::update_layout() {
 
 void server_processor::translate_users_data() {
     Query all_users_query;
-    std::string all_users = "connected,";
+    all_users_query.set_ftype(ChitChatMessage::Query_FeedbackType_CONNECTION_SUCCESS);
     for (const auto &u : model::state::get_users()) {
         auto us = all_users_query.add_users();
         us->set_name(u.get_name());

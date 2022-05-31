@@ -26,6 +26,7 @@ void login::on_log_in_button_clicked() {
     std::string login, password;
     login = (ui->login_line_edit->text().toStdString());
     password = ui->password_line_edit->text().toStdString();
+    // TODO
     user u(login, password, "aboba");
     ChitChatMessage::Query aboba = u.serialize(ChitChatMessage::Query_RequestType_LOGIN);
     emit run_send_request(aboba);

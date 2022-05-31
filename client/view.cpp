@@ -9,6 +9,9 @@ view::view() {
     connect(&login_process, SIGNAL(show_registration_window()),
             &registration_process, SLOT(show()));
 
+
+    qRegisterMetaType<ChitChatMessage::Query>("ChitChatMessage::Query");
+
     //коннекты из логина
     qRegisterMetaType<std::string>("std::string");
     connect(&current_session.processor,

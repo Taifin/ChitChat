@@ -25,6 +25,7 @@ client::processor::processor(network::queries_keeper *keeper1,
 void client::processor::process() {
     while (keeper->parsed_size() > 0) {
         if (!muted) {
+            // TODO: add size to msg before sending
             device->write(keeper->front_parsed().first.data(),
                           keeper->front_parsed().first.size());
         }

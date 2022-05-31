@@ -137,8 +137,8 @@ void main_window::on_change_avatar_button_clicked() {
 void main_window::set_user_sprite() {
     current_user.user_sprite =
         new sprite(current_user.get_name(), current_user.get_skin());
-    connect(current_user.user_sprite, SIGNAL(run_send_request(std::string)),
-            current_session, SLOT(send_request(std::string)));
+    connect(current_user.user_sprite, SIGNAL(run_send_request(ChitChatMessage::Query)),
+            current_session, SLOT(send_request(ChitChatMessage::Query)));
 }
 
 void main_window::on_headphones_check_stateChanged(int arg1) {

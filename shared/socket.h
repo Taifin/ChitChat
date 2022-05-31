@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include "message.pb.h"
+#include "user.h"
 
 namespace network {
 
@@ -43,6 +44,9 @@ class tcp_socket : public QObject {
 
 protected:
     queries_keeper *keeper;
+
+private:
+    uint32_t read_msg_size(char* buf);
 
 public:
     explicit tcp_socket(const QHostAddress &host,
@@ -75,7 +79,7 @@ protected:
 public:
     explicit query_processor(queries_keeper *keeper, tcp_socket &socket);
 
-    static std::vector<std::string> parse(const std::string &raw_data);
+    static void parse(const QByteArray &raw_data, ChitChatMessage::Query &q);
 
     void wait_next_query();
 
@@ -83,7 +87,8 @@ public:
 
     void prepare_query(const QByteArray &q, QTcpSocket *cli);
 
-    void prepare_query(const ChitChatMessage::Query &q, QTcpSocket *cli);
+    void prepare_query(const ChitChatMessage::Query& q,
+                       QTcpSocket *cli);
 
 signals:
 

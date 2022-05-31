@@ -72,26 +72,22 @@ public:
 
     [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::RequestType type) const {
         ChitChatMessage::Query query;
-        ChitChatMessage::Query_User user;
-        user.set_name(username);
-        user.set_password(password);
-        user.set_skin(skin);
-        user.set_x_coord(coords.x);
-        user.set_y_coord(coords.y);
-        query.set_allocated_user(&user);
+        query.mutable_user()->set_name(username);
+        query.mutable_user()->set_password(password);
+        query.mutable_user()->set_skin(skin);
+        query.mutable_user()->set_x_coord(coords.x);
+        query.mutable_user()->set_y_coord(coords.y);
         query.set_rtype(type);
-        return query;
+        return std::move(query);
     }
 
     [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::FeedbackType type) const {
         ChitChatMessage::Query query;
-        ChitChatMessage::Query_User user;
-        user.set_name(username);
-        user.set_password(password);
-        user.set_skin(skin);
-        user.set_x_coord(coords.x);
-        user.set_y_coord(coords.y);
-        query.set_allocated_user(&user);
+        query.mutable_user()->set_name(username);
+        query.mutable_user()->set_password(password);
+        query.mutable_user()->set_skin(skin);
+        query.mutable_user()->set_x_coord(coords.x);
+        query.mutable_user()->set_y_coord(coords.y);
         query.set_ftype(type);
         return query;
     }

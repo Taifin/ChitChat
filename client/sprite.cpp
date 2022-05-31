@@ -93,9 +93,8 @@ void change_position(int step_size, sprite *walker, directions dir) {
                                  walker->name_display->y() + walker->y() - y);
     x = walker->x();
     y = walker->y();
-    emit walker->run_send_request("move," + walker->name + "," +
-                                  std::to_string(x) + "," + std::to_string(y) +
-                                  "\n");
+    user moved(walker->name, "placeholder", "skin", x, y);
+    emit walker->run_send_request(moved.serialize(ChitChatMessage::Query_RequestType_MOVE));
     qDebug() << std::to_string(walker->x()).c_str()
              << std::to_string(walker->y()).c_str();
 }
