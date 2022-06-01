@@ -44,7 +44,7 @@ std::atomic_size_t queries_keeper::parsed_size() const {
 void query_processor::prepare_query(const QByteArray &q, QTcpSocket *cli) {
     auto size = q.size();
     QByteArray array(reinterpret_cast<const char*>(&size), 4);
-    array.append(q); // TODO: prepend??
+    array.append(q);
     keeper->push_prepared(array, cli);
     emit prepared();
 }

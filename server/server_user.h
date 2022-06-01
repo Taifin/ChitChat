@@ -21,12 +21,12 @@ public:
 
     server_user() = default;
 
-    bool operator==(const server_user &other) {
+    bool operator==(const server_user &other) const {
         return this->get_name() == other.get_name();
     }
 
-    bool operator==(server_user &&other) {
-        return this->get_name() == other.get_name();
+    bool operator!=(const server_user &other) const {
+        return !(*this == other);
     }
 };
 

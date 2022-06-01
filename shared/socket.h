@@ -39,7 +39,6 @@ public:
 };
 
 class tcp_socket : public QObject {
-    // TODO: class only for methods read() and send()?
     Q_OBJECT
 
 protected:
@@ -73,13 +72,11 @@ class query_processor : public QObject {
 protected:
     queries_keeper *keeper;
     tcp_socket &socket;
-    ChitChatMessage::Query query;
+    ChitChatMessage::Query query; // TODO: query is used only once, consider removing
     QTcpSocket *to;
 
 public:
     explicit query_processor(queries_keeper *keeper, tcp_socket &socket);
-
-    static void parse(const QByteArray &raw_data, ChitChatMessage::Query &q);
 
     void wait_next_query();
 

@@ -28,7 +28,7 @@ public:
     void process() override;
 
 signals:
-    void run_successful_login(std::string);
+    void run_successful_login(const ChitChatMessage::Query q);
 
     void run_wrong_password();
 

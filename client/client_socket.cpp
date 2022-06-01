@@ -18,7 +18,7 @@ void client_processor::process() {
             emit run_no_user();
             break;
         case ChitChatMessage::Query_FeedbackType_LOGIN_ALLOWED:
-            emit run_successful_login(query.user().name());
+            emit run_successful_login(query);
             break;
         case ChitChatMessage::Query_FeedbackType_LOGIN_DENIED:
             emit run_wrong_password();
@@ -36,6 +36,7 @@ void client_processor::process() {
             emit run_already_connected();
             break;
         case ChitChatMessage::Query_FeedbackType_MOVED:
+            // TODO: unify signatures to ChitChatMessage::Query as args
             emit run_change_position(query.user().name(), query.user().x_coord(), query.user().y_coord());
             break;
         case ChitChatMessage::Query_FeedbackType_DISCONNECTED:

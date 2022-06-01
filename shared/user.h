@@ -92,7 +92,7 @@ public:
         return query;
     }
 
-    void parse(const ChitChatMessage::Query& query) {
+    void parse_from(const ChitChatMessage::Query& query) {
         username = query.user().name();
         password = query.user().password();
         skin = query.user().skin();

@@ -9,7 +9,7 @@ void server_processor::process() {
     while (keeper->parsed_size() > 0) {
         auto raw_query = keeper->pop_parsed();
         query.ParseFromString(raw_query.first.toStdString());
-        user_in_process.parse(query);  // TODO: c-tor
+        user_in_process.parse_from(query);
         user_in_process.client = raw_query.second;
         to = raw_query.second;
         switch (query.rtype()) {
@@ -86,8 +86,7 @@ void server_processor::connect_user() {
 void server_processor::update_layout() {
     model::state::update_coords(user_in_process);
     for (const auto &u : model::state::get_users()) {
-        if (u.get_name() !=
-            user_in_process.get_name()) {  // TODO: operator overload
+        if (u != user_in_process) {
             prepare_query(user_in_process.serialize(Query_FeedbackType_MOVED),
                           u.client);
         }
@@ -124,7 +123,7 @@ server_processor::server_processor(network::queries_keeper *pKeeper,
 
 void server_processor::new_user_connected() {
     for (const auto &u : model::state::get_users()) {
-        if (u.get_name() != user_in_process.get_name()) {
+        if (u != user_in_process) {
             prepare_query(user_in_process.serialize(
                               Query_FeedbackType_NEW_USER_CONNECTED),
                           u.client);
