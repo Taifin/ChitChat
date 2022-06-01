@@ -14,9 +14,11 @@ bool state::connect_user(const server_user &new_user) {
 
 void state::update_coords(const server_user &user_moved) {
     if (connected_users.count(user_moved.get_name()))
-        connected_users.at(user_moved.get_name()).set_coords(user_moved.get_x(), user_moved.get_y());
+        connected_users.at(user_moved.get_name())
+            .set_coords(user_moved.get_x(), user_moved.get_y());
     else
-        qDebug() << "user" << user_moved.get_name().c_str() << "is not in the room";
+        qDebug() << "user" << user_moved.get_name().c_str()
+                 << "is not in the room";
 }
 
 std::vector<server_user> state::get_users() {

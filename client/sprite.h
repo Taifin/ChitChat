@@ -16,7 +16,7 @@ class sprite : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
-    sprite(const std::string &name, const std::string& skin);
+    sprite(const std::string &name, const std::string &skin);
     void keyPressEvent(QKeyEvent *event) override;
 
     const std::string &name;
@@ -51,7 +51,7 @@ class sprite_of_object : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
-    explicit sprite_of_object(const std::string& object);
+    explicit sprite_of_object(const std::string &object);
     std::string type_of_object;
 };
 

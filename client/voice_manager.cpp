@@ -26,7 +26,7 @@ void client::processor::process() {
     while (keeper->parsed_size() > 0) {
         if (!muted) {
             outDevice->write(keeper->front_parsed().first.data(),
-                          keeper->front_parsed().first.size());
+                             keeper->front_parsed().first.size());
         }
         keeper->pop_parsed();
     }
@@ -56,7 +56,7 @@ void client::processor::output_audio_off() {
 void client::processor::send() {
     auto size = inDevice->bytesAvailable();
     qDebug() << "Audio of size" << size << "is being sent";
-    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    QByteArray array(reinterpret_cast<const char *>(&size), 4);
     array.append(inDevice->readAll(), (int)(size));
     audio_socket->write(array);
 }

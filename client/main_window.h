@@ -8,9 +8,9 @@
 #include <QTimer>
 #include "game_selection.h"
 #include "login.h"
+#include "message.pb.h"
 #include "model.h"
 #include "room.h"
-#include "message.pb.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -81,7 +81,7 @@ private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
-    void initialize_user(client_user& u);
+    void initialize_user(client_user &u);
 
     QTimer *timer;
     int TIME_FOR_MESSAGE = 1500;

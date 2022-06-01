@@ -43,9 +43,11 @@ void server_processor::process() {
 
 void server_processor::authorize_user() {
     try {
-        if (model::database::authorize(user_in_process.get_name(), user_in_process.get_password())) {
+        if (model::database::authorize(user_in_process.get_name(),
+                                       user_in_process.get_password())) {
             user_in_process.set_skin(
-                model::database::get_user_data(user_in_process.get_name()).get_skin());
+                model::database::get_user_data(user_in_process.get_name())
+                    .get_skin());
             prepare_query(
                 user_in_process.serialize(Query_FeedbackType_LOGIN_ALLOWED),
                 to);
@@ -161,7 +163,8 @@ server_socket::server_socket(const QHostAddress &host,
     tcp_server = new QTcpServer();
     tcp_server->listen(host, port);
     qDebug() << tcp_server->serverAddress() << tcp_server->serverPort();
-    qDebug() << "Server listening on" << tcp_server->serverAddress() << tcp_server->serverPort();
+    qDebug() << "Server listening on" << tcp_server->serverAddress()
+             << tcp_server->serverPort();
     connect(tcp_server, SIGNAL(newConnection()), this, SLOT(connect_one()));
 }
 

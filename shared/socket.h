@@ -45,7 +45,7 @@ protected:
     queries_keeper *keeper;
 
 private:
-    uint32_t read_msg_size(char* buf);
+    uint32_t read_msg_size(char *buf);
 
 public:
     explicit tcp_socket(const QHostAddress &host,
@@ -72,7 +72,8 @@ class query_processor : public QObject {
 protected:
     queries_keeper *keeper;
     tcp_socket &socket;
-    ChitChatMessage::Query query; // TODO: query is used only once, consider removing
+    ChitChatMessage::Query
+        query;  // TODO: query is used only once, consider removing
     QTcpSocket *to;
 
 public:
@@ -84,8 +85,7 @@ public:
 
     void prepare_query(const QByteArray &q, QTcpSocket *cli);
 
-    void prepare_query(const ChitChatMessage::Query& q,
-                       QTcpSocket *cli);
+    void prepare_query(const ChitChatMessage::Query &q, QTcpSocket *cli);
 
 signals:
 

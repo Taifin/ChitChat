@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 #include "database.h"
-#include "socket.h"
 #include "server_user.h"
+#include "socket.h"
 
 // clang-format off
 /// +--------------+---------------------------------------------+----------------------------------------------------------------------------------------------+
@@ -95,5 +95,5 @@ public:
     void process() override;
 };
 
-}  // namespace sv
+}  // namespace server
 #endif

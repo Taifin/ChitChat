@@ -37,7 +37,9 @@ void client_processor::process() {
             break;
         case ChitChatMessage::Query_FeedbackType_MOVED:
             // TODO: unify signatures to ChitChatMessage::Query as args
-            emit run_change_position(query.user().name(), query.user().x_coord(), query.user().y_coord());
+            emit run_change_position(query.user().name(),
+                                     query.user().x_coord(),
+                                     query.user().y_coord());
             break;
         case ChitChatMessage::Query_FeedbackType_DISCONNECTED:
             emit run_disconnect_roommate(query.user().name());

@@ -78,7 +78,8 @@ void registration::on_confirm_button_clicked() {
             u.set_skin("rafael");
             qDebug() << "rafael";
         }
-        emit run_send_request(u.serialize(ChitChatMessage::Query_RequestType_REGISTER));
+        emit run_send_request(
+            u.serialize(ChitChatMessage::Query_RequestType_REGISTER));
     }
 }
 

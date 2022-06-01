@@ -4,9 +4,9 @@
 #include <QApplication>
 #include "client_socket.h"
 #include "client_user.h"
+#include "message.pb.h"
 #include "shared/socket.h"
 #include "voice_manager.h"
-#include "message.pb.h"
 
 static quint16 PORT = 1235;
 
@@ -28,7 +28,7 @@ public:
     ~model() override;
 
 private slots:
-    void send_request(const ChitChatMessage::Query& message);
+    void send_request(const ChitChatMessage::Query &message);
 };
 
 #endif  // MODEL_H

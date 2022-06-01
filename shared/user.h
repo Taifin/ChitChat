@@ -2,10 +2,10 @@
 #define CHITCHAT_USER_H
 
 #include <utility>
-#include "QObject"
 #include "QDebug"
-#include "string"
+#include "QObject"
 #include "message.pb.h"
+#include "string"
 
 struct point {
     int x;
@@ -66,11 +66,12 @@ public:
         coords = {x, y};
     }
 
-    void set_skin(const std::string& skin_name) {
+    void set_skin(const std::string &skin_name) {
         skin = skin_name;
     }
 
-    [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::RequestType type) const {
+    [[nodiscard]] ChitChatMessage::Query serialize(
+        ChitChatMessage::Query::RequestType type) const {
         ChitChatMessage::Query query;
         query.mutable_user()->set_name(username);
         query.mutable_user()->set_password(password);
@@ -81,7 +82,8 @@ public:
         return std::move(query);
     }
 
-    [[nodiscard]] ChitChatMessage::Query serialize(ChitChatMessage::Query::FeedbackType type) const {
+    [[nodiscard]] ChitChatMessage::Query serialize(
+        ChitChatMessage::Query::FeedbackType type) const {
         ChitChatMessage::Query query;
         query.mutable_user()->set_name(username);
         query.mutable_user()->set_password(password);
@@ -92,14 +94,14 @@ public:
         return query;
     }
 
-    void parse_from(const ChitChatMessage::Query& query) {
+    void parse_from(const ChitChatMessage::Query &query) {
         username = query.user().name();
         password = query.user().password();
         skin = query.user().skin();
         coords = {query.user().x_coord(), query.user().y_coord()};
     }
 
-    void parse(const ChitChatMessage::Query_User& user) {
+    void parse(const ChitChatMessage::Query_User &user) {
         username = user.name();
         password = user.password();
         skin = user.skin();

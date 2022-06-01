@@ -36,7 +36,8 @@ void login::on_log_in_button_clicked() {
         timer->start(TIME_FOR_MESSAGE);
     } else {
         user u(login, password, "aboba");
-        emit run_send_request(u.serialize(ChitChatMessage::Query_RequestType_LOGIN));
+        emit run_send_request(
+            u.serialize(ChitChatMessage::Query_RequestType_LOGIN));
     }
 }
 

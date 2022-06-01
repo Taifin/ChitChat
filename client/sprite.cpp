@@ -5,7 +5,7 @@
 #include "client_socket.h"
 #include "view.h"
 
-sprite::sprite(const std::string &name, const std::string& skin) : name(name) {
+sprite::sprite(const std::string &name, const std::string &skin) : name(name) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
     QPen pen;
 
@@ -56,11 +56,10 @@ void sprite::change_skin(const std::string &skin) {
 }
 
 bool is_colliding(sprite *walker) {
-    auto *text =
-        new QGraphicsTextItem("Press CTRL+G to start a game");
+    auto *text = new QGraphicsTextItem("Press CTRL+G to start a game");
     QGraphicsScene *scene = walker->scene();
     QList<QGraphicsItem *> colliding_items = walker->collidingItems();
-    for (auto & colliding_item : colliding_items) {
+    for (auto &colliding_item : colliding_items) {
         if (typeid(*colliding_item) == typeid(sprite_of_object)) {
             auto *effect = new QGraphicsColorizeEffect();
             effect->setColor(Qt::black);
@@ -103,7 +102,8 @@ void change_position(int step_size, sprite *walker, directions dir) {
     x = walker->x();
     y = walker->y();
     user moved(walker->name, "placeholder", "skin", x, y);
-    emit walker->run_send_request(moved.serialize(ChitChatMessage::Query_RequestType_MOVE));
+    emit walker->run_send_request(
+        moved.serialize(ChitChatMessage::Query_RequestType_MOVE));
     qDebug() << std::to_string(walker->x()).c_str()
              << std::to_string(walker->y()).c_str();
 }
@@ -118,7 +118,7 @@ void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     emit this->add_curren_sprite();
 }
 
-sprite_of_object::sprite_of_object(const std::string& object)
+sprite_of_object::sprite_of_object(const std::string &object)
     : QGraphicsPixmapItem(
           QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;

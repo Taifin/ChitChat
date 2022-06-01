@@ -12,8 +12,8 @@ view::view() {
     qRegisterMetaType<ChitChatMessage::Query>("ChitChatMessage::Query");
     qRegisterMetaType<std::string>("std::string");
     connect(&current_session.processor,
-            SIGNAL(run_successful_login(ChitChatMessage::Query)), &login_process,
-            SLOT(successful_login(ChitChatMessage::Query)));
+            SIGNAL(run_successful_login(ChitChatMessage::Query)),
+            &login_process, SLOT(successful_login(ChitChatMessage::Query)));
     connect(&current_session.processor, SIGNAL(run_wrong_password()),
             &login_process, SLOT(wrong_password()));
     connect(&current_session.processor, SIGNAL(run_no_user()), &login_process,
@@ -40,8 +40,8 @@ view::view() {
             SIGNAL(run_connect_with_room(ChitChatMessage::Query)),
             &main_process, SLOT(connect_with_room(ChitChatMessage::Query)));
     connect(&current_session.processor,
-            SIGNAL(run_change_position(std::string,int,int)), &main_process,
-            SLOT(user_changed_position(std::string,int,int)));
+            SIGNAL(run_change_position(std::string, int, int)), &main_process,
+            SLOT(user_changed_position(std::string, int, int)));
     connect(&current_session.processor,
             SIGNAL(run_disconnect_roommate(std::string)), &main_process,
             SLOT(roommate_disconnect(std::string)));
@@ -62,9 +62,9 @@ view::view() {
     connect(&current_session.processor, SIGNAL(run_duplicate()),
             &registration_process, SLOT(duplicate()));
 
-    connect(&login_process, SIGNAL(run_initialize(std::string,std::string)),
+    connect(&login_process, SIGNAL(run_initialize(std::string, std::string)),
             &main_process.current_user,
-            SLOT(initialize(std::string,std::string)));
+            SLOT(initialize(std::string, std::string)));
     connect(&current_session.processor, SIGNAL(run_change_skin(std::string)),
             &main_process.current_user, SLOT(change_skin(std::string)));
 }
