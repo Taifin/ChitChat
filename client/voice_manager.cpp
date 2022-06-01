@@ -56,7 +56,7 @@ void client::processor::send() {
     auto audio = inDevice->readAll();
     auto size = audio.size();
     qDebug() << "Audio of size" << size << "is being sent";
-    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    QByteArray array(reinterpret_cast<const char *>(&size), 4);
     array.append(audio, (int)(size));
     audio_socket->write(array);
 }
