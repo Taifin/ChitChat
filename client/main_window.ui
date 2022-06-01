@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>604</height>
+    <width>785</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,10 +25,10 @@ border-top-color: rgb(173, 127, 168);</string>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>0</y>
       <width>782</width>
-      <height>561</height>
+      <height>570</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -48,7 +48,7 @@ border-top-color: rgb(173, 127, 168);</string>
       <number>10</number>
      </property>
      <property name="bottomMargin">
-      <number>0</number>
+      <number>10</number>
      </property>
      <item>
       <widget class="QGraphicsView" name="room_view">
@@ -145,17 +145,11 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
     </layout>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>791</width>
-     <height>22</height>
-    </rect>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="autoFillBackground">
+    <bool>true</bool>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

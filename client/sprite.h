@@ -23,7 +23,7 @@ public:
 
     ~sprite() override;
 
-    QGraphicsTextItem *name_display = new QGraphicsTextItem;
+    QGraphicsSimpleTextItem *name_display = new QGraphicsSimpleTextItem;
 
     void change_skin(const std::string &skin);
 
@@ -44,6 +44,7 @@ public:
 
 signals:
     void add_curren_sprite();
+    void run_send_skin(const std::string &message);
 };
 
 class sprite_of_object : public QObject, public QGraphicsPixmapItem {

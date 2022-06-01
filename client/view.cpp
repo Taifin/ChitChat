@@ -9,10 +9,7 @@ view::view() {
     connect(&login_process, SIGNAL(show_registration_window()),
             &registration_process, SLOT(show()));
 
-
     qRegisterMetaType<ChitChatMessage::Query>("ChitChatMessage::Query");
-
-    //коннекты из логина
     qRegisterMetaType<std::string>("std::string");
     connect(&current_session.processor,
             SIGNAL(run_successful_login(ChitChatMessage::Query)), &login_process,
@@ -23,8 +20,6 @@ view::view() {
             SLOT(no_user()));
     connect(&current_session.processor, SIGNAL(run_error()), &login_process,
             SLOT(error()));
-
-    //коннекты из мейн виндов
 
     qRegisterMetaType<std::vector<std::string>>("std::vector<std::string>");
     connect(&login_process, SIGNAL(show_main_window()), &main_process,
@@ -70,6 +65,8 @@ view::view() {
     connect(&login_process, SIGNAL(run_initialize(std::string,std::string)),
             &main_process.current_user,
             SLOT(initialize(std::string,std::string)));
+    connect(&current_session.processor, SIGNAL(run_change_skin(std::string)),
+            &main_process.current_user, SLOT(change_skin(std::string)));
 }
 
 void view::start() {

@@ -32,8 +32,13 @@ private slots:
 
     void duplicate();
 
+public slots:
+    void remove_message();
+
 private:
     Ui::registration *ui;
+    QTimer *timer;
+    int TIME_FOR_MESSAGE = 1500;
 };
 
 #endif  // REGISTRATION_H

@@ -51,6 +51,8 @@ signals:
     void run_disconnect_roommate(std::string);
 
     void run_connect_roommate(ChitChatMessage::Query);
+
+    void run_change_skin(const std::string &);
 };
 
 #endif  // CLIENT_SOCKET_H

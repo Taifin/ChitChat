@@ -9,10 +9,14 @@
 #include "sprite.h"
 
 main_window::main_window(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::main_window) {
+    : QMainWindow(parent),
+      ui(new Ui::main_window),
+      font("Source Code Pro", 13, QFont::Bold) {
     scene = new room();
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    move(QGuiApplication::screens().at(0)->geometry().center() -
+         frameGeometry().center());
     view = ui->room_view;
     view->setFixedSize(600, 550);
     qDebug() << view->y() << " " << view->x() << " " << view->width() << " "
@@ -21,6 +25,21 @@ main_window::main_window(QWidget *parent)
 
     view->x(), view->setScene(scene);
     scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
+
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
+
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::blue);
+    // pen.setCapStyle(Qt::RoundCap);
+    // pen.setJoinStyle(Qt::RoundJoin);
+    // pen.setColor(Qt::green);
+    brush.setColor(Qt::white);
+    brush.setStyle(Qt::SolidPattern);
+
+    ui->statusbar->setStyleSheet("background-color: rgb(169, 231, 245);");
+    this->lower();
 }
 
 void main_window::show_after_auth() {
@@ -30,17 +49,38 @@ void main_window::show_after_auth() {
 
 main_window::~main_window() {
     delete scene;
-
     emit run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
 }
 
+void main_window::remove_message() {
+    ui->statusbar->clearMessage();
+}
+
 void main_window::on_connect_button_clicked() {
-    run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
-    ui->change_avatar_button->hide();
+    if (ui->connect_button->text() == "connect") {
+        run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
+        ui->change_avatar_button->hide();
+        ui->connect_button->setText("disconnect");
+    } else if (ui->connect_button->text() == "disconnect") {
+    run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
+        ui->connect_button->setText("connect");
+    }
 }
 
 void main_window::already_connected() {
     ui->statusbar->showMessage("Wait dude, you're already in the room");
+    timer->start(TIME_FOR_MESSAGE);
+}
+
+void main_window::set_sprite_name(sprite *sprite) {
+    QFontMetrics fm(font);
+    int wide = fm.width(sprite->name_display->text());
+    qDebug() << (wide) << sprite->x();
+    sprite->name_display->setPos(sprite->x() + 36 - (wide / 2),
+                                 sprite->y() - 20);
+    sprite->name_display->setPen(pen);
+    sprite->name_display->setBrush(brush);
+    sprite->name_display->setFont(font);
 }
 
 void main_window::connect_with_room(const ChitChatMessage::Query &data) {
@@ -65,9 +105,10 @@ void main_window::connect_with_room(const ChitChatMessage::Query &data) {
         }
     }
 
-    current_user.user_sprite->name_display->setPlainText(
+    current_user.user_sprite->name_display->setText(
         QString(current_user.get_name().c_str()));
     current_user.user_sprite->name_display->setPos(0, -20);
+    set_sprite_name(current_user.user_sprite);
 
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
@@ -80,7 +121,8 @@ void main_window::connect_with_room(const ChitChatMessage::Query &data) {
 
 void main_window::user_changed_position(const std::string &name, int x, int y) {
     users_in_the_room[name].user_sprite->setPos(x, y);
-    users_in_the_room[name].user_sprite->name_display->setPos(x, y - 20);
+    set_sprite_name(users_in_the_room[name].user_sprite);
+    // users_in_the_room[name].user_sprite->name_display->setPos(x, y - 20);
 }
 
 void main_window::roommate_disconnect(const std::string &roommate_name) {
@@ -101,14 +143,26 @@ void main_window::roommate_connect(const ChitChatMessage::Query &roommate_data) 
 
 void main_window::show_curren_sprite() {
     scene->clear();
-    auto *text = new QGraphicsTextItem("Your character");
+    QGraphicsSimpleTextItem *text =
+        new QGraphicsSimpleTextItem("Your character");
+
+    QFont font("Source Code Pro", 28, QFont::Bold);
+
+    text->setFont(font);
     scene->addItem(text);
-    text->setPos(200, 100);
-    auto *user_skin = new QGraphicsPixmapItem(
+
+    text->setPos(140, 160);
+
+    QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
+
         QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
                 "_sprite.png"));
     scene->addItem(user_skin);
     user_skin->setPos(250, 220);
+}
+
+void main_window::send_skin(const std::string &skin) {
+    run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_CHANGE_SKIN));
 }
 
 void main_window::set_user_skin(const std::string &skin) {
@@ -118,9 +172,27 @@ void main_window::set_user_skin(const std::string &skin) {
 void main_window::on_change_avatar_button_clicked() {
     // view->setEnabled(true);
     scene->clear();
-    auto *text = new QGraphicsTextItem("Select a character by clicking on it");
+
+    QGraphicsSimpleTextItem *text =
+        new QGraphicsSimpleTextItem("Select a character by clicking on it");
+    QFont font("Source Code Pro", 18, QFont::Bold);
+
+    QPen pen;
+
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::black);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    pen.setColor(Qt::white);
+    text->setPen(pen);
+
+    text->setFont(font);
+
     scene->addItem(text);
-    text->setPos(200, 100);
+    text->setPos(70, 80);
+    text->setPen(pen);
+
     std::vector<std::string> characters = {
         "finn",  "gambol",        "miku",   "mushroom", "rafael",
         "sonic", "stormtroopers", "kermit", "pikachu"};
@@ -128,6 +200,8 @@ void main_window::on_change_avatar_button_clicked() {
         auto *skin = new sprite_for_choice(characters[i]);
         connect(skin, SIGNAL(add_curren_sprite()), this,
                 SLOT(show_curren_sprite()));
+        connect(skin, SIGNAL(run_send_skin(const std::string &)), this,
+                SLOT(send_skin(const std::string &)));
         scene->addItem(skin);
 
         skin->setPos(150 + ((i % 3) * 100), 120 + ((i / 3) * 100));  // NOLINT
@@ -159,6 +233,8 @@ void main_window::on_microphone_check_stateChanged(int arg1) {
 void main_window::initialize_user(client_user& u) {
     u.set_user_sprite();
     u.user_sprite->setPos(u.get_x(), u.get_y());
-    u.user_sprite->name_display->setPlainText(u.get_name().c_str());
+    u.user_sprite->name_display->setText(u.get_name().c_str());
     u.user_sprite->name_display->setPos(u.get_x(), u.get_y() - 20);
+    set_sprite_name(u.user_sprite);
+    u.user_sprite->change_skin(u.get_skin());
 }

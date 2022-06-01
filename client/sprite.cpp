@@ -7,8 +7,19 @@
 
 sprite::sprite(const std::string &name, const std::string& skin) : name(name) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
-    // name_display->setPlainText(QString("a"));
-    // name_display->setPlainText(QString("aa"));
+    QPen pen;
+
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::white);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    pen.setColor(Qt::black);
+
+    QFont font("Source Code Pro", 12);
+    name_display->setFont(font);
+    name_display->setPos(70, 80);
+    name_display->setPen(pen);
 }
 
 void sprite::keyPressEvent(QKeyEvent *event) {
@@ -102,8 +113,8 @@ sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
 }
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    emit run_send_skin(skin);
     //Здесь нужно отправить датаграмму на изменение скина;-
-    // current_view.main_process.set_user_skin(skin);
     emit this->add_curren_sprite();
 }
 

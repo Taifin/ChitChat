@@ -10,7 +10,7 @@ namespace Ui {
 class game_hangman;
 }
 
-class Q_DECL_EXPORT game_hangman : ChitChat_game {
+class Q_DECL_EXPORT game_hangman : public ChitChat_game {
     Q_OBJECT
 
 public:

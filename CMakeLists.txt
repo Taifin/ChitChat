@@ -17,7 +17,7 @@ include_directories(server)
 include_directories(games/arkanoid)
 include_directories(games/hangman)
 
-add_compile_definitions(LOCAL)
+#add_compile_definitions(LOCAL)
 add_compile_definitions(SHARED)
 set(CLIENT_SOURCES
         client/main.cpp

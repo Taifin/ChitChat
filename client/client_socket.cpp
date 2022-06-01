@@ -57,4 +57,7 @@ void client_processor::process() {
             emit run_connect_roommate(query);
             break;
     }
+    if (status == "changed") {
+        emit run_change_skin(data[2]);
+    }
 }
