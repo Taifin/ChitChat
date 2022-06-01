@@ -39,7 +39,6 @@ void client::processor::input_audio_on() {
 
 void client::processor::input_audio_off() {
     audioInput->stop();
-    // TODO: delete inDevice???
     qDebug() << "Microphone is muted";
 }
 
@@ -54,9 +53,10 @@ void client::processor::output_audio_off() {
 }
 
 void client::processor::send() {
-    auto size = inDevice->bytesAvailable();
+    auto audio = inDevice->readAll();
+    auto size = audio.size();
     qDebug() << "Audio of size" << size << "is being sent";
-    QByteArray array(reinterpret_cast<const char *>(&size), 4);
-    array.append(inDevice->readAll(), (int)(size));
+    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    array.append(audio, (int)(size));
     audio_socket->write(array);
 }
