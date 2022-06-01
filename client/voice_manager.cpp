@@ -33,7 +33,7 @@ void client::processor::process() {
 }
 void client::processor::input_audio_on() {
     inDevice = audioInput->start();
-    connect(inDevice, SIGNAL(bytesWritten()), this, SLOT(send()));
+    connect(inDevice, SIGNAL(readyRead()), this, SLOT(send()));
     qDebug() << "Microphone is on";
 }
 
@@ -53,9 +53,10 @@ void client::processor::output_audio_off() {
 }
 
 void client::processor::send() {
-    auto size = inDevice->bytesAvailable();
+    auto audio = inDevice->readAll();
+    auto size = audio.size();
     qDebug() << "Audio of size" << size << "is being sent";
     QByteArray array(reinterpret_cast<const char*>(&size), 4);
-    array.append(inDevice->readAll(), (int)(size));
+    array.append(audio, (int)(size));
     audio_socket->write(array);
 }
