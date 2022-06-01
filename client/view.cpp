@@ -15,8 +15,8 @@ view::view() {
     //коннекты из логина
     qRegisterMetaType<std::string>("std::string");
     connect(&current_session.processor,
-            SIGNAL(run_successful_login(std::string)), &login_process,
-            SLOT(successful_login(std::string)));
+            SIGNAL(run_successful_login(ChitChatMessage::Query)), &login_process,
+            SLOT(successful_login(ChitChatMessage::Query)));
     connect(&current_session.processor, SIGNAL(run_wrong_password()),
             &login_process, SLOT(wrong_password()));
     connect(&current_session.processor, SIGNAL(run_no_user()), &login_process,
