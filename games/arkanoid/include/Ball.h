@@ -4,9 +4,9 @@
 #include <random>
 #include "Config.h"
 
-static std::mt19937 rng( // NOLINT
+static std::mt19937 rng(  // NOLINT
     std::chrono::steady_clock::now().time_since_epoch().count());
-static std::uniform_real_distribution<> gen_int(-1, 1); // NOLINT
+static std::uniform_real_distribution<> gen_int(-1, 1);  // NOLINT
 
 struct vector {
     float x;

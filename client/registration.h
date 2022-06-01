@@ -18,7 +18,7 @@ public:
 
 signals:
     void show_login_window_again();
-    void run_send_request(const ChitChatMessage::Query& message);
+    void run_send_request(const ChitChatMessage::Query &message);
 
 private slots:
 

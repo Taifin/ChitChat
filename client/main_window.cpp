@@ -49,7 +49,8 @@ void main_window::show_after_auth() {
 
 main_window::~main_window() {
     delete scene;
-    emit run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
+    emit run_send_request(
+        current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
 }
 
 void main_window::remove_message() {
@@ -58,11 +59,13 @@ void main_window::remove_message() {
 
 void main_window::on_connect_button_clicked() {
     if (ui->connect_button->text() == "connect") {
-        run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
+        run_send_request(
+            current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
         ui->change_avatar_button->hide();
         ui->connect_button->setText("disconnect");
     } else if (ui->connect_button->text() == "disconnect") {
-    run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
+        run_send_request(current_user.serialize(
+            ChitChatMessage::Query_RequestType_DISCONNECT));
         ui->connect_button->setText("connect");
     }
 }
@@ -94,7 +97,7 @@ void main_window::connect_with_room(const ChitChatMessage::Query &data) {
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
-    for (const auto& user : data.users()) {
+    for (const auto &user : data.users()) {
         if (user.name() != current_user.get_name()) {
             client_user u;
             u.parse(user);
@@ -132,7 +135,8 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
     users_in_the_room.erase(roommate_name);
 }
 
-void main_window::roommate_connect(const ChitChatMessage::Query &roommate_data) {
+void main_window::roommate_connect(
+    const ChitChatMessage::Query &roommate_data) {
     client_user u;
     u.parse_from(roommate_data);
     initialize_user(u);
@@ -162,7 +166,8 @@ void main_window::show_curren_sprite() {
 }
 
 void main_window::send_skin(const std::string &skin) {
-    run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_CHANGE_SKIN));
+    run_send_request(
+        current_user.serialize(ChitChatMessage::Query_RequestType_CHANGE_SKIN));
 }
 
 void main_window::set_user_skin(const std::string &skin) {
@@ -211,8 +216,9 @@ void main_window::on_change_avatar_button_clicked() {
 void main_window::set_user_sprite() {
     current_user.user_sprite =
         new sprite(current_user.get_name(), current_user.get_skin());
-    connect(current_user.user_sprite, SIGNAL(run_send_request(ChitChatMessage::Query)),
-            current_session, SLOT(send_request(ChitChatMessage::Query)));
+    connect(current_user.user_sprite,
+            SIGNAL(run_send_request(ChitChatMessage::Query)), current_session,
+            SLOT(send_request(ChitChatMessage::Query)));
 }
 
 void main_window::on_headphones_check_stateChanged(int arg1) {
@@ -230,7 +236,7 @@ void main_window::on_microphone_check_stateChanged(int arg1) {
         emit turn_mic_off();
     }
 }
-void main_window::initialize_user(client_user& u) {
+void main_window::initialize_user(client_user &u) {
     u.set_user_sprite();
     u.user_sprite->setPos(u.get_x(), u.get_y());
     u.user_sprite->name_display->setText(u.get_name().c_str());

@@ -26,7 +26,7 @@ void client::processor::process() {
     while (keeper->parsed_size() > 0) {
         if (!muted) {
             outDevice->write(keeper->front_parsed().first.data(),
-                          keeper->front_parsed().first.size());
+                             keeper->front_parsed().first.size());
         }
         keeper->pop_parsed();
     }

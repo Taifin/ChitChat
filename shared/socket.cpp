@@ -1,19 +1,19 @@
 #include "socket.h"
+#include <google/protobuf/descriptor.h>
 #include <QTcpServer>
 #include "istream"
 #include "message.pb.h"
-#include <google/protobuf/descriptor.h>
 
 namespace network {
 
-void queries_keeper::push_parsed(const QByteArray& data, QTcpSocket *sender) {
+void queries_keeper::push_parsed(const QByteArray &data, QTcpSocket *sender) {
     std::unique_lock lock(queries_mutex);
     parsed_queries.push({data, sender});
     query_available.notify_one();
 }
 
 void queries_keeper::push_prepared(const QByteArray &q, QTcpSocket *cli) {
-//    std::unique_lock lock(queries_mutex);
+    //    std::unique_lock lock(queries_mutex);
     prepared_queries.push({q, cli});
 }
 
@@ -22,7 +22,7 @@ std::pair<QByteArray, QTcpSocket *> queries_keeper::front_parsed() {
 }
 
 std::pair<QByteArray, QTcpSocket *> queries_keeper::pop_parsed() {
-//    std::unique_lock lock(queries_mutex);
+    //    std::unique_lock lock(queries_mutex);
     auto q = parsed_queries.front();
     parsed_queries.pop();
     return q;
@@ -41,27 +41,27 @@ std::atomic_size_t queries_keeper::parsed_size() const {
 
 void query_processor::prepare_query(const QByteArray &q, QTcpSocket *cli) {
     auto size = q.size();
-    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    QByteArray array(reinterpret_cast<const char *>(&size), 4);
     array.append(q);
     keeper->push_prepared(array, cli);
     emit prepared();
 }
 
-void query_processor::prepare_query(const ChitChatMessage::Query& q,
+void query_processor::prepare_query(const ChitChatMessage::Query &q,
                                     QTcpSocket *cli) {
     qDebug() << "Preparing query, msg is:" << q.DebugString().c_str();
     qDebug() << "Size is:" << q.ByteSizeLong();
     auto size = q.ByteSizeLong();
-    QByteArray array(reinterpret_cast<const char*>(&size), 4);
-    array.append(q.SerializeAsString().data(), size); // NOLINT
+    QByteArray array(reinterpret_cast<const char *>(&size), 4);
+    array.append(q.SerializeAsString().data(), size);  // NOLINT
     keeper->push_prepared(array, cli);
     emit prepared();
 }
 
 void query_processor::wait_next_query() {
     std::unique_lock lock(keeper->queries_mutex);
-    keeper->query_available.wait(
-        lock, [&]() { return keeper->parsed_size() > 0; });
+    keeper->query_available.wait(lock,
+                                 [&]() { return keeper->parsed_size() > 0; });
     process();
 }
 
@@ -84,12 +84,14 @@ void tcp_socket::read() {
     qDebug() << "Reading...";
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     while (sender->bytesAvailable() > 0) {
-        auto msg_size = *reinterpret_cast<quint32*>(sender->read(4).data());
+        auto msg_size = *reinterpret_cast<quint32 *>(sender->read(4).data());
         qDebug() << "New message of size:" << msg_size;
-        qDebug() << "Bytes available after reading size:" << sender->bytesAvailable();
+        qDebug() << "Bytes available after reading size:"
+                 << sender->bytesAvailable();
         auto msg = sender->read(msg_size);
         ChitChatMessage::Query q;
-        qDebug() << "Bytes available after reading whole msg:" << sender->bytesAvailable();
+        qDebug() << "Bytes available after reading whole msg:"
+                 << sender->bytesAvailable();
         keeper->push_parsed(msg, sender);
     }
 }
