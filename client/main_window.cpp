@@ -92,7 +92,7 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
 
 void main_window::roommate_connect(const ChitChatMessage::Query &roommate_data) {
     client_user u;
-    u.parse(roommate_data);
+    u.parse_from(roommate_data);
     initialize_user(u);
     users_in_the_room.insert({u.get_name(), u});
     scene->addItem(u.user_sprite);

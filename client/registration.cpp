@@ -40,7 +40,6 @@ void registration::on_confirm_button_clicked() {
         ui->information_label->setText("Passwords don't match");
     } else {
         user u(login, password, "aboba");
-        // TODO: передавать на сервер информацию о выборе
         if (ui->finn_radio_button->isChecked()) {
             u.set_skin("finn");
             qDebug() << "finn";

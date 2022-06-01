@@ -35,7 +35,7 @@ private slots:
 
     void show_login_window();
 
-    void successful_login(const std::string &name);
+    void successful_login(const ChitChatMessage::Query &q);
 
     void wrong_password();
 
