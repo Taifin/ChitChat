@@ -19,25 +19,27 @@ client::processor::processor(network::queries_keeper *keeper1,
     if (!info.isFormatSupported(format))
         format = info.nearestFormat(format);
     audioOutput = new QAudioOutput(format, this);
-    device = audioOutput->start();
+    outDevice = audioOutput->start();
 }
 
 void client::processor::process() {
-    while (!keeper->parsed_queries.empty()) {
+    while (keeper->parsed_size() > 0) {
         if (!muted) {
-            device->write(keeper->parsed_queries.front().first.data(),
-                          keeper->parsed_queries.front().first.size());
+            outDevice->write(keeper->front_parsed().first.data(),
+                          keeper->front_parsed().first.size());
         }
-        keeper->parsed_queries.pop();
+        keeper->pop_parsed();
     }
 }
 void client::processor::input_audio_on() {
-    audioInput->start(audio_socket);
+    inDevice = audioInput->start();
+    connect(inDevice, SIGNAL(readyRead()), this, SLOT(send()));
     qDebug() << "Microphone is on";
 }
 
 void client::processor::input_audio_off() {
     audioInput->stop();
+    // TODO: delete inDevice???
     qDebug() << "Microphone is muted";
 }
 
@@ -49,4 +51,12 @@ void client::processor::output_audio_on() {
 void client::processor::output_audio_off() {
     muted = true;
     qDebug() << "Headphones are muted";
+}
+
+void client::processor::send() {
+    auto size = inDevice->bytesAvailable();
+    qDebug() << "Audio of size" << size << "is being sent";
+    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    array.append(inDevice->readAll(), (int)(size));
+    audio_socket->write(array);
 }

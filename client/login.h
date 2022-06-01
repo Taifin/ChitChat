@@ -15,14 +15,13 @@ class login : public QDialog {
 
 public:
     explicit login(QWidget *parent = nullptr);
-    explicit login(model *current_session);
 
-    ~login();
+    ~login() override;
 
 signals:
     void show_main_window();
     void show_registration_window();
-    void run_send_request(const std::string &message);
+    void run_send_request(ChitChatMessage::Query message);
     void run_initialize(std::string, std::string);
 
 private slots:
@@ -35,7 +34,7 @@ private slots:
 
     void show_login_window();
 
-    void successful_login(const std::string &name);
+    void successful_login(const ChitChatMessage::Query &q);
 
     void wrong_password();
 
@@ -48,7 +47,6 @@ public slots:
 
 private:
     Ui::login *ui;
-    model *current_seccion = nullptr;
     client_processor *processor = nullptr;
     QTimer *timer;
     int TIME_FOR_MESSAGE = 1500;

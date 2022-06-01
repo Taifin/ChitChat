@@ -11,44 +11,51 @@ client_socket::client_socket(const QHostAddress &host,
 }
 
 void client_processor::process() {
-    std::vector<std::string> data =
-        parse(keeper->parsed_queries.front().first.toStdString());
-    std::string status = data[0];
-    keeper->parsed_queries.pop();
-
-    if (status == "allowed") {
-        emit run_successful_login(data[1]);
-    }
-    if (status == "denied") {
-        emit run_wrong_password();
-    }
-    if (status == "none") {
-        emit run_no_user();
-    }
-    if (status == "dberror") {
-        emit run_error();
-    }
-    if (status == "created") {
-        emit run_successful_registration();
-    }
-    if (status == "rexists") {
-        emit run_duplicate();
-    }
-    if (status == "connected") {
-        emit run_connect_with_room(data);
-    }
-    if (status == "cexists") {
-        emit run_already_connected();
-    }
-    if (status == "move") {
-        emit run_change_position(data[1], stoi(data[2]), stoi(data[3]));
-    }
-    if (status == "disconnected") {
-        emit run_disconnect_roommate(data[1]);
-    }
-    if (status == "new") {
-        qDebug() << "New connection: " << data[1].c_str();
-        emit run_connect_roommate(data[1]);
+    auto raw_query = keeper->pop_parsed();
+    query.ParseFromString(raw_query.first.toStdString());
+    switch (query.ftype()) {
+        case ChitChatMessage::Query_FeedbackType_NO_USER_FOUND:
+            emit run_no_user();
+            break;
+        case ChitChatMessage::Query_FeedbackType_LOGIN_ALLOWED:
+            emit run_successful_login(query);
+            break;
+        case ChitChatMessage::Query_FeedbackType_LOGIN_DENIED:
+            emit run_wrong_password();
+            break;
+        case ChitChatMessage::Query_FeedbackType_USER_CREATED:
+            emit run_successful_registration();
+            break;
+        case ChitChatMessage::Query_FeedbackType_USER_DUPLICATE:
+            emit run_duplicate();
+            break;
+        case ChitChatMessage::Query_FeedbackType_CONNECTION_SUCCESS:
+            emit run_connect_with_room(query);
+            break;
+        case ChitChatMessage::Query_FeedbackType_CONNECTION_EXISTS:
+            emit run_already_connected();
+            break;
+        case ChitChatMessage::Query_FeedbackType_MOVED:
+            // TODO: unify signatures to ChitChatMessage::Query as args
+            emit run_change_position(query.user().name(), query.user().x_coord(), query.user().y_coord());
+            break;
+        case ChitChatMessage::Query_FeedbackType_DISCONNECTED:
+            emit run_disconnect_roommate(query.user().name());
+            break;
+        case ChitChatMessage::Query_FeedbackType_SKIN_CHANGED:
+            // TODO
+            break;
+        case ChitChatMessage::Query_FeedbackType_SCORE_CHANGED:
+            // TODO
+            break;
+        case ChitChatMessage::Query_FeedbackType_DATABASE_ERROR:
+            emit run_error();
+            break;
+        case ChitChatMessage::Query_FeedbackType_SKIN:
+            break;
+        case ChitChatMessage::Query_FeedbackType_NEW_USER_CONNECTED:
+            emit run_connect_roommate(query);
+            break;
     }
     if (status == "changed") {
         emit run_change_skin(data[2]);

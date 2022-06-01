@@ -13,9 +13,9 @@ void room::keyPressEvent(QKeyEvent *event) {
                 QList<QGraphicsItem *> colliding_items =
                     current_user_sprite->collidingItems();
                 qDebug() << colliding_items.size();
-                for (int i = 0; i < colliding_items.size(); i++) {
+                for (auto & colliding_item : colliding_items) {
                     qDebug() << typeid(sprite_of_object).name();
-                    if (colliding_items[i] == game_machine) {
+                    if (colliding_item == game_machine) {
                         choose_game.show();
                     }
                 }

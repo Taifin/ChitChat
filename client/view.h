@@ -19,7 +19,6 @@ public:
     login login_process;
 
     void start();
-    void set_user_sprite();
 
     ~view() = default;
 };

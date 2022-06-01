@@ -1,18 +1,67 @@
 #include "socket.h"
 #include <QTcpServer>
-#include "iostream"
+#include "istream"
+#include "message.pb.h"
+#include <google/protobuf/descriptor.h>
 
 namespace network {
 
-void query_processor::prepare_query(const std::string &q, QTcpSocket *cli) {
-    keeper->prepared_queries.push({q.c_str(), cli});
+void queries_keeper::push_parsed(const QByteArray& data, QTcpSocket *sender) {
+    std::unique_lock lock(queries_mutex);
+    parsed_queries.push({data, sender});
+    query_available.notify_one();
+}
+
+void queries_keeper::push_prepared(const QByteArray &q, QTcpSocket *cli) {
+//    std::unique_lock lock(queries_mutex);
+    prepared_queries.push({q, cli});
+}
+
+std::pair<QByteArray, QTcpSocket *> queries_keeper::front_parsed() {
+    return parsed_queries.front();
+}
+
+std::pair<QByteArray, QTcpSocket *> queries_keeper::pop_parsed() {
+//    std::unique_lock lock(queries_mutex);
+    auto q = parsed_queries.front();
+    parsed_queries.pop();
+    return q;
+}
+
+std::pair<QByteArray, QTcpSocket *> queries_keeper::pop_prepared() {
+    std::unique_lock lock(queries_mutex);
+    auto q = prepared_queries.front();
+    prepared_queries.pop();
+    return q;
+}
+
+std::atomic_size_t queries_keeper::parsed_size() const {
+    return parsed_queries.size();
+}
+
+void query_processor::prepare_query(const QByteArray &q, QTcpSocket *cli) {
+    auto size = q.size();
+    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    array.append(q);
+    keeper->push_prepared(array, cli);
+    emit prepared();
+}
+
+void query_processor::prepare_query(const ChitChatMessage::Query& q,
+                                    QTcpSocket *cli) {
+    qDebug() << "Preparing query, msg is:" << q.DebugString().c_str();
+    qDebug() << "Size is:" << q.ByteSizeLong();
+    auto size = q.ByteSizeLong();
+    QByteArray array(reinterpret_cast<const char*>(&size), 4);
+    array.append(q.SerializeAsString().data(), size); // NOLINT
+    keeper->push_prepared(array, cli);
     emit prepared();
 }
 
 void query_processor::wait_next_query() {
     std::unique_lock lock(keeper->queries_mutex);
     keeper->query_available.wait(
-        lock, [&]() { return !keeper->parsed_queries.empty(); });
+        lock, [&]() { return keeper->parsed_size() > 0; });
     process();
 }
 
@@ -24,41 +73,30 @@ tcp_socket::tcp_socket(const QHostAddress &host,
     keeper = keeper1;
 }
 
-std::vector<std::string> query_processor::parse(const std::string &raw_data) {
-    std::vector<std::string> parsed;
-    std::istringstream raw_query(raw_data);
-    std::string token;
-    while (std::getline(raw_query, token, ',')) {
-        parsed.push_back(token);
-    }
-    if (parsed.back().back() == '\n') {
-        parsed.back().pop_back();
-    }
-    qDebug() << "Parsed:" << parsed[0].c_str();
-    return parsed;
-}
-
 void tcp_socket::send() {
-    auto q = keeper->prepared_queries.front();
-    keeper->prepared_queries.pop();
-    qDebug() << "Sending...";
+    auto q = keeper->pop_prepared();
+    qDebug() << "Sending msg of size:" << q.first.size();
     q.second->write(q.first);
-    q.second->waitForReadyRead(25);
+    q.second->waitForBytesWritten(25);
 }
 
 void tcp_socket::read() {
-    qDebug() << "New msg";
-    auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
-    QByteArray data = sender->readAll();
-    // TODO: on many simultaneous requests they can glue together
     qDebug() << "Reading...";
-    std::unique_lock lock(keeper->queries_mutex);
-    keeper->parsed_queries.push({data, sender});
-    keeper->query_available.notify_one();
+    auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
+    while (sender->bytesAvailable() > 0) {
+        auto msg_size = *reinterpret_cast<quint32*>(sender->read(4).data());
+        qDebug() << "New message of size:" << msg_size;
+        qDebug() << "Bytes available after reading size:" << sender->bytesAvailable();
+        auto msg = sender->read(msg_size);
+        ChitChatMessage::Query q;
+        qDebug() << "Bytes available after reading whole msg:" << sender->bytesAvailable();
+        keeper->push_parsed(msg, sender);
+    }
 }
 
 query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
     : keeper(keeper), socket(socket) {
     connect(this, SIGNAL(prepared()), &socket, SLOT(send()));
 }
+
 }  // namespace network

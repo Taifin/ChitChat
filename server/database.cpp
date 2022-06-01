@@ -34,12 +34,12 @@ void database::debug_create_table() {
 bool database::create_user(const user &new_user) {
     bool exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
-                       new_user->name())[0][0]
+                       new_user.get_name())[0][0]
             .as<bool>();
     if (!exists) {
         execute_params(
             "INSERT INTO users (uname, upassword, skin) VALUES ($1, $2, $3);",
-            new_user->name(), new_user->pwd(), new_user->get_skin());
+            new_user.get_name(), new_user.get_password(), new_user.get_skin());
         return true;
     } else {
         return false;
@@ -87,6 +87,7 @@ pqxx::result database::execute_protected(const std::string &connection_params,
         std::cerr << error.what() << std::endl;
     }
 }
+
 bool database::authorize(const std::string &username,
                          const std::string &given_password) {
     auto exists =

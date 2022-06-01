@@ -9,7 +9,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Widgets Network Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Multimedia Core REQUIRED)
+find_package(Protobuf REQUIRED)
 include_directories(client)
 include_directories(shared)
 include_directories(server)
@@ -18,8 +19,6 @@ include_directories(games/hangman)
 
 #add_compile_definitions(LOCAL)
 add_compile_definitions(SHARED)
-#add_compile_definitions(NOLOCAL)
-
 set(CLIENT_SOURCES
         client/main.cpp
         client/model.h
@@ -47,8 +46,12 @@ set(CLIENT_SOURCES
         client/view.h
         client/view.cpp
         client/game_selection.cpp
+        client/game_selection.ui
+        client/game_selection.h
         client/voice_manager.cpp
         resources/resources.qrc
+        shared/message.pb.cc
+        shared/message.pb.h
         )
 
 set(SERVER_SOURCES
@@ -58,6 +61,8 @@ set(SERVER_SOURCES
         server/database.cpp
         shared/socket.cpp
         shared/user.h
+        shared/message.pb.cc
+        shared/message.pb.h
         )
 
 set(ARKANOID_SOURCES
@@ -76,10 +81,13 @@ set(HANGMAN_SOURCES
         shared/abstract_game.h)
 
 add_executable(ChitChatClient ${CLIENT_SOURCES} )
-target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread)
+target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network Qt5::Multimedia -pthread -lprotobuf)
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
-target_link_libraries(ChitChatServer PRIVATE Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread)
+target_link_libraries(ChitChatServer Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread -lprotoc -lprotobuf)
+
+add_executable(aboba protoc_testing.cpp shared/message.pb.cc)
+target_link_libraries(aboba Qt5::Widgets Qt5::Network Qt5::Multimedia Qt5::Core -pthread -lprotobuf)
 
 add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
 target_link_libraries(Arkanoid Qt5::Widgets)

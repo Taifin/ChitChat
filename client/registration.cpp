@@ -1,7 +1,6 @@
 #include "registration.h"
 #include <QTimer>
 #include <vector>
-#include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
 
@@ -50,35 +49,36 @@ void registration::on_confirm_button_clicked() {
             "This password is too short. (At least 6 symbols)");
         timer->start(TIME_FOR_MESSAGE);
     } else {
-        emit run_send_request("register," + login + "," + password);
+        user u(login, password, "aboba");
         if (ui->finn_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "finn");
+            u.set_skin("finn");
+            qDebug() << "finn";
         } else if (ui->gambol_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "gambol");
+            u.set_skin("gambol");
+            qDebug() << "gambol";
         } else if (ui->kermit_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "kermit");
+            u.set_skin("kermit");
+            qDebug() << "kermit";
         } else if (ui->miku_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "miku");
+            u.set_skin("miku");
+            qDebug() << "miku";
         } else if (ui->mushroom_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "myshroom");
+            u.set_skin("mushroom");
+            qDebug() << "mushroom";
         } else if (ui->pikachu_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "pikachu");
+            u.set_skin("pikachu");
+            qDebug() << "pikachu";
         } else if (ui->rafael_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "rafael");
+            u.set_skin("rafael");
+            qDebug() << "rafael";
         } else if (ui->sonic_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "sonic");
+            u.set_skin("sonic");
+            qDebug() << "sonic";
         } else if (ui->stormtroopers_radio_button->isChecked()) {
-            emit run_send_request("register," + login + "," + password + "," +
-                                  "stormtroopers");
+            u.set_skin("rafael");
+            qDebug() << "rafael";
         }
+        emit run_send_request(u.serialize(ChitChatMessage::Query_RequestType_REGISTER));
     }
 }
 

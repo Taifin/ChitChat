@@ -17,7 +17,7 @@ class Q_DECL_IMPORT game_selection : public QWidget {
 public:
     explicit game_selection(QWidget *parent = nullptr);
 
-    ~game_selection();
+    ~game_selection() override;
 
 private slots:
     void on_rating_button_clicked();
