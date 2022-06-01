@@ -180,6 +180,7 @@ std::string game_hangman::random_word() {
 }
 void game_hangman::start() {
     this->show();
+    this->activateWindow();
 }
 
 extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {

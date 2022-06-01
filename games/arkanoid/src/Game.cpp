@@ -127,6 +127,7 @@ void Game::show_menu() {
 
 void Game::start() {
     game_view->show();
+    game_view->activateWindow();
 }
 
 extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {

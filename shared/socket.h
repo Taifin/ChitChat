@@ -16,6 +16,7 @@
 namespace network {
 
 // TODO: safety
+
 struct queries_keeper {
     std::queue<std::pair<QByteArray, QTcpSocket *>> parsed_queries;
     std::queue<std::pair<QByteArray, QTcpSocket *>> prepared_queries;
