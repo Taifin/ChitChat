@@ -55,7 +55,6 @@ void query_processor::prepare_query(const ChitChatMessage::Query& q,
     qDebug() << "Size is:" << q.ByteSizeLong();
     auto size = q.ByteSizeLong();
     QByteArray array(reinterpret_cast<const char*>(&size), 4);
-    qDebug() << "Aboba:" << q.SerializeAsString().c_str();
     array.append(q.SerializeAsString().data(), size);
     keeper->push_prepared(array, cli);
     emit prepared();
