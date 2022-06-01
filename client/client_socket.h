@@ -28,7 +28,7 @@ public:
     void process() override;
 
 signals:
-    void run_successful_login(const ChitChatMessage::Query q);
+    void run_successful_login(const ChitChatMessage::Query &q);
 
     void run_wrong_password();
 
@@ -43,8 +43,6 @@ signals:
     void run_already_connected();
 
     void run_connect_with_room(ChitChatMessage::Query);
-
-    void run_move(std::string, int, int);
 
     void run_get();
 

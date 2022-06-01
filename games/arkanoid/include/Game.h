@@ -22,7 +22,7 @@ public:
 
     void start() override;
 
-    ~Game();
+    ~Game() override;
 
 public slots:
     void destroy_brick(QGraphicsItem *brick);

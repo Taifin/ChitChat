@@ -15,9 +15,8 @@ class login : public QDialog {
 
 public:
     explicit login(QWidget *parent = nullptr);
-    explicit login(model *current_session);
 
-    ~login();
+    ~login() override;
 
 signals:
     void show_main_window();
@@ -45,8 +44,6 @@ private slots:
 
 private:
     Ui::login *ui;
-    model *current_seccion = nullptr;
-    client_processor *processor = nullptr;
 };
 
 #endif  // LOGIN_H

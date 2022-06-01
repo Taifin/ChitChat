@@ -3,11 +3,9 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include "client_socket.h"
-#include "client_user.h"
-#include "sprite.h"
 #include "view.h"
 
-sprite::sprite(const std::string &name, std::string skin) : name(name) {
+sprite::sprite(const std::string &name, const std::string& skin) : name(name) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
     // name_display->setPlainText(QString("a"));
     // name_display->setPlainText(QString("aa"));
@@ -47,24 +45,24 @@ void sprite::change_skin(const std::string &skin) {
 }
 
 bool is_colliding(sprite *walker) {
-    QGraphicsTextItem *text =
-        new QGraphicsTextItem("click on cntl+g to start a game");
+    auto *text =
+        new QGraphicsTextItem("Press CTRL+G to start a game");
     QGraphicsScene *scene = walker->scene();
     QList<QGraphicsItem *> colliding_items = walker->collidingItems();
-    for (int i = 0, n = colliding_items.size(); i < n; ++i) {
-        if (typeid(*(colliding_items[i])) == typeid(sprite_of_object)) {
+    for (auto & colliding_item : colliding_items) {
+        if (typeid(*colliding_item) == typeid(sprite_of_object)) {
             auto *effect = new QGraphicsColorizeEffect();
             effect->setColor(Qt::black);
-            colliding_items[i]->setGraphicsEffect(effect);
+            colliding_item->setGraphicsEffect(effect);
             scene->addItem(text);
             return true;
         } else {
-            colliding_items[i]->setGraphicsEffect(NULL);
+            colliding_item->setGraphicsEffect(nullptr);
         }
     }
     QList<QGraphicsItem *> items = scene->items();
     for (auto x : items) {
-        x->setGraphicsEffect(NULL);
+        x->setGraphicsEffect(nullptr);
     }
     scene->addItem(text);
     scene->removeItem(text);
@@ -72,8 +70,8 @@ bool is_colliding(sprite *walker) {
 }
 
 void change_position(int step_size, sprite *walker, directions dir) {
-    int x = walker->x();
-    int y = walker->y();
+    auto x = walker->x();
+    auto y = walker->y();
     switch (dir) {
         case directions::UP:
             walker->setPos(x, y - step_size);
@@ -109,7 +107,7 @@ void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     emit this->add_curren_sprite();
 }
 
-sprite_of_object::sprite_of_object(std::string object)
+sprite_of_object::sprite_of_object(const std::string& object)
     : QGraphicsPixmapItem(
           QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;

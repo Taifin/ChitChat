@@ -3,8 +3,6 @@
 #include "istream"
 #include "message.pb.h"
 #include <google/protobuf/descriptor.h>
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 
 namespace network {
 
@@ -55,7 +53,7 @@ void query_processor::prepare_query(const ChitChatMessage::Query& q,
     qDebug() << "Size is:" << q.ByteSizeLong();
     auto size = q.ByteSizeLong();
     QByteArray array(reinterpret_cast<const char*>(&size), 4);
-    array.append(q.SerializeAsString().data(), size);
+    array.append(q.SerializeAsString().data(), size); // NOLINT
     keeper->push_prepared(array, cli);
     emit prepared();
 }

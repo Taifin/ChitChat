@@ -16,12 +16,12 @@ class sprite : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
-    sprite(const std::string &name, std::string skin);
-    void keyPressEvent(QKeyEvent *event);
+    sprite(const std::string &name, const std::string& skin);
+    void keyPressEvent(QKeyEvent *event) override;
 
     const std::string &name;
 
-    ~sprite();
+    ~sprite() override;
 
     QGraphicsTextItem *name_display = new QGraphicsTextItem;
 
@@ -37,8 +37,8 @@ class sprite_for_choice : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
-    sprite_for_choice(const std::string &skin);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    explicit sprite_for_choice(const std::string &skin);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     std::string skin;
     // current_user_sprite;
 
@@ -50,7 +50,7 @@ class sprite_of_object : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
-    sprite_of_object(std::string object);
+    explicit sprite_of_object(const std::string& object);
     std::string type_of_object;
 };
 

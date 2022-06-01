@@ -1,10 +1,5 @@
 #include <QApplication>
-#include <map>
 #include <thread>
-#include "client_socket.h"
-#include "client_user.h"
-#include "main_window.h"
-#include "shared/socket.h"
 #include "view.h"
 
 int main(int argc, char *argv[]) {

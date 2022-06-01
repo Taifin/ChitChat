@@ -25,12 +25,10 @@ public:
     client_processor processor;
     client::processor audio_processor;
 
-    void set_curren_user(std::string name, std::string password);
-
-    ~model();
+    ~model() override;
 
 private slots:
-    void send_request(ChitChatMessage::Query message);
+    void send_request(const ChitChatMessage::Query& message);
 };
 
 #endif  // MODEL_H

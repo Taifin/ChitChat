@@ -13,7 +13,7 @@ public:
     void set_user_sprite();
     sprite *user_sprite;
     // std::string skin = "pikachu";
-    ~client_user();
+    ~client_user() override;
 
 private:
 };

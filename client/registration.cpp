@@ -1,6 +1,5 @@
 #include "registration.h"
 #include <vector>
-#include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
 
