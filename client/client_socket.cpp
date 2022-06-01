@@ -30,6 +30,7 @@ void client_processor::process() {
             emit run_duplicate();
             break;
         case ChitChatMessage::Query_FeedbackType_CONNECTION_SUCCESS:
+            // TODO: turn audio on
             emit run_connect_with_room(query);
             break;
         case ChitChatMessage::Query_FeedbackType_CONNECTION_EXISTS:
@@ -43,7 +44,7 @@ void client_processor::process() {
             emit run_disconnect_roommate(query.user().name());
             break;
         case ChitChatMessage::Query_FeedbackType_SKIN_CHANGED:
-            // TODO
+            emit run_change_skin(query.user().skin());
             break;
         case ChitChatMessage::Query_FeedbackType_SCORE_CHANGED:
             // TODO
@@ -56,8 +57,5 @@ void client_processor::process() {
         case ChitChatMessage::Query_FeedbackType_NEW_USER_CONNECTED:
             emit run_connect_roommate(query);
             break;
-    }
-    if (status == "changed") {
-        emit run_change_skin(data[2]);
     }
 }

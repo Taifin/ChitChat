@@ -33,13 +33,12 @@ void client::processor::process() {
 }
 void client::processor::input_audio_on() {
     inDevice = audioInput->start();
-    connect(inDevice, SIGNAL(readyRead()), this, SLOT(send()));
+    connect(inDevice, SIGNAL(bytesWritten()), this, SLOT(send()));
     qDebug() << "Microphone is on";
 }
 
 void client::processor::input_audio_off() {
     audioInput->stop();
-    // TODO: delete inDevice???
     qDebug() << "Microphone is muted";
 }
 

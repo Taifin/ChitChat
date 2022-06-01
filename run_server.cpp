@@ -11,8 +11,8 @@ int main(int argc, char *argv[]) {
     server::server_socket audio_receiver(QHostAddress::LocalHost, 1236,
                                      audio_keeper);
 #else
-    sv::server_socket receiver(QHostAddress::Any, 1235, keeper);
-    sv::server_socket audio_receiver(QHostAddress::Any, 1236, audio_keeper);
+    server::server_socket receiver(QHostAddress::Any, 1235, keeper);
+    server::server_socket audio_receiver(QHostAddress::Any, 1236, audio_keeper);
 #endif
     server::server_processor processor(keeper, receiver);
     server::audio_processor audio(audio_keeper, audio_receiver);
