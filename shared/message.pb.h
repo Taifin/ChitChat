@@ -137,10 +137,8 @@ inline bool Query_FeedbackType_Parse(
 }
 // ===================================================================
 
-class Query_User final
-    : public ::PROTOBUF_NAMESPACE_ID::
-          Message /* @@protoc_insertion_point(class_definition:ChitChatMessage.Query.User)
-                   */
+class Query_User final : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:ChitChatMessage.Query.User)
+                                                                  */
 {
 public:
     inline Query_User() : Query_User(nullptr) {
@@ -415,10 +413,8 @@ private:
 };
 // -------------------------------------------------------------------
 
-class Query final
-    : public ::PROTOBUF_NAMESPACE_ID::
-          Message /* @@protoc_insertion_point(class_definition:ChitChatMessage.Query)
-                   */
+class Query final : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:ChitChatMessage.Query)
+                                                             */
 {
 public:
     inline Query() : Query(nullptr) {
