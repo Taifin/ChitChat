@@ -195,7 +195,8 @@ void server_processor::change_skin() {
                   to);
 }
 void server_processor::change_score() {
-    qDebug() << "Changing score, game name is" << (query.game_name() + "_score").c_str();
+    qDebug() << "Changing score, game name is"
+             << (query.game_name() + "_score").c_str();
     model::database::change_values(user_in_process.get_name(),
                                    query.game_name() + "_score",
                                    std::to_string(query.score()));
