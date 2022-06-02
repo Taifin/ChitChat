@@ -6,6 +6,7 @@
 #include "view.h"
 
 sprite::sprite(const std::string &name, const std::string &skin) : name(name) {
+    qDebug() << skin.c_str();
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
     QPen pen;
 

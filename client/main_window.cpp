@@ -44,7 +44,7 @@ main_window::main_window(QWidget *parent)
 
 void main_window::show_after_auth() {
     this->show();
-    show_curren_sprite();
+    show_current_sprite();
 }
 
 main_window::~main_window() {
@@ -145,7 +145,7 @@ void main_window::roommate_connect(
     scene->addItem(u.user_sprite->name_display);
 }
 
-void main_window::show_curren_sprite() {
+void main_window::show_current_sprite() {
     scene->clear();
     QGraphicsSimpleTextItem *text =
         new QGraphicsSimpleTextItem("Your character");
@@ -158,14 +158,15 @@ void main_window::show_curren_sprite() {
     text->setPos(140, 160);
 
     QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
-
         QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
                 "_sprite.png"));
+
     scene->addItem(user_skin);
     user_skin->setPos(250, 220);
 }
 
 void main_window::send_skin(const std::string &skin) {
+    current_user.change_skin(skin);
     run_send_request(
         current_user.serialize(ChitChatMessage::Query_RequestType_CHANGE_SKIN));
 }
@@ -204,7 +205,7 @@ void main_window::on_change_avatar_button_clicked() {
     for (int i = 0; i < 9; i++) {
         auto *skin = new sprite_for_choice(characters[i]);
         connect(skin, SIGNAL(add_curren_sprite()), this,
-                SLOT(show_curren_sprite()));
+                SLOT(show_current_sprite()));
         connect(skin, SIGNAL(run_send_skin(const std::string &)), this,
                 SLOT(send_skin(const std::string &)));
         scene->addItem(skin);
@@ -216,6 +217,7 @@ void main_window::on_change_avatar_button_clicked() {
 void main_window::set_user_sprite() {
     current_user.user_sprite =
         new sprite(current_user.get_name(), current_user.get_skin());
+
     connect(current_user.user_sprite,
             SIGNAL(run_send_request(ChitChatMessage::Query)), current_session,
             SLOT(send_request(ChitChatMessage::Query)));

@@ -69,7 +69,7 @@ private slots:
 
     void roommate_connect(const ChitChatMessage::Query &roommate_data);
 
-    void show_curren_sprite();
+    void show_current_sprite();
 
     void on_microphone_check_stateChanged(int arg1);
 
