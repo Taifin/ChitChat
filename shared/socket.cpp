@@ -40,6 +40,7 @@ std::atomic_size_t queries_keeper::parsed_size() const {
 }
 
 void query_processor::prepare_query(const QByteArray &q, QTcpSocket *cli) {
+    qDebug() << "Preparing audio query, sending to" << cli->localPort();
     auto size = q.size();
     QByteArray array(reinterpret_cast<const char *>(&size), 4);
     array.append(q);

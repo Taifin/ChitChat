@@ -60,7 +60,7 @@ void database::change_values(const std::string &username,
                        std::stoi(new_value), username);
     } else if (column_name == "skin") {
         execute_params("UPDATE users SET skin = $1 WHERE uname = $2;",
-                       std::stoi(new_value), username);
+                       new_value, username);
     }
 }
 

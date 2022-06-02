@@ -188,12 +188,14 @@ void server_processor::get_sprite() {
 }
 
 void server_processor::change_skin() {
+    qDebug() << "Changing skin...";
     model::database::change_values(user_in_process.get_name(), "skin",
                                    user_in_process.get_skin());
     prepare_query(user_in_process.serialize(Query_FeedbackType_SKIN_CHANGED),
                   to);
 }
 void server_processor::change_score() {
+    qDebug() << "Changing score, game name is" << (query.game_name() + "_score").c_str();
     model::database::change_values(user_in_process.get_name(),
                                    query.game_name() + "_score",
                                    std::to_string(query.score()));
