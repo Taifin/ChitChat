@@ -16,7 +16,6 @@ client_user::client_user(const std::string &uname,
                          int y)
 
     : user(uname, upwd, "", x, y) {
-
     // user_sprite->setRect(0, 0, 30, 30);
     // user_sprite->setRect(0, 0, 30, 30);
 }

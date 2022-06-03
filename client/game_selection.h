@@ -31,7 +31,6 @@ private slots:
 
     void show_game_rating() {
         //апгрейднуть рейтинг;
-
     }
 
 signals:
