@@ -14,7 +14,7 @@ public:
 
     static void disconnect_user(const server_user &disc_user);
 
-    static void update_coords(const std::string &username, int x, int y);
+    static void update_coords(const server_user &user_moved);
 
     static std::vector<server_user> get_users();
 };

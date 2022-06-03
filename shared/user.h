@@ -2,9 +2,10 @@
 #define CHITCHAT_USER_H
 
 #include <utility>
-#include "QHostAddress"
+#include "QDebug"
+#include "QObject"
+#include "message.pb.h"
 #include "string"
-#include "vector"
 
 struct point {
     int x;
@@ -16,11 +17,10 @@ class user : public QObject {
 
     std::string username;
     std::string password;
-    point coords;
+    std::string skin = "miku";
+    point coords{0, 0};
 
 public:
-    std::string skin = "miku";
-
     explicit user(std::string uname,
                   std::string upwd,
                   std::string skin_name,
@@ -28,7 +28,7 @@ public:
                   int y = 0)
         : username(std::move(uname)),
           password(std::move(upwd)),
-          skin(skin_name),
+          skin(std::move(skin_name)),
           coords({x, y}){};
 
     user(const user &other)
@@ -38,18 +38,16 @@ public:
           skin(other.skin) {
     }
 
-    virtual ~user() = default;
+    user() = default;
 
-    [[nodiscard]] const std::string &name() const {
+    ~user() override = default;
+
+    [[nodiscard]] const std::string &get_name() const {
         return username;
     }
 
-    [[nodiscard]] const std::string &pwd() const {
+    [[nodiscard]] const std::string &get_password() const {
         return password;
-    }
-
-    [[nodiscard]] point get_coords() const {
-        return coords;
     }
 
     [[nodiscard]] int get_x() const {
@@ -60,37 +58,60 @@ public:
         return coords.y;
     }
 
-    void set_coords(int x, int y) {
-        coords = {x, y};
-    }
-
-    user &operator=(const user &other) {
-        username = other.username;
-        password = other.password;
-        coords = other.coords;
-        return *this;
-    }
-
-    std::string get_name() {
-        return username;
-    }
-
-    void set_name(const std::string &name) {
-        username = name;
-    }
-
     [[nodiscard]] std::string get_skin() const {
         return skin;
     }
 
-    void set_skin(const std::string &skin_type) {
-        skin = skin_type;
+    void set_coords(int x, int y) {
+        coords = {x, y};
+    }
+
+    void set_skin(const std::string &skin_name) {
+        skin = skin_name;
+    }
+
+    [[nodiscard]] ChitChatMessage::Query serialize(
+        ChitChatMessage::Query::RequestType type) const {
+        ChitChatMessage::Query query;
+        query.mutable_user()->set_name(username);
+        query.mutable_user()->set_password(password);
+        query.mutable_user()->set_skin(skin);
+        query.mutable_user()->set_x_coord(coords.x);
+        query.mutable_user()->set_y_coord(coords.y);
+        query.set_rtype(type);
+        return std::move(query);
+    }
+
+    [[nodiscard]] ChitChatMessage::Query serialize(
+        ChitChatMessage::Query::FeedbackType type) const {
+        ChitChatMessage::Query query;
+        query.mutable_user()->set_name(username);
+        query.mutable_user()->set_password(password);
+        query.mutable_user()->set_skin(skin);
+        query.mutable_user()->set_x_coord(coords.x);
+        query.mutable_user()->set_y_coord(coords.y);
+        query.set_ftype(type);
+        return query;
+    }
+
+    void parse_from(const ChitChatMessage::Query &query) {
+        username = query.user().name();
+        password = query.user().password();
+        skin = query.user().skin();
+        coords = {query.user().x_coord(), query.user().y_coord()};
+    }
+
+    void parse(const ChitChatMessage::Query_User &user) {
+        username = user.name();
+        password = user.password();
+        skin = user.skin();
+        coords = {user.x_coord(), user.y_coord()};
     }
 
 private slots:
     void initialize(const std::string &name, const std::string &skin_type) {
-        set_skin(skin_type);
-        set_name(name);
+        skin = skin_type;
+        username = name;
         qDebug() << get_skin().c_str() << get_name().c_str();
     }
 };

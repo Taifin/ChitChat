@@ -31,17 +31,11 @@ game_hangman::game_hangman() : ui(new Ui::game_hangman) {
             ui->letters->addWidget(letters[i], 5, i - 22);
         }
     }
-    for (int i = 0; i < 6; ++i) {
-        QSpacerItem *item =
-            new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
-        // ui->letters->addWidget(item);
-    }
 
     std::string score_str = "Score: " + std::to_string(score);
     ui->score->setText(score_str.c_str());
     std::string theme_str = "Theme: " + theme;
     ui->theme->setText(theme_str.c_str());
-
     // QPixmap bkgnd(":/image/background.png");
     // bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
@@ -96,24 +90,21 @@ void game_hangman::draw_man(int step) {
 
 void game_hangman::game_start() {
     mistakes = 0;
-    game_status = 1;
+    game_status = true;
     used_letters = "";
     word = random_word();
     print_word();
 }
 
-void game_hangman::print_letters() {
-}
-
 void game_hangman::print_word() {
     bool won = true;
     QString s = "";
-    for (int i = 0; i < word.length(); i++) {
-        if (used_letters.find(word[i]) == std::string::npos) {
+    for (char i : word) {
+        if (used_letters.find(i) == std::string::npos) {
             won = false;
             s += "_ ";
         } else {
-            s += word[i];
+            s += i;
             s += " ";
         }
     }
@@ -124,14 +115,14 @@ void game_hangman::print_word() {
 }
 
 void game_hangman::win() {
-    game_status = 0;
+    game_status = false;
     mistakes = -1;
     update();
-    for (int i = 0; i < used_letters.length(); i++) {
-        letters[used_letters[i] - 'a']->show();
+    for (char used_letter : used_letters) {
+        letters[used_letter - 'a']->show();
     }
-    for (int i = 0; i < word.length(); i++) {
-        letters[word[i] - 'a']->show();
+    for (char i : word) {
+        letters[i - 'a']->show();
     }
     ui->word->setText(word.c_str());
     ui->game_status->setText("<font color='red'>You win</font>");
@@ -143,12 +134,12 @@ void game_hangman::win() {
 }
 
 void game_hangman::lose() {
-    game_status = 0;
-    for (int i = 0; i < used_letters.length(); i++) {
-        letters[used_letters[i] - 'a']->show();
+    game_status = false;
+    for (char used_letter : used_letters) {
+        letters[used_letter - 'a']->show();
     }
-    for (int i = 0; i < word.length(); i++) {
-        letters[word[i] - 'a']->show();
+    for (char i : word) {
+        letters[i - 'a']->show();
     }
     ui->word->setText(word.c_str());
     ui->game_status->setText("<font color='red'>You lose</font>");
@@ -156,7 +147,7 @@ void game_hangman::lose() {
 
 void game_hangman::letter_clicked() {
     if (game_status) {
-        QToolButton *letter = (QToolButton *)sender();
+        auto *letter = (QToolButton *)sender();
         char l = letter->text().toStdString()[0];
         letters[l - 'a']->hide();
         used_letters += l;

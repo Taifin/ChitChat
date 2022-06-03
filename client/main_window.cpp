@@ -44,17 +44,14 @@ main_window::main_window(QWidget *parent)
 
 void main_window::show_after_auth() {
     this->show();
+    show_current_sprite();
     this->activateWindow();
-    show_curren_sprite();
 }
 
 main_window::~main_window() {
     delete scene;
-    emit run_send_request("disconnect," + current_user.name() + "," +
-                          current_user.pwd() + "," +
-                          std::to_string(current_user.get_x()) + "," +
-                          std::to_string(current_user.get_y()));
-    emit stop_thread();
+    emit run_send_request(
+        current_user.serialize(ChitChatMessage::Query_RequestType_DISCONNECT));
 }
 
 void main_window::remove_message() {
@@ -63,13 +60,13 @@ void main_window::remove_message() {
 
 void main_window::on_connect_button_clicked() {
     if (ui->connect_button->text() == "connect") {
-        emit run_send_request("connect," + current_user.name() + "," +
-                              current_user.pwd());
+        run_send_request(
+            current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
         ui->change_avatar_button->hide();
         ui->connect_button->setText("disconnect");
     } else if (ui->connect_button->text() == "disconnect") {
-        emit run_send_request("disconnect," + current_user.name() + "," +
-                              current_user.pwd());
+        run_send_request(current_user.serialize(
+            ChitChatMessage::Query_RequestType_DISCONNECT));
         ui->connect_button->setText("connect");
     }
 }
@@ -90,7 +87,7 @@ void main_window::set_sprite_name(sprite *sprite) {
     sprite->name_display->setFont(font);
 }
 
-void main_window::connect_with_room(std::vector<std::string> data) {
+void main_window::connect_with_room(const ChitChatMessage::Query &data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     scene->clear();
     scene->addItem(scene->game_machine);
@@ -101,30 +98,21 @@ void main_window::connect_with_room(std::vector<std::string> data) {
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
-    for (int i = 1; i < data.size(); i += 4) {
-        if (data[i] != current_user.name()) {
-            client_user u(data[i], "psw", "miku", stoi(data[i + 1]),
-                          stoi(data[i + 2]));
-            users_in_the_room[data[i]] = u;
-            users_in_the_room[data[i]].set_user_sprite();
-            users_in_the_room[data[i]].user_sprite->setPos(stoi(data[i + 1]),
-                                                           stoi(data[i + 2]));
-            users_in_the_room[data[i]].user_sprite->name_display->setText(
-                QString(users_in_the_room[data[i]].name().c_str()));
-            set_sprite_name(users_in_the_room[data[i]].user_sprite);
-            users_in_the_room[data[i]].user_sprite->change_skin(data[i + 3]);
-            // users_in_the_room[data[i]].user_sprite->name_display->setPos(
-            // stoi(data[i + 1]), stoi(data[i + 2]) - 20);
-            scene->addItem(users_in_the_room[data[i]].user_sprite);
-            scene->addItem(
-                users_in_the_room[data[i]].user_sprite->name_display);
+    for (const auto &user : data.users()) {
+        if (user.name() != current_user.get_name()) {
+            client_user u;
+            u.parse(user);
+            initialize_user(u);
+            users_in_the_room.insert({u.get_name(), u});
+            scene->addItem(u.user_sprite);
+            scene->addItem(u.user_sprite->name_display);
         }
     }
 
     current_user.user_sprite->name_display->setText(
-        QString(current_user.name().c_str()));
+        QString(current_user.get_name().c_str()));
+    current_user.user_sprite->name_display->setPos(0, -20);
     set_sprite_name(current_user.user_sprite);
-    // current_user.user_sprite->name_display->setPos(0, -20);
 
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
@@ -148,24 +136,18 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
     users_in_the_room.erase(roommate_name);
 }
 
-void main_window::roommate_connect(const std::string &roommate_name) {
-    client_user u(roommate_name, "pwd");
-    users_in_the_room[roommate_name] = u;
-    users_in_the_room[roommate_name].set_user_sprite();
-    users_in_the_room[roommate_name].user_sprite->name_display->setText(
-        QString(roommate_name.c_str()));
-
-    set_sprite_name(users_in_the_room[roommate_name].user_sprite);
-
-    // users_in_the_room[roommate_name].user_sprite->name_display->setPos(0,
-    // -20);
-    scene->addItem(users_in_the_room[roommate_name].user_sprite);
-    scene->addItem(users_in_the_room[roommate_name].user_sprite->name_display);
+void main_window::roommate_connect(
+    const ChitChatMessage::Query &roommate_data) {
+    client_user u;
+    u.parse_from(roommate_data);
+    initialize_user(u);
+    users_in_the_room.insert({u.get_name(), u});
+    scene->addItem(u.user_sprite);
+    scene->addItem(u.user_sprite->name_display);
 }
 
-void main_window::show_curren_sprite() {
+void main_window::show_current_sprite() {
     scene->clear();
-
     QGraphicsSimpleTextItem *text =
         new QGraphicsSimpleTextItem("Your character");
 
@@ -177,19 +159,21 @@ void main_window::show_curren_sprite() {
     text->setPos(140, 160);
 
     QGraphicsPixmapItem *user_skin = new QGraphicsPixmapItem(
-
         QPixmap(":/images/" + QString(current_user.get_skin().c_str()) +
                 "_sprite.png"));
+
     scene->addItem(user_skin);
     user_skin->setPos(250, 220);
 }
 
 void main_window::send_skin(const std::string &skin) {
-    run_send_request("change,skin," + current_user.name() + "," + skin);
+    current_user.change_skin(skin);
+    run_send_request(
+        current_user.serialize(ChitChatMessage::Query_RequestType_CHANGE_SKIN));
 }
 
 void main_window::set_user_skin(const std::string &skin) {
-    current_user.skin = skin;
+    current_user.set_skin(skin);
 }
 
 void main_window::on_change_avatar_button_clicked() {
@@ -222,7 +206,7 @@ void main_window::on_change_avatar_button_clicked() {
     for (int i = 0; i < 9; i++) {
         auto *skin = new sprite_for_choice(characters[i]);
         connect(skin, SIGNAL(add_curren_sprite()), this,
-                SLOT(show_curren_sprite()));
+                SLOT(show_current_sprite()));
         connect(skin, SIGNAL(run_send_skin(const std::string &)), this,
                 SLOT(send_skin(const std::string &)));
         scene->addItem(skin);
@@ -233,9 +217,11 @@ void main_window::on_change_avatar_button_clicked() {
 
 void main_window::set_user_sprite() {
     current_user.user_sprite =
-        new sprite(current_user.name(), current_user.get_skin());
-    connect(current_user.user_sprite, SIGNAL(run_send_request(std::string)),
-            current_session, SLOT(send_request(std::string)));
+        new sprite(current_user.get_name(), current_user.get_skin());
+
+    connect(current_user.user_sprite,
+            SIGNAL(run_send_request(ChitChatMessage::Query)), current_session,
+            SLOT(send_request(ChitChatMessage::Query)));
 }
 
 void main_window::on_headphones_check_stateChanged(int arg1) {
@@ -252,4 +238,12 @@ void main_window::on_microphone_check_stateChanged(int arg1) {
     } else {
         emit turn_mic_off();
     }
+}
+void main_window::initialize_user(client_user &u) {
+    u.set_user_sprite();
+    u.user_sprite->setPos(u.get_x(), u.get_y());
+    u.user_sprite->name_display->setText(u.get_name().c_str());
+    u.user_sprite->name_display->setPos(u.get_x(), u.get_y() - 20);
+    set_sprite_name(u.user_sprite);
+    u.user_sprite->change_skin(u.get_skin());
 }

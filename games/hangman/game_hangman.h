@@ -17,7 +17,7 @@ public:
     QPainter painter;
     explicit game_hangman();
     void start() override;
-    ~game_hangman();
+    ~game_hangman() override;
 
 private:
     Ui::game_hangman *ui;
@@ -25,8 +25,6 @@ private:
     std::string used_letters;
     std::string word;
     QToolButton *letters[26];
-    QToolButton *start_button;
-    QToolButton *exit_button;
     bool game_status;
     int score;
     std::string theme;
@@ -35,13 +33,10 @@ protected:
     void paintEvent(QPaintEvent *) override;
     void draw_man(int step);
     void game_start();
-    void print_letters();
     void print_word();
     void win();
     void lose();
     std::string random_word();
-
-    QToolButton *create_button();
 
 private slots:
     void letter_clicked();

@@ -8,8 +8,6 @@
 #include "client_socket.h"
 #include "socket.h"
 
-// TODO: initialize voice module only after successful connection
-
 namespace client {
 
 class processor : public network::query_processor {
@@ -24,7 +22,8 @@ private:
     QAudioFormat format;
     QAudioInput *audioInput;
     QAudioOutput *audioOutput;
-    QIODevice *device;
+    QIODevice *outDevice;
+    QIODevice *inDevice;
     QTcpSocket *audio_socket;
     bool muted;
 
@@ -36,6 +35,8 @@ public slots:
     void output_audio_on();
 
     void output_audio_off();
+
+    void send();
 };
 
 }  // namespace client

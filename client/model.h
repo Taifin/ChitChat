@@ -4,6 +4,7 @@
 #include <QApplication>
 #include "client_socket.h"
 #include "client_user.h"
+#include "message.pb.h"
 #include "shared/socket.h"
 #include "voice_manager.h"
 
@@ -36,16 +37,15 @@ public:
     network::queries_keeper *audio_keeper = new network::queries_keeper;
 
     client_socket socket;
+    client_socket a_socket;
     client_processor processor;
     client::processor audio_processor;
     threads thread;
 
-    void set_curren_user(std::string name, std::string password);
-
-    ~model();
+    ~model() override;
 
 private slots:
-    void send_request(const std::string &message);
+    void send_request(const ChitChatMessage::Query &message);
 };
 
 #endif  // MODEL_H
