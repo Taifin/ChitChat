@@ -17,7 +17,7 @@ include_directories(server)
 include_directories(games/arkanoid)
 include_directories(games/hangman)
 
-add_compile_definitions(LOCAL)
+#add_compile_definitions(LOCAL)
 add_compile_definitions(SHARED)
 set(CLIENT_SOURCES
         client/main.cpp
@@ -55,9 +55,6 @@ set(CLIENT_SOURCES
         resources/resources.qrc
         shared/message.pb.cc
         shared/message.pb.h
-        client/rating.cpp
-        client/rating.h
-        client/rating.ui
         )
 
 set(SERVER_SOURCES
@@ -90,9 +87,6 @@ target_link_libraries(ChitChatClient Qt5::Widgets Qt5::Network Qt5::Multimedia -
 
 add_executable(ChitChatServer ${SERVER_SOURCES})
 target_link_libraries(ChitChatServer Qt5::Widgets Qt5::Network Qt5::Multimedia -lpqxx -lpq -pthread -lprotoc -lprotobuf)
-
-add_executable(HangmanTest ${HANGMAN_SOURCES} games/hangman/main.cpp)
-target_link_libraries(HangmanTest Qt5::Widgets)
 
 add_library(Arkanoid SHARED ${ARKANOID_SOURCES})
 target_link_libraries(Arkanoid Qt5::Widgets)

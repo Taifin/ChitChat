@@ -68,6 +68,9 @@ void main_window::on_connect_button_clicked() {
         run_send_request(current_user.serialize(
             ChitChatMessage::Query_RequestType_DISCONNECT));
         ui->connect_button->setText("connect");
+        ui->change_avatar_button->show();
+        scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
+        show_current_sprite();
     }
 }
 
