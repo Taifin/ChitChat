@@ -27,6 +27,8 @@ public:
 
     void change_skin(const std::string &skin);
 
+    bool is_colliding();
+
 signals:
     void run_send_request(const ChitChatMessage::Query &message);
 };

@@ -6,7 +6,6 @@
 #include "view.h"
 
 sprite::sprite(const std::string &name, const std::string &skin) : name(name) {
-    qDebug() << skin.c_str();
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
     QPen pen;
 
@@ -56,16 +55,21 @@ void sprite::change_skin(const std::string &skin) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
 }
 
-bool is_colliding(sprite *walker) {
+bool sprite::is_colliding() {
     auto *text = new QGraphicsTextItem("Press CTRL+G to start a game");
-    QGraphicsScene *scene = walker->scene();
-    QList<QGraphicsItem *> colliding_items = walker->collidingItems();
+    auto timer = new QTimer;
+
+    connect(timer, SIGNAL(timeout()), text, SLOT(hide()));
+
+    QGraphicsScene *scene = this->scene();
+    QList<QGraphicsItem *> colliding_items = this->collidingItems();
     for (auto &colliding_item : colliding_items) {
         if (typeid(*colliding_item) == typeid(sprite_of_object)) {
             auto *effect = new QGraphicsColorizeEffect();
             effect->setColor(Qt::black);
             colliding_item->setGraphicsEffect(effect);
             scene->addItem(text);
+            timer->start(2000);
             return true;
         } else {
             colliding_item->setGraphicsEffect(nullptr);
@@ -97,7 +101,7 @@ void change_position(int step_size, sprite *walker, directions dir) {
             walker->setPos(x - step_size, y);
             break;
     }
-    is_colliding(walker);
+    walker->is_colliding();
     walker->name_display->setPos(walker->name_display->x() + walker->x() - x,
                                  walker->name_display->y() + walker->y() - y);
     x = walker->x();

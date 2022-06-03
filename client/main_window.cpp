@@ -68,6 +68,10 @@ void main_window::on_connect_button_clicked() {
         run_send_request(current_user.serialize(
             ChitChatMessage::Query_RequestType_DISCONNECT));
         ui->connect_button->setText("connect");
+        scene->clear();
+        scene->setBackgroundBrush(QBrush(QImage(":/images/background.png")));
+        ui->change_avatar_button->show();
+        show_current_sprite();
     }
 }
 
@@ -90,6 +94,7 @@ void main_window::set_sprite_name(sprite *sprite) {
 void main_window::connect_with_room(const ChitChatMessage::Query &data) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     scene->clear();
+    scene->set_game_machine();
     scene->addItem(scene->game_machine);
     scene->game_machine->setPos(100, 70);
     set_user_sprite();

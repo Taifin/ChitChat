@@ -16,82 +16,76 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
-
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
 namespace ChitChatMessage {
-PROTOBUF_CONSTEXPR Query_User::Query_User(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.password_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.skin_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.x_coord_)*/0
-  , /*decltype(_impl_.y_coord_)*/0} {}
+constexpr Query_User::Query_User(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , password_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , skin_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , x_coord_(0)
+  , y_coord_(0){}
 struct Query_UserDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR Query_UserDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  constexpr Query_UserDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
   ~Query_UserDefaultTypeInternal() {}
   union {
     Query_User _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Query_UserDefaultTypeInternal _Query_User_default_instance_;
-PROTOBUF_CONSTEXPR Query::Query(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.users_)*/{}
-  , /*decltype(_impl_.game_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.user_)*/nullptr
-  , /*decltype(_impl_.rtype_)*/0
-  , /*decltype(_impl_.ftype_)*/0
-  , /*decltype(_impl_.score_)*/0} {}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Query_UserDefaultTypeInternal _Query_User_default_instance_;
+constexpr Query::Query(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : users_()
+  , game_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , user_(nullptr)
+  , rtype_(0)
+
+  , ftype_(0)
+
+  , score_(0){}
 struct QueryDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR QueryDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  constexpr QueryDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
   ~QueryDefaultTypeInternal() {}
   union {
     Query _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 QueryDefaultTypeInternal _Query_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT QueryDefaultTypeInternal _Query_default_instance_;
 }  // namespace ChitChatMessage
-static ::_pb::Metadata file_level_metadata_shared_2fmessage_2eproto[2];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_shared_2fmessage_2eproto[2];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_shared_2fmessage_2eproto = nullptr;
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_shared_2fmessage_2eproto[2];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_shared_2fmessage_2eproto[2];
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_shared_2fmessage_2eproto = nullptr;
 
 const uint32_t TableStruct_shared_2fmessage_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _impl_._has_bits_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _impl_.name_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _impl_.password_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _impl_.skin_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _impl_.x_coord_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, _impl_.y_coord_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, name_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, password_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, skin_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, x_coord_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query_User, y_coord_),
   0,
   1,
   2,
   3,
   4,
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_._has_bits_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_.rtype_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_.ftype_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_.user_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_.users_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_.score_),
-  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, _impl_.game_name_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, rtype_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, ftype_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, user_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, users_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, score_),
+  PROTOBUF_FIELD_OFFSET(::ChitChatMessage::Query, game_name_),
   2,
   3,
   1,
@@ -99,14 +93,14 @@ const uint32_t TableStruct_shared_2fmessage_2eproto::offsets[] PROTOBUF_SECTION_
   4,
   0,
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 11, -1, sizeof(::ChitChatMessage::Query_User)},
   { 16, 28, -1, sizeof(::ChitChatMessage::Query)},
 };
 
-static const ::_pb::Message* const file_default_instances[] = {
-  &::ChitChatMessage::_Query_User_default_instance_._instance,
-  &::ChitChatMessage::_Query_default_instance_._instance,
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ChitChatMessage::_Query_User_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ChitChatMessage::_Query_default_instance_),
 };
 
 const char descriptor_table_protodef_shared_2fmessage_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -131,21 +125,19 @@ const char descriptor_table_protodef_shared_2fmessage_2eproto[] PROTOBUF_SECTION
   "ABASE_ERROR\020\013\022\010\n\004SKIN\020\014\022\026\n\022NEW_USER_CONN"
   "ECTED\020\r"
   ;
-static ::_pbi::once_flag descriptor_table_shared_2fmessage_2eproto_once;
-const ::_pbi::DescriptorTable descriptor_table_shared_2fmessage_2eproto = {
-    false, false, 767, descriptor_table_protodef_shared_2fmessage_2eproto,
-    "shared/message.proto",
-    &descriptor_table_shared_2fmessage_2eproto_once, nullptr, 0, 2,
-    schemas, file_default_instances, TableStruct_shared_2fmessage_2eproto::offsets,
-    file_level_metadata_shared_2fmessage_2eproto, file_level_enum_descriptors_shared_2fmessage_2eproto,
-    file_level_service_descriptors_shared_2fmessage_2eproto,
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_shared_2fmessage_2eproto_once;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_shared_2fmessage_2eproto = {
+  false, false, 767, descriptor_table_protodef_shared_2fmessage_2eproto, "shared/message.proto", 
+  &descriptor_table_shared_2fmessage_2eproto_once, nullptr, 0, 2,
+  schemas, file_default_instances, TableStruct_shared_2fmessage_2eproto::offsets,
+  file_level_metadata_shared_2fmessage_2eproto, file_level_enum_descriptors_shared_2fmessage_2eproto, file_level_service_descriptors_shared_2fmessage_2eproto,
 };
-PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_shared_2fmessage_2eproto_getter() {
+PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_shared_2fmessage_2eproto_getter() {
   return &descriptor_table_shared_2fmessage_2eproto;
 }
 
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_shared_2fmessage_2eproto(&descriptor_table_shared_2fmessage_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_shared_2fmessage_2eproto(&descriptor_table_shared_2fmessage_2eproto);
 namespace ChitChatMessage {
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Query_RequestType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_shared_2fmessage_2eproto);
@@ -230,7 +222,7 @@ constexpr int Query::FeedbackType_ARRAYSIZE;
 
 class Query_User::_Internal {
  public:
-  using HasBits = decltype(std::declval<Query_User>()._impl_._has_bits_);
+  using HasBits = decltype(std::declval<Query_User>()._has_bits_);
   static void set_has_name(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -254,97 +246,87 @@ class Query_User::_Internal {
 Query_User::Query_User(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:ChitChatMessage.Query.User)
 }
 Query_User::Query_User(const Query_User& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Query_User* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.name_){}
-    , decltype(_impl_.password_){}
-    , decltype(_impl_.skin_){}
-    , decltype(_impl_.x_coord_){}
-    , decltype(_impl_.y_coord_){}};
-
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.name_.InitDefault();
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.name_.Set("", GetArenaForAllocation());
+    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_name()) {
-    _this->_impl_.name_.Set(from._internal_name(), 
-      _this->GetArenaForAllocation());
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+      GetArenaForAllocation());
   }
-  _impl_.password_.InitDefault();
+  password_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.password_.Set("", GetArenaForAllocation());
+    password_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_password()) {
-    _this->_impl_.password_.Set(from._internal_password(), 
-      _this->GetArenaForAllocation());
+    password_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_password(), 
+      GetArenaForAllocation());
   }
-  _impl_.skin_.InitDefault();
+  skin_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.skin_.Set("", GetArenaForAllocation());
+    skin_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_skin()) {
-    _this->_impl_.skin_.Set(from._internal_skin(), 
-      _this->GetArenaForAllocation());
+    skin_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_skin(), 
+      GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.x_coord_, &from._impl_.x_coord_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.y_coord_) -
-    reinterpret_cast<char*>(&_impl_.x_coord_)) + sizeof(_impl_.y_coord_));
+  ::memcpy(&x_coord_, &from.x_coord_,
+    static_cast<size_t>(reinterpret_cast<char*>(&y_coord_) -
+    reinterpret_cast<char*>(&x_coord_)) + sizeof(y_coord_));
   // @@protoc_insertion_point(copy_constructor:ChitChatMessage.Query.User)
 }
 
-inline void Query_User::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.name_){}
-    , decltype(_impl_.password_){}
-    , decltype(_impl_.skin_){}
-    , decltype(_impl_.x_coord_){0}
-    , decltype(_impl_.y_coord_){0}
-  };
-  _impl_.name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.password_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.password_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.skin_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.skin_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void Query_User::SharedCtor() {
+name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+password_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  password_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+skin_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  skin_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&x_coord_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&y_coord_) -
+    reinterpret_cast<char*>(&x_coord_)) + sizeof(y_coord_));
 }
 
 Query_User::~Query_User() {
   // @@protoc_insertion_point(destructor:ChitChatMessage.Query.User)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void Query_User::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.name_.Destroy();
-  _impl_.password_.Destroy();
-  _impl_.skin_.Destroy();
+  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  skin_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void Query_User::ArenaDtor(void* object) {
+  Query_User* _this = reinterpret_cast< Query_User* >(object);
+  (void)_this;
+}
+void Query_User::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Query_User::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
+  _cached_size_.Set(size);
 }
 
 void Query_User::Clear() {
@@ -353,43 +335,43 @@ void Query_User::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
+  cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      _impl_.name_.ClearNonDefaultToEmpty();
+      name_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000002u) {
-      _impl_.password_.ClearNonDefaultToEmpty();
+      password_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000004u) {
-      _impl_.skin_.ClearNonDefaultToEmpty();
+      skin_.ClearNonDefaultToEmpty();
     }
   }
   if (cached_has_bits & 0x00000018u) {
-    ::memset(&_impl_.x_coord_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&_impl_.y_coord_) -
-        reinterpret_cast<char*>(&_impl_.x_coord_)) + sizeof(_impl_.y_coord_));
+    ::memset(&x_coord_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&y_coord_) -
+        reinterpret_cast<char*>(&x_coord_)) + sizeof(y_coord_));
   }
-  _impl_._has_bits_.Clear();
+  _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* Query_User::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* Query_User::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // required string name = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "ChitChatMessage.Query.User.name");
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "ChitChatMessage.Query.User.name");
           #endif  // !NDEBUG
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -397,11 +379,11 @@ const char* Query_User::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_password();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "ChitChatMessage.Query.User.password");
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "ChitChatMessage.Query.User.password");
           #endif  // !NDEBUG
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -409,11 +391,11 @@ const char* Query_User::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_skin();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "ChitChatMessage.Query.User.skin");
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "ChitChatMessage.Query.User.skin");
           #endif  // !NDEBUG
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -421,7 +403,7 @@ const char* Query_User::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
           _Internal::set_has_x_coord(&has_bits);
-          _impl_.x_coord_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          x_coord_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -430,7 +412,7 @@ const char* Query_User::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
           _Internal::set_has_y_coord(&has_bits);
-          _impl_.y_coord_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          y_coord_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -451,7 +433,7 @@ const char* Query_User::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
     CHK_(ptr != nullptr);
   }  // while
 message_done:
-  _impl_._has_bits_.Or(has_bits);
+  _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -465,7 +447,7 @@ uint8_t* Query_User::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
+  cached_has_bits = _has_bits_[0];
   // required string name = 1;
   if (cached_has_bits & 0x00000001u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -499,17 +481,17 @@ uint8_t* Query_User::_InternalSerialize(
   // optional int32 x_coord = 4;
   if (cached_has_bits & 0x00000008u) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_x_coord(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_x_coord(), target);
   }
 
   // optional int32 y_coord = 5;
   if (cached_has_bits & 0x00000010u) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(5, this->_internal_y_coord(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_y_coord(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:ChitChatMessage.Query.User)
@@ -530,7 +512,7 @@ size_t Query_User::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
+  cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000001eu) {
     // optional string password = 2;
     if (cached_has_bits & 0x00000002u) {
@@ -548,53 +530,57 @@ size_t Query_User::ByteSizeLong() const {
 
     // optional int32 x_coord = 4;
     if (cached_has_bits & 0x00000008u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_x_coord());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_x_coord());
     }
 
     // optional int32 y_coord = 5;
     if (cached_has_bits & 0x00000010u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_y_coord());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_y_coord());
     }
 
   }
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Query_User::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
     Query_User::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Query_User::GetClassData() const { return &_class_data_; }
 
+void Query_User::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Query_User *>(to)->MergeFrom(
+      static_cast<const Query_User &>(from));
+}
 
-void Query_User::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<Query_User*>(&to_msg);
-  auto& from = static_cast<const Query_User&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ChitChatMessage.Query.User)
-  GOOGLE_DCHECK_NE(&from, _this);
+
+void Query_User::MergeFrom(const Query_User& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ChitChatMessage.Query.User)
+  GOOGLE_DCHECK_NE(&from, this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = from._impl_._has_bits_[0];
+  cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
-      _this->_internal_set_name(from._internal_name());
+      _internal_set_name(from._internal_name());
     }
     if (cached_has_bits & 0x00000002u) {
-      _this->_internal_set_password(from._internal_password());
+      _internal_set_password(from._internal_password());
     }
     if (cached_has_bits & 0x00000004u) {
-      _this->_internal_set_skin(from._internal_skin());
+      _internal_set_skin(from._internal_skin());
     }
     if (cached_has_bits & 0x00000008u) {
-      _this->_impl_.x_coord_ = from._impl_.x_coord_;
+      x_coord_ = from.x_coord_;
     }
     if (cached_has_bits & 0x00000010u) {
-      _this->_impl_.y_coord_ = from._impl_.y_coord_;
+      y_coord_ = from.y_coord_;
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
+    _has_bits_[0] |= cached_has_bits;
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Query_User::CopyFrom(const Query_User& from) {
@@ -605,7 +591,7 @@ void Query_User::CopyFrom(const Query_User& from) {
 }
 
 bool Query_User::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   return true;
 }
 
@@ -614,29 +600,32 @@ void Query_User::InternalSwap(Query_User* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.name_, lhs_arena,
-      &other->_impl_.name_, rhs_arena
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.password_, lhs_arena,
-      &other->_impl_.password_, rhs_arena
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &password_, lhs_arena,
+      &other->password_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.skin_, lhs_arena,
-      &other->_impl_.skin_, rhs_arena
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &skin_, lhs_arena,
+      &other->skin_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Query_User, _impl_.y_coord_)
-      + sizeof(Query_User::_impl_.y_coord_)
-      - PROTOBUF_FIELD_OFFSET(Query_User, _impl_.x_coord_)>(
-          reinterpret_cast<char*>(&_impl_.x_coord_),
-          reinterpret_cast<char*>(&other->_impl_.x_coord_));
+      PROTOBUF_FIELD_OFFSET(Query_User, y_coord_)
+      + sizeof(Query_User::y_coord_)
+      - PROTOBUF_FIELD_OFFSET(Query_User, x_coord_)>(
+          reinterpret_cast<char*>(&x_coord_),
+          reinterpret_cast<char*>(&other->x_coord_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Query_User::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_shared_2fmessage_2eproto_getter, &descriptor_table_shared_2fmessage_2eproto_once,
       file_level_metadata_shared_2fmessage_2eproto[0]);
 }
@@ -645,7 +634,7 @@ void Query_User::InternalSwap(Query_User* other) {
 
 class Query::_Internal {
  public:
-  using HasBits = decltype(std::declval<Query>()._impl_._has_bits_);
+  using HasBits = decltype(std::declval<Query>()._has_bits_);
   static void set_has_rtype(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
@@ -666,83 +655,74 @@ class Query::_Internal {
 
 const ::ChitChatMessage::Query_User&
 Query::_Internal::user(const Query* msg) {
-  return *msg->_impl_.user_;
+  return *msg->user_;
 }
 Query::Query(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  users_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:ChitChatMessage.Query)
 }
 Query::Query(const Query& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Query* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.users_){from._impl_.users_}
-    , decltype(_impl_.game_name_){}
-    , decltype(_impl_.user_){nullptr}
-    , decltype(_impl_.rtype_){}
-    , decltype(_impl_.ftype_){}
-    , decltype(_impl_.score_){}};
-
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_),
+      users_(from.users_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.game_name_.InitDefault();
+  game_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.game_name_.Set("", GetArenaForAllocation());
+    game_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_game_name()) {
-    _this->_impl_.game_name_.Set(from._internal_game_name(), 
-      _this->GetArenaForAllocation());
+    game_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_game_name(), 
+      GetArenaForAllocation());
   }
   if (from._internal_has_user()) {
-    _this->_impl_.user_ = new ::ChitChatMessage::Query_User(*from._impl_.user_);
+    user_ = new ::ChitChatMessage::Query_User(*from.user_);
+  } else {
+    user_ = nullptr;
   }
-  ::memcpy(&_impl_.rtype_, &from._impl_.rtype_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.score_) -
-    reinterpret_cast<char*>(&_impl_.rtype_)) + sizeof(_impl_.score_));
+  ::memcpy(&rtype_, &from.rtype_,
+    static_cast<size_t>(reinterpret_cast<char*>(&score_) -
+    reinterpret_cast<char*>(&rtype_)) + sizeof(score_));
   // @@protoc_insertion_point(copy_constructor:ChitChatMessage.Query)
 }
 
-inline void Query::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.users_){arena}
-    , decltype(_impl_.game_name_){}
-    , decltype(_impl_.user_){nullptr}
-    , decltype(_impl_.rtype_){0}
-    , decltype(_impl_.ftype_){0}
-    , decltype(_impl_.score_){0}
-  };
-  _impl_.game_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.game_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void Query::SharedCtor() {
+game_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  game_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&user_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&score_) -
+    reinterpret_cast<char*>(&user_)) + sizeof(score_));
 }
 
 Query::~Query() {
   // @@protoc_insertion_point(destructor:ChitChatMessage.Query)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void Query::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.users_.~RepeatedPtrField();
-  _impl_.game_name_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.user_;
+  game_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete user_;
 }
 
+void Query::ArenaDtor(void* object) {
+  Query* _this = reinterpret_cast< Query* >(object);
+  (void)_this;
+}
+void Query::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Query::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
+  _cached_size_.Set(size);
 }
 
 void Query::Clear() {
@@ -751,32 +731,32 @@ void Query::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.users_.Clear();
-  cached_has_bits = _impl_._has_bits_[0];
+  users_.Clear();
+  cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      _impl_.game_name_.ClearNonDefaultToEmpty();
+      game_name_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000002u) {
-      GOOGLE_DCHECK(_impl_.user_ != nullptr);
-      _impl_.user_->Clear();
+      GOOGLE_DCHECK(user_ != nullptr);
+      user_->Clear();
     }
   }
   if (cached_has_bits & 0x0000001cu) {
-    ::memset(&_impl_.rtype_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&_impl_.score_) -
-        reinterpret_cast<char*>(&_impl_.rtype_)) + sizeof(_impl_.score_));
+    ::memset(&rtype_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&score_) -
+        reinterpret_cast<char*>(&rtype_)) + sizeof(score_));
   }
-  _impl_._has_bits_.Clear();
+  _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* Query::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* Query::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional .ChitChatMessage.Query.RequestType rType = 1;
       case 1:
@@ -829,7 +809,7 @@ const char* Query::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
           _Internal::set_has_score(&has_bits);
-          _impl_.score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -838,11 +818,11 @@ const char* Query::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
           auto str = _internal_mutable_game_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "ChitChatMessage.Query.game_name");
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "ChitChatMessage.Query.game_name");
           #endif  // !NDEBUG
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -862,7 +842,7 @@ const char* Query::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     CHK_(ptr != nullptr);
   }  // while
 message_done:
-  _impl_._has_bits_.Or(has_bits);
+  _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -876,40 +856,41 @@ uint8_t* Query::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
+  cached_has_bits = _has_bits_[0];
   // optional .ChitChatMessage.Query.RequestType rType = 1;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->_internal_rtype(), target);
   }
 
   // optional .ChitChatMessage.Query.FeedbackType fType = 2;
   if (cached_has_bits & 0x00000008u) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       2, this->_internal_ftype(), target);
   }
 
   // optional .ChitChatMessage.Query.User user = 3;
   if (cached_has_bits & 0x00000002u) {
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::user(this),
-        _Internal::user(this).GetCachedSize(), target, stream);
+      InternalWriteMessage(
+        3, _Internal::user(this), target, stream);
   }
 
   // repeated .ChitChatMessage.Query.User users = 4;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_users_size()); i < n; i++) {
-    const auto& repfield = this->_internal_users(i);
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_users_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(4, repfield, repfield.GetCachedSize(), target, stream);
+      InternalWriteMessage(4, this->_internal_users(i), target, stream);
   }
 
   // optional int32 score = 5;
   if (cached_has_bits & 0x00000010u) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(5, this->_internal_score(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_score(), target);
   }
 
   // optional string game_name = 6;
@@ -923,7 +904,7 @@ uint8_t* Query::_InternalSerialize(
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:ChitChatMessage.Query)
@@ -940,12 +921,12 @@ size_t Query::ByteSizeLong() const {
 
   // repeated .ChitChatMessage.Query.User users = 4;
   total_size += 1UL * this->_internal_users_size();
-  for (const auto& msg : this->_impl_.users_) {
+  for (const auto& msg : this->users_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  cached_has_bits = _impl_._has_bits_[0];
+  cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
     // optional string game_name = 6;
     if (cached_has_bits & 0x00000001u) {
@@ -958,67 +939,70 @@ size_t Query::ByteSizeLong() const {
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.user_);
+          *user_);
     }
 
     // optional .ChitChatMessage.Query.RequestType rType = 1;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
-        ::_pbi::WireFormatLite::EnumSize(this->_internal_rtype());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_rtype());
     }
 
     // optional .ChitChatMessage.Query.FeedbackType fType = 2;
     if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
-        ::_pbi::WireFormatLite::EnumSize(this->_internal_ftype());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_ftype());
     }
 
     // optional int32 score = 5;
     if (cached_has_bits & 0x00000010u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_score());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_score());
     }
 
   }
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Query::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
     Query::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Query::GetClassData() const { return &_class_data_; }
 
+void Query::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Query *>(to)->MergeFrom(
+      static_cast<const Query &>(from));
+}
 
-void Query::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<Query*>(&to_msg);
-  auto& from = static_cast<const Query&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ChitChatMessage.Query)
-  GOOGLE_DCHECK_NE(&from, _this);
+
+void Query::MergeFrom(const Query& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ChitChatMessage.Query)
+  GOOGLE_DCHECK_NE(&from, this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.users_.MergeFrom(from._impl_.users_);
-  cached_has_bits = from._impl_._has_bits_[0];
+  users_.MergeFrom(from.users_);
+  cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
-      _this->_internal_set_game_name(from._internal_game_name());
+      _internal_set_game_name(from._internal_game_name());
     }
     if (cached_has_bits & 0x00000002u) {
-      _this->_internal_mutable_user()->::ChitChatMessage::Query_User::MergeFrom(
-          from._internal_user());
+      _internal_mutable_user()->::ChitChatMessage::Query_User::MergeFrom(from._internal_user());
     }
     if (cached_has_bits & 0x00000004u) {
-      _this->_impl_.rtype_ = from._impl_.rtype_;
+      rtype_ = from.rtype_;
     }
     if (cached_has_bits & 0x00000008u) {
-      _this->_impl_.ftype_ = from._impl_.ftype_;
+      ftype_ = from.ftype_;
     }
     if (cached_has_bits & 0x00000010u) {
-      _this->_impl_.score_ = from._impl_.score_;
+      score_ = from.score_;
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
+    _has_bits_[0] |= cached_has_bits;
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Query::CopyFrom(const Query& from) {
@@ -1029,10 +1013,10 @@ void Query::CopyFrom(const Query& from) {
 }
 
 bool Query::IsInitialized() const {
-  if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(_impl_.users_))
+  if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(users_))
     return false;
   if (_internal_has_user()) {
-    if (!_impl_.user_->IsInitialized()) return false;
+    if (!user_->IsInitialized()) return false;
   }
   return true;
 }
@@ -1042,22 +1026,23 @@ void Query::InternalSwap(Query* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.users_.InternalSwap(&other->_impl_.users_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  users_.InternalSwap(&other->users_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.game_name_, lhs_arena,
-      &other->_impl_.game_name_, rhs_arena
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &game_name_, lhs_arena,
+      &other->game_name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Query, _impl_.score_)
-      + sizeof(Query::_impl_.score_)
-      - PROTOBUF_FIELD_OFFSET(Query, _impl_.user_)>(
-          reinterpret_cast<char*>(&_impl_.user_),
-          reinterpret_cast<char*>(&other->_impl_.user_));
+      PROTOBUF_FIELD_OFFSET(Query, score_)
+      + sizeof(Query::score_)
+      - PROTOBUF_FIELD_OFFSET(Query, user_)>(
+          reinterpret_cast<char*>(&user_),
+          reinterpret_cast<char*>(&other->user_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Query::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_shared_2fmessage_2eproto_getter, &descriptor_table_shared_2fmessage_2eproto_once,
       file_level_metadata_shared_2fmessage_2eproto[1]);
 }
@@ -1065,12 +1050,10 @@ void Query::InternalSwap(Query* other) {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace ChitChatMessage
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::ChitChatMessage::Query_User*
-Arena::CreateMaybeMessage< ::ChitChatMessage::Query_User >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::ChitChatMessage::Query_User* Arena::CreateMaybeMessage< ::ChitChatMessage::Query_User >(Arena* arena) {
   return Arena::CreateMessageInternal< ::ChitChatMessage::Query_User >(arena);
 }
-template<> PROTOBUF_NOINLINE ::ChitChatMessage::Query*
-Arena::CreateMaybeMessage< ::ChitChatMessage::Query >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::ChitChatMessage::Query* Arena::CreateMaybeMessage< ::ChitChatMessage::Query >(Arena* arena) {
   return Arena::CreateMessageInternal< ::ChitChatMessage::Query >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE

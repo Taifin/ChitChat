@@ -13,7 +13,6 @@ model::model()
     data_socket->connectToHost(QHostAddress::LocalHost, PORT);
     audio_socket->connectToHost(QHostAddress::LocalHost, PORT + 1);
 #endif
-    thread.start();
 }
 
 void model::send_request(const ChitChatMessage::Query &message) {
