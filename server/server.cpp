@@ -140,7 +140,8 @@ server::audio_processor::audio_processor(network::queries_keeper *keeper,
 
 void server::server_socket::connect_one() {
     QTcpSocket *new_socket = tcp_server->nextPendingConnection();
-    qDebug() << "New connection from" << new_socket->peerAddress() << new_socket->peerPort();
+    qDebug() << "New connection from" << new_socket->peerAddress()
+             << new_socket->peerPort();
     connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
     connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
     sockets.push_back(new_socket);
