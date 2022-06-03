@@ -3,15 +3,16 @@
 
 #include "Ball.h"
 #include "Platform.h"
+#include "abstract_game.h"
 
 // TODO: memory leaks
 // TODO: remove unnecessary class members from Game
 
-class Game : public QMainWindow {
+class Q_DECL_EXPORT Game : ChitChat_game {
     Q_OBJECT
 
 public:
-    Game(QWidget *parent = nullptr);
+    Game();
 
     void prepare_game_scene();
 
@@ -19,7 +20,9 @@ public:
 
     void prepare_end_scene();
 
-    ~Game();
+    void start() override;
+
+    ~Game() override;
 
 public slots:
     void destroy_brick(QGraphicsItem *brick);
@@ -35,14 +38,14 @@ public slots:
 private:
     Plank *p = new Plank();
     Ball *b = new Ball(p);
-    QTimer *movement_timer = new QTimer();
-    QLabel *score_widget = new QLabel("0");
-    QLabel *lives_widget = new QLabel("3");
-    QLabel *game_over_score_widget = new QLabel();
-    QGraphicsScene *game_scene = new QGraphicsScene();
-    QGraphicsScene *start_scene = new QGraphicsScene();
-    QGraphicsScene *end_scene = new QGraphicsScene();
-    QGraphicsView *game_view = new QGraphicsView();
+    QTimer *movement_timer = new QTimer(this);
+    QLabel *score_widget = new QLabel("0", this);
+    QLabel *lives_widget = new QLabel("3", this);
+    QLabel *game_over_score_widget = new QLabel(this);
+    QGraphicsScene *game_scene = new QGraphicsScene(this);
+    QGraphicsScene *start_scene = new QGraphicsScene(this);
+    QGraphicsScene *end_scene = new QGraphicsScene(this);
+    QGraphicsView *game_view = new QGraphicsView(this);
     QGraphicsTextItem *game_over_text =
         new QGraphicsTextItem("Game is over! Your score is:");
     QPushButton *start_button = new QPushButton("Start new game");

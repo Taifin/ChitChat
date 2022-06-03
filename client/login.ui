@@ -84,25 +84,12 @@ font: 11pt &quot;Source Code Pro&quot;;</string>
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>180</y>
+     <y>200</y>
      <width>182</width>
-     <height>101</height>
+     <height>71</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="information_label">
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
     <item>
      <widget class="QPushButton" name="log_in_button">
       <property name="font">
@@ -140,6 +127,28 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="information_label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>170</y>
+     <width>361</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 11pt &quot;Source Code Pro&quot;;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>

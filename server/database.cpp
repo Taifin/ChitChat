@@ -31,27 +31,47 @@ void database::debug_create_table() {
         "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
     w.commit();
 }
-bool database::create_user(user *new_user) {
+bool database::create_user(const user &new_user) {
     bool exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
-                       new_user->name())[0][0]
+                       new_user.get_name())[0][0]
             .as<bool>();
     if (!exists) {
-        execute_params("INSERT INTO users (uname, upassword) VALUES ($1, $2);",
-                       new_user->name(), new_user->pwd());
+        execute_params(
+            "INSERT INTO users (uname, upassword, skin) VALUES ($1, $2, $3);",
+            new_user.get_name(), new_user.get_password(), new_user.get_skin());
         return true;
     } else {
         return false;
     }
 }
 
-user database::get_user_data(user *user_) {
+void database::change_values(const std::string &username,
+                             const std::string &column_name,
+                             const std::string &new_value) {
+    // TODO: map on column name, because exec_params do not support variable
+    // column name
+    if (column_name == "arkanoid_score") {
+        auto r = execute_params(
+            "UPDATE users SET arkanoid_score = $1 WHERE uname = $2;",
+            std::stoi(new_value), username);
+    } else if (column_name == "hangman_score") {
+        execute_params("UPDATE users SET hangman_score = $1 WHERE uname = $2;",
+                       std::stoi(new_value), username);
+    } else if (column_name == "skin") {
+        execute_params("UPDATE users SET skin = $1 WHERE uname = $2;",
+                       new_value, username);
+    }
+}
+
+user database::get_user_data(const std::string &username) {
     auto raw_user_data =
-        execute_params("SELECT 1 FROM users WHERE uname=$1;", user_->name());
+        execute_params("SELECT * FROM users WHERE uname=$1;", username);
     if (raw_user_data.empty())
         throw no_user_found("No information returned");
     return user(raw_user_data[0]["uname"].as<std::string>(),
-                raw_user_data[0]["upassword"].as<std::string>());
+                raw_user_data[0]["upassword"].as<std::string>(),
+                raw_user_data[0]["skin"].as<std::string>());
 }
 
 pqxx::result database::execute_protected(const std::string &connection_params,
@@ -67,6 +87,7 @@ pqxx::result database::execute_protected(const std::string &connection_params,
         std::cerr << error.what() << std::endl;
     }
 }
+
 bool database::authorize(const std::string &username,
                          const std::string &given_password) {
     auto exists =

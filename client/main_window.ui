@@ -6,15 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>604</height>
+    <width>785</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>main_window</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(117, 80, 123);</string>
+   <string notr="true">background-color: rgb(255, 224, 237);
+border-color: rgb(173, 127, 168);
+border-top-color: rgb(173, 127, 168);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="layoutDirection">
@@ -23,10 +25,10 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>0</y>
       <width>782</width>
-      <height>561</height>
+      <height>570</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -46,7 +48,7 @@
       <number>10</number>
      </property>
      <property name="bottomMargin">
-      <number>0</number>
+      <number>10</number>
      </property>
      <item>
       <widget class="QGraphicsView" name="room_view">
@@ -124,22 +126,30 @@ font: 700 10pt &quot;Source Code Pro&quot;;</string>
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QCheckBox" name="headphones_check">
+         <property name="text">
+          <string>headphones</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="microphone_check">
+         <property name="text">
+          <string>microphone</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>791</width>
-     <height>22</height>
-    </rect>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="autoFillBackground">
+    <bool>true</bool>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

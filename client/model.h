@@ -4,21 +4,32 @@
 #include <QApplication>
 #include "client_socket.h"
 #include "client_user.h"
-#include "main_window.h"
+#include "message.pb.h"
 #include "shared/socket.h"
+#include "voice_manager.h"
 
-class model {
+static quint16 PORT = 1235;
+
+class model : public QObject {
+    Q_OBJECT
+
 public:
     model();
-    QTcpSocket *remote_server = new QTcpSocket();
-    // client_user current_user("noname", "default_password");
-    // std::map<std::string, client_user> users_in_the_room;
-    // network::queries_keeper *keeper =
-    //  new network::queries_keeper;  //Нужно delete keeper;
+    // TODO: aboba
+    QTcpSocket *data_socket = new QTcpSocket(this);
+    QTcpSocket *audio_socket = new QTcpSocket(this);
+    network::queries_keeper *keeper = new network::queries_keeper;
+    network::queries_keeper *audio_keeper = new network::queries_keeper;
 
-    // client_socket socket(QHostAddress::Any, 60000, remote_server, keeper,
-    // nullptr); client_processor processor(keeper, socket);
-    void set_curren_user(std::string name, std::string password);
+    client_socket socket;
+    client_socket a_socket;
+    client_processor processor;
+    client::processor audio_processor;
+
+    ~model() override;
+
+private slots:
+    void send_request(const ChitChatMessage::Query &message);
 };
 
 #endif  // MODEL_H

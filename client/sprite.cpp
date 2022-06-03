@@ -3,16 +3,23 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include "client_socket.h"
-#include "client_user.h"
+#include "view.h"
 
-extern QTcpSocket *remote_server;
-extern client_processor processor;
-extern client_user current_user;
-
-sprite::sprite(const std::string &name, std::string skin) : name(name) {
+sprite::sprite(const std::string &name, const std::string &skin) : name(name) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
-    // name_display->setPlainText(QString("a"));
-    // name_display->setPlainText(QString("aa"));
+    QPen pen;
+
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    pen.setBrush(Qt::white);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    pen.setColor(Qt::black);
+
+    QFont font("Source Code Pro", 12);
+    name_display->setFont(font);
+    name_display->setPos(70, 80);
+    name_display->setPen(pen);
 }
 
 void sprite::keyPressEvent(QKeyEvent *event) {
@@ -48,25 +55,29 @@ void sprite::change_skin(const std::string &skin) {
     setPixmap(QPixmap(":/images/" + QString(skin.c_str()) + "_sprite.png"));
 }
 
-bool is_colliding(sprite *walker) {
-    QGraphicsTextItem *text =
-        new QGraphicsTextItem("click on cntl+z to start a game");
-    QGraphicsScene *scene = walker->scene();
-    QList<QGraphicsItem *> colliding_items = walker->collidingItems();
-    for (int i = 0, n = colliding_items.size(); i < n; ++i) {
-        if (typeid(*(colliding_items[i])) == typeid(sprite_of_object)) {
-            QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+bool sprite::is_colliding() {
+    auto *text = new QGraphicsTextItem("Press CTRL+G to start a game");
+    auto timer = new QTimer;
+
+    connect(timer, SIGNAL(timeout()), text, SLOT(hide()));
+
+    QGraphicsScene *scene = this->scene();
+    QList<QGraphicsItem *> colliding_items = this->collidingItems();
+    for (auto &colliding_item : colliding_items) {
+        if (typeid(*colliding_item) == typeid(sprite_of_object)) {
+            auto *effect = new QGraphicsColorizeEffect();
             effect->setColor(Qt::black);
-            colliding_items[i]->setGraphicsEffect(effect);
+            colliding_item->setGraphicsEffect(effect);
             scene->addItem(text);
+            timer->start(2000);
             return true;
         } else {
-            colliding_items[i]->setGraphicsEffect(NULL);
+            colliding_item->setGraphicsEffect(nullptr);
         }
     }
     QList<QGraphicsItem *> items = scene->items();
     for (auto x : items) {
-        x->setGraphicsEffect(NULL);
+        x->setGraphicsEffect(nullptr);
     }
     scene->addItem(text);
     scene->removeItem(text);
@@ -74,8 +85,8 @@ bool is_colliding(sprite *walker) {
 }
 
 void change_position(int step_size, sprite *walker, directions dir) {
-    int x = walker->x();
-    int y = walker->y();
+    auto x = walker->x();
+    auto y = walker->y();
     switch (dir) {
         case directions::UP:
             walker->setPos(x, y - step_size);
@@ -90,17 +101,14 @@ void change_position(int step_size, sprite *walker, directions dir) {
             walker->setPos(x - step_size, y);
             break;
     }
-    if (is_colliding(walker)) {
-        walker->setPos(x, y);
-        return;
-    }
+    walker->is_colliding();
     walker->name_display->setPos(walker->name_display->x() + walker->x() - x,
                                  walker->name_display->y() + walker->y() - y);
     x = walker->x();
     y = walker->y();
-    processor.prepare_query("move," + walker->name + "," + std::to_string(x) +
-                                "," + std::to_string(y),
-                            remote_server);
+    user moved(walker->name, "placeholder", "skin", x, y);
+    emit walker->run_send_request(
+        moved.serialize(ChitChatMessage::Query_RequestType_MOVE));
     qDebug() << std::to_string(walker->x()).c_str()
              << std::to_string(walker->y()).c_str();
 }
@@ -110,11 +118,12 @@ sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
 }
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    current_user.skin = skin;
+    emit run_send_skin(skin);
+    //Здесь нужно отправить датаграмму на изменение скина;-
     emit this->add_curren_sprite();
 }
 
-sprite_of_object::sprite_of_object(std::string object)
+sprite_of_object::sprite_of_object(const std::string &object)
     : QGraphicsPixmapItem(
           QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;

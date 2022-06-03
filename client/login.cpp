@@ -1,30 +1,15 @@
 #include "login.h"
 #include <QLineEdit>
 #include <QMetaType>
-#include "client_socket.h"
 #include "main_window.h"
 #include "shared/user.h"
 #include "ui_login.h"
 
-extern QTcpSocket *remote_server;
-
-extern user current_user;
-extern client_processor processor;
-
 login::login(QWidget *parent) : QDialog(parent), ui(new Ui::login) {
-    connect(&registration_m, SIGNAL(show_login_window_again()), this,
-            SLOT(show_login_window()));
-
-    qRegisterMetaType<std::string>("std::string");
-    connect(&processor, SIGNAL(run_successful_login(std::string)), this,
-            SLOT(successful_login(std::string)));
-    connect(&processor, SIGNAL(run_wrong_password()), this,
-            SLOT(wrong_password()));
-    connect(&processor, SIGNAL(run_no_user()), this, SLOT(no_user()));
-    connect(&processor, SIGNAL(run_error()), this, SLOT(error()));
-
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 }
 
 login::~login() {
@@ -43,32 +28,50 @@ void login::on_log_in_button_clicked() {
     std::string login, password;
     login = (ui->login_line_edit->text().toStdString());
     password = ui->password_line_edit->text().toStdString();
-    processor.prepare_query("login," + login + "," + password, remote_server);
+    if (login.length() == 0) {
+        ui->information_label->setText("You haven't entered a login");
+        timer->start(TIME_FOR_MESSAGE);
+    } else if (password.length() == 0) {
+        ui->information_label->setText("You haven't entered a password");
+        timer->start(TIME_FOR_MESSAGE);
+    } else {
+        user u(login, password, "aboba");
+        emit run_send_request(
+            u.serialize(ChitChatMessage::Query_RequestType_LOGIN));
+    }
 }
 
 void login::on_create_new_account_button_clicked() {
     this->hide();
-    registration_m.show();
+    emit show_registration_window();
 }
 
 void login::show_login_window() {
     this->show();
+    this->activateWindow();
 }
 
-void login::successful_login(const std::string &name) {
-    current_user.set_name(name);
-    this->hide();
+void login::successful_login(const ChitChatMessage::Query &q) {
+    this->close();
+    emit run_initialize(q.user().name(), q.user().skin());
     emit show_main_window();
 }
 
 void login::wrong_password() {
     ui->information_label->setText("Wrong password");
+    timer->start(TIME_FOR_MESSAGE);
 }
 
 void login::no_user() {
     ui->information_label->setText("User is not found");
+    timer->start(TIME_FOR_MESSAGE);
 }
 
 void login::error() {
-    ui->information_label->setText("Something go wrong");
+    ui->information_label->setText("Something went wrong");
+    timer->start(TIME_FOR_MESSAGE);
+}
+
+void login::remove_message() {
+    ui->information_label->clear();
 };

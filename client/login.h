@@ -3,6 +3,7 @@
 #include <QDialog>
 #include <QObject>
 #include "client_socket.h"
+#include "model.h"
 #include "registration.h"
 
 namespace Ui {
@@ -15,10 +16,13 @@ class login : public QDialog {
 public:
     explicit login(QWidget *parent = nullptr);
 
-    ~login();
+    ~login() override;
 
 signals:
     void show_main_window();
+    void show_registration_window();
+    void run_send_request(ChitChatMessage::Query message);
+    void run_initialize(std::string, std::string);
 
 private slots:
 
@@ -30,7 +34,7 @@ private slots:
 
     void show_login_window();
 
-    void successful_login(const std::string &name);
+    void successful_login(const ChitChatMessage::Query &q);
 
     void wrong_password();
 
@@ -38,9 +42,14 @@ private slots:
 
     void error();
 
+public slots:
+    void remove_message();
+
 private:
     Ui::login *ui;
-    registration registration_m;
+    client_processor *processor = nullptr;
+    QTimer *timer;
+    int TIME_FOR_MESSAGE = 1500;
 };
 
 #endif  // LOGIN_H

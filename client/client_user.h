@@ -5,16 +5,26 @@
 #include "sprite.h"
 
 class client_user : public user {
+    Q_OBJECT
+
 public:
     client_user();
-    client_user(std::string uname, std::string upwd);
-    client_user(std::string uname, std::string upwd, int x, int y);
+    client_user(const std::string &uname, const std::string &upwd);
+    client_user(const std::string &uname,
+                const std::string &upwd,
+                const std::string &skin = "miku");
+    client_user(const std::string &uname,
+                const std::string &upwd,
+                const std::string &skin,
+                int x,
+                int y);
+
     void set_user_sprite();
     sprite *user_sprite;
-    std::string skin = "pikachu";
-    ~client_user();
+    ~client_user() override;
 
-private:
+public slots:
+    void change_skin(const std::string &skin);
 };
 
 #endif  // CLIENT_USER_H

@@ -1,12 +1,8 @@
 #include "registration.h"
+#include <QTimer>
 #include <vector>
-#include "client_socket.h"
 #include "shared/user.h"
 #include "ui_registration.h"
-
-extern QTcpSocket *remote_server;
-
-extern client_processor processor;
 
 registration::registration(QWidget *parent)
     : QDialog(parent), ui(new Ui::registration) {
@@ -24,9 +20,8 @@ registration::registration(QWidget *parent)
     ui->stormtroopers_label->setPixmap(
         QPixmap(":/images/stormtroopers_sprite.png"));
 
-    connect(&processor, SIGNAL(run_successful_registration()), this,
-            SLOT(successful_registration()));
-    connect(&processor, SIGNAL(run_duplicate()), this, SLOT(duplicate()));
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 }
 
 registration::~registration() {
@@ -46,40 +41,61 @@ void registration::on_confirm_button_clicked() {
 
     if (password != confirm_password) {
         ui->information_label->setText("Passwords don't match");
+    } else if (login.length() == 0) {
+        ui->information_label->setText("You haven't entered a login");
+        timer->start(TIME_FOR_MESSAGE);
+    } else if (password.length() < 6) {
+        ui->information_label->setText(
+            "This password is too short. (At least 6 symbols)");
+        timer->start(TIME_FOR_MESSAGE);
     } else {
-        processor.prepare_query("register," + login + "," + password,
-                                remote_server);
-        // TODO: передавать на сервер информацию о выборе
+        user u(login, password, "aboba");
         if (ui->finn_radio_button->isChecked()) {
+            u.set_skin("finn");
             qDebug() << "finn";
         } else if (ui->gambol_radio_button->isChecked()) {
+            u.set_skin("gambol");
             qDebug() << "gambol";
         } else if (ui->kermit_radio_button->isChecked()) {
-            qDebug() << "kertmit";
+            u.set_skin("kermit");
+            qDebug() << "kermit";
         } else if (ui->miku_radio_button->isChecked()) {
+            u.set_skin("miku");
             qDebug() << "miku";
         } else if (ui->mushroom_radio_button->isChecked()) {
-            qDebug() << "mushrom";
+            u.set_skin("mushroom");
+            qDebug() << "mushroom";
         } else if (ui->pikachu_radio_button->isChecked()) {
+            u.set_skin("pikachu");
             qDebug() << "pikachu";
         } else if (ui->rafael_radio_button->isChecked()) {
+            u.set_skin("rafael");
             qDebug() << "rafael";
         } else if (ui->sonic_radio_button->isChecked()) {
+            u.set_skin("sonic");
             qDebug() << "sonic";
         } else if (ui->stormtroopers_radio_button->isChecked()) {
+            u.set_skin("rafael");
             qDebug() << "rafael";
         }
+        emit run_send_request(
+            u.serialize(ChitChatMessage::Query_RequestType_REGISTER));
     }
 }
 
 void registration::successful_registration() {
-    this->hide();
+    this->close();
     emit show_login_window_again();
 }
 
 void registration::duplicate() {
     ui->information_label->setText(
         "Name already in use. Please choose another one");
+    timer->start(TIME_FOR_MESSAGE);
+}
+
+void registration::remove_message() {
+    ui->information_label->clear();
 }
 
 void registration::on_show_password_check_stateChanged(int arg1) {

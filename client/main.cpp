@@ -1,32 +1,27 @@
 #include <QApplication>
-#include <map>
 #include <thread>
-#include "client_socket.h"
-#include "client_user.h"
-#include "database.h"
-#include "main_window.h"
-#include "shared/socket.h"
-
-QTcpSocket *remote_server = new QTcpSocket();
-client_user current_user("noname", "default_password");
-std::map<std::string, client_user> users_in_the_room;
-network::queries_keeper *keeper =
-    new network::queries_keeper;  //Нужно delete keeper;
-
-client_socket socket(QHostAddress::Any, 60000, remote_server, keeper, nullptr);
-client_processor processor(keeper, socket);
+#include "view.h"
 
 int main(int argc, char *argv[]) {
-    std::thread t([]() {
+    QApplication a(argc, argv);
+
+    view current_view;
+
+    std::thread t([&]() {
         while (true) {
-            processor.wait_next_query();
+            current_view.current_session.processor.wait_next_query();
         }
     });
     t.detach();
 
-    QApplication a(argc, argv);
-    main_window w;
-    w.start();
+    std::thread t2([&]() {
+        while (true) {
+            current_view.current_session.audio_processor.wait_next_query();
+        }
+    });
+    t2.detach();
+
+    current_view.start();
 
     return a.exec();
 }
