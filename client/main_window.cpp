@@ -45,6 +45,8 @@ main_window::main_window(QWidget *parent)
 void main_window::show_after_auth() {
     this->show();
     show_current_sprite();
+    this->activateWindow();
+
 }
 
 main_window::~main_window() {
@@ -97,6 +99,7 @@ void main_window::connect_with_room(const ChitChatMessage::Query &data) {
 
     scene->setBackgroundBrush(QBrush(QImage(":/images/floor.png")));
 
+
     for (const auto &user : data.users()) {
         if (user.name() != current_user.get_name()) {
             client_user u;
@@ -143,6 +146,7 @@ void main_window::roommate_connect(
     users_in_the_room.insert({u.get_name(), u});
     scene->addItem(u.user_sprite);
     scene->addItem(u.user_sprite->name_display);
+
 }
 
 void main_window::show_current_sprite() {

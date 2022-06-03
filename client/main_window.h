@@ -52,6 +52,8 @@ signals:
 
     void turn_head_off();
 
+    void stop_thread();
+
 private slots:
     void on_change_avatar_button_clicked();
 

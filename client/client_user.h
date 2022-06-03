@@ -9,9 +9,12 @@ class client_user : public user {
 
 public:
     client_user();
-    client_user(const std::string &uname, const std::string &upwd);
     client_user(const std::string &uname,
                 const std::string &upwd,
+                const std::string &skin = "miku");
+    client_user(const std::string &uname,
+                const std::string &upwd,
+                const std::string &skin,
                 int x,
                 int y);
 

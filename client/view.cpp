@@ -67,6 +67,12 @@ view::view() {
             SLOT(initialize(std::string, std::string)));
     connect(&current_session.processor, SIGNAL(run_change_skin(std::string)),
             &main_process.current_user, SLOT(change_skin(std::string)));
+
+    connect(&current_session.processor, SIGNAL(run_change_skin(std::string)),
+            &main_process.current_user, SLOT(change_skin(std::string)));
+
+    connect(&main_process, SIGNAL(stop_thread()), &current_session.thread,
+            SLOT(quit()));
 }
 
 void view::start() {

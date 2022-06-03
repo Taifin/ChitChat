@@ -11,7 +11,6 @@ game_selection::game_selection(QWidget *parent)
     this->setWindowTitle("ChitChat");
     move(QGuiApplication::screens().at(0)->geometry().center() -
          frameGeometry().center());
-    this->raise();
 }
 
 game_selection::~game_selection() {
@@ -58,5 +57,6 @@ void game_selection::start_game(const std::string &name) {
 void game_selection::on_rating_button_clicked() {
     games_rating.update_rating();
     games_rating.show();
+    games_rating.activateWindow();
     this->close();
 }

@@ -10,6 +10,21 @@
 
 static quint16 PORT = 1235;
 
+class threads : public QThread {
+    Q_OBJECT
+public:
+    threads(client_processor *processor) : processor(processor){};
+
+protected:
+    client_processor *processor;
+    void run() {
+        while (true) {
+            qDebug() << "wanna die";
+            processor->wait_next_query();
+        }
+    }
+};
+
 class model : public QObject {
     Q_OBJECT
 
@@ -25,6 +40,7 @@ public:
     client_socket a_socket;
     client_processor processor;
     client::processor audio_processor;
+    threads thread;
 
     ~model() override;
 

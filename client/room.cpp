@@ -17,6 +17,7 @@ void room::keyPressEvent(QKeyEvent *event) {
                     qDebug() << typeid(sprite_of_object).name();
                     if (colliding_item == game_machine) {
                         choose_game.show();
+                        choose_game.activateWindow();
                     }
                 }
             }

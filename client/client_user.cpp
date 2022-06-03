@@ -11,9 +11,12 @@ client_user::client_user(const std::string &uname, const std::string &upwd)
 
 client_user::client_user(const std::string &uname,
                          const std::string &upwd,
+                         const std::string &skin,
                          int x,
                          int y)
+
     : user(uname, upwd, "", x, y) {
+
     // user_sprite->setRect(0, 0, 30, 30);
     // user_sprite->setRect(0, 0, 30, 30);
 }
