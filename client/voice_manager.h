@@ -5,6 +5,7 @@
 #include "QAudioInput"
 #include "QAudioOutput"
 #include "QIODevice"
+#include "QTimer"
 #include "client_socket.h"
 #include "socket.h"
 
@@ -25,6 +26,7 @@ private:
     QIODevice *outDevice;
     QIODevice *inDevice;
     QTcpSocket *audio_socket;
+    QTimer *timer;
     bool muted;
 
 public slots:
