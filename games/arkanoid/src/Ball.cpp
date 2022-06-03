@@ -66,7 +66,7 @@ qreal Ball::top() {
 qreal Ball::bottom() {
     return y() + this->rect().height();
 }
-Ball::Ball(QGraphicsItem *plank_) {
+Ball::Ball(QGraphicsItem *plank_) {  // NOLINT : randomize_velocity do the thing
     plank = plank_;
     randomize_velocity();
 }

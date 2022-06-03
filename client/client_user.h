@@ -20,7 +20,7 @@ public:
 
     void set_user_sprite();
     sprite *user_sprite;
-    ~client_user();
+    ~client_user() override;
 
 public slots:
     void change_skin(const std::string &skin);

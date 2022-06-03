@@ -19,12 +19,14 @@ public:
           client(socket) {
     }
 
-    bool operator==(const server_user &other) {
-        return this->name() == other.name();
+    server_user() = default;
+
+    bool operator==(const server_user &other) const {
+        return this->get_name() == other.get_name();
     }
 
-    bool operator==(server_user &&other) {
-        return this->name() == other.name();
+    bool operator!=(const server_user &other) const {
+        return !(*this == other);
     }
 };
 

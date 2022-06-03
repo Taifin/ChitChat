@@ -17,7 +17,7 @@ Game::~Game() {
     delete movement_timer;
     delete score_widget;
     delete lives_widget;
-};
+}
 
 void Game::destroy_brick(QGraphicsItem *brick) {
     brick->setVisible(false);

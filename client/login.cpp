@@ -1,7 +1,6 @@
 #include "login.h"
 #include <QLineEdit>
 #include <QMetaType>
-#include "client_socket.h"
 #include "main_window.h"
 #include "shared/user.h"
 #include "ui_login.h"
@@ -36,7 +35,9 @@ void login::on_log_in_button_clicked() {
         ui->information_label->setText("You haven't entered a password");
         timer->start(TIME_FOR_MESSAGE);
     } else {
-        emit run_send_request("login," + login + "," + password);
+        user u(login, password, "aboba");
+        emit run_send_request(
+            u.serialize(ChitChatMessage::Query_RequestType_LOGIN));
     }
 }
 
@@ -50,12 +51,9 @@ void login::show_login_window() {
     this->activateWindow();
 }
 
-void login::successful_login(const std::string &name) {
-    // current_user.set_name(name);
-
-    //Сделать получение спринта
+void login::successful_login(const ChitChatMessage::Query &q) {
     this->close();
-    emit run_initialize(name, "pikachu");
+    emit run_initialize(q.user().name(), q.user().skin());
     emit show_main_window();
 }
 
@@ -70,7 +68,7 @@ void login::no_user() {
 }
 
 void login::error() {
-    ui->information_label->setText("Something go wrong");
+    ui->information_label->setText("Something went wrong");
     timer->start(TIME_FOR_MESSAGE);
 }
 
