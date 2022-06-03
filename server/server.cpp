@@ -139,8 +139,8 @@ server::audio_processor::audio_processor(network::queries_keeper *keeper,
 }
 
 void server::server_socket::connect_one() {
-    qDebug() << "New connection";
     QTcpSocket *new_socket = tcp_server->nextPendingConnection();
+    qDebug() << "New connection from" << new_socket->peerAddress() << new_socket->peerPort();
     connect(new_socket, SIGNAL(readyRead()), this, SLOT(read()));
     connect(new_socket, SIGNAL(disconnected()), this, SLOT(disconnect_one()));
     sockets.push_back(new_socket);
@@ -173,7 +173,8 @@ void server::audio_processor::process() {
         for (auto &sock :
              dynamic_cast<server_socket &>(socket).get_connected_sockets()) {
             auto query = keeper->front_parsed();
-            if (sock != query.second) {
+            qDebug() << query.second->peerPort() << sock->peerPort();
+            if (sock->peerPort() != query.second->peerPort()) {
                 prepare_query(query.first, sock);
             }
         }

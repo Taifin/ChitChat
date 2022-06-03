@@ -14,6 +14,13 @@ int main(int argc, char *argv[]) {
     });
     t.detach();
 
+    std::thread t2([&]() {
+        while (true) {
+            current_view.current_session.audio_processor.wait_next_query();
+        }
+    });
+    t2.detach();
+
     current_view.start();
 
     return a.exec();

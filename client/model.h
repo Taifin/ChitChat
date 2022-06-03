@@ -22,6 +22,7 @@ public:
     network::queries_keeper *audio_keeper = new network::queries_keeper;
 
     client_socket socket;
+    client_socket a_socket;
     client_processor processor;
     client::processor audio_processor;
 

@@ -44,17 +44,11 @@ class tcp_socket : public QObject {
 protected:
     queries_keeper *keeper;
 
-private:
-    uint32_t read_msg_size(char *buf);
-
 public:
     explicit tcp_socket(const QHostAddress &host,
                         quint16 port,
                         queries_keeper *keeper1,
                         QObject *parent = nullptr);
-
-    void wait_for_processed();
-    /// Sends "msg" to client.
 
 public slots:
 

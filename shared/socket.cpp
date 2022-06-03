@@ -40,7 +40,7 @@ std::atomic_size_t queries_keeper::parsed_size() const {
 }
 
 void query_processor::prepare_query(const QByteArray &q, QTcpSocket *cli) {
-    qDebug() << "Preparing audio query, sending to" << cli->localPort();
+    qDebug() << "Preparing audio query, sending to" << cli->peerPort();
     auto size = q.size();
     QByteArray array(reinterpret_cast<const char *>(&size), 4);
     array.append(q);
@@ -82,17 +82,17 @@ void tcp_socket::send() {
 }
 
 void tcp_socket::read() {
-    qDebug() << "Reading...";
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
+    qDebug() << sender->localPort() << "reading new message...";
     while (sender->bytesAvailable() > 0) {
         auto msg_size = *reinterpret_cast<quint32 *>(sender->read(4).data());
         qDebug() << "New message of size:" << msg_size;
-        qDebug() << "Bytes available after reading size:"
-                 << sender->bytesAvailable();
+//        qDebug() << "Bytes available after reading size:"
+//                 << sender->bytesAvailable();
         auto msg = sender->read(msg_size);
         ChitChatMessage::Query q;
-        qDebug() << "Bytes available after reading whole msg:"
-                 << sender->bytesAvailable();
+//        qDebug() << "Bytes available after reading whole msg:"
+//                 << sender->bytesAvailable();
         keeper->push_parsed(msg, sender);
     }
 }

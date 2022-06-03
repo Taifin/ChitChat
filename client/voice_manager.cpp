@@ -24,6 +24,7 @@ client::processor::processor(network::queries_keeper *keeper1,
 
 void client::processor::process() {
     while (keeper->parsed_size() > 0) {
+        qDebug() << "Processing incoming audio";
         if (!muted) {
             outDevice->write(keeper->front_parsed().first.data(),
                              keeper->front_parsed().first.size());
@@ -54,9 +55,5 @@ void client::processor::output_audio_off() {
 
 void client::processor::send() {
     auto audio = inDevice->readAll();
-    auto size = audio.size();
-    qDebug() << "Audio of size" << size << "is being sent";
-    QByteArray array(reinterpret_cast<const char *>(&size), 4);
-    array.append(audio, (int)(size));
-    audio_socket->write(array);
+    prepare_query(audio, audio_socket);
 }
