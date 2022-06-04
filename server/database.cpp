@@ -16,21 +16,6 @@ void database::connection(const std::string &dbname,
     users_connection = pqxx::connection(params);
 }
 
-void database::debug_create_db() {
-    pqxx::connection conn("dbname=postgres");
-    pqxx::nontransaction creator(conn);
-    creator.exec("CREATE DATABASE ChitChat");
-    creator.commit();
-}
-
-void database::debug_create_table() {
-    pqxx::connection conn("dbname=chitchat");
-    pqxx::work w(conn);
-    w.exec(
-        "CREATE TABLE IF NOT EXISTS users (uname VARCHAR(30), "
-        "upassword VARCHAR(30));");  // TODO: avatar and visited rooms
-    w.commit();
-}
 bool database::create_user(const user &new_user) {
     bool exists =
         execute_params("SELECT count(1) > 0 FROM users WHERE uname=$1;",
@@ -72,6 +57,13 @@ user database::get_user_data(const std::string &username) {
     return user(raw_user_data[0]["uname"].as<std::string>(),
                 raw_user_data[0]["upassword"].as<std::string>(),
                 raw_user_data[0]["skin"].as<std::string>());
+}
+
+int database::get_user_score(const std::string& username, const std::string& gamename) {
+    auto raw_user_data = execute_params("SELECT * FROM users WHERE uname=$1;", username);
+    if (raw_user_data.empty())
+        throw no_user_found("No information returned");
+    return raw_user_data[0][gamename].as<int>();
 }
 
 pqxx::result database::execute_protected(const std::string &connection_params,
