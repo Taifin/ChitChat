@@ -134,7 +134,7 @@ void Game::start() {
                this->rect().center());
 }
 void Game::get_score() {
-    emit score_sender(score);
+    emit score_sender(score, "arkanoid");
 }
 
 extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {

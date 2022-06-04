@@ -27,6 +27,10 @@ public:
     ~game_hangman() override;
     Ui::game_hangman *ui;
 
+    void get_score() override {
+        emit score_sender(score, "hangman");
+    }
+
 private:   
     int mistakes;
     std::string used_letters;

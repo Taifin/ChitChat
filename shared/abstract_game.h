@@ -18,7 +18,7 @@ public:
     virtual void get_score() = 0;
 
 signals:
-    void score_sender(int);
+    void score_sender(int, std::string);
 };
 
 #endif  // CHITCHAT_ABSTRACT_GAME_H

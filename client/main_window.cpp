@@ -33,6 +33,9 @@ main_window::main_window(QWidget *parent)
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 
+    connect(&scene->choose_game, SIGNAL(run_send_score(int, std::string)), this,
+            SLOT(send_score(int, std::string)));
+
     pen.setStyle(Qt::SolidLine);
     pen.setWidth(1);
     pen.setBrush(QColor(117, 5, 48));
@@ -180,7 +183,6 @@ void main_window::set_user_skin(const std::string &skin) {
 }
 
 void main_window::on_change_avatar_button_clicked() {
-    // view->setEnabled(true);
     scene->clear();
 
     QGraphicsSimpleTextItem *text =
