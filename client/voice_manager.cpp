@@ -36,7 +36,6 @@ void client::processor::process() {
 }
 void client::processor::input_audio_on() {
     inDevice = audioInput->start();
-    connect(inDevice, SIGNAL(readyRead()), this, SLOT(send()));
     connect(timer, SIGNAL(timeout()), this, SLOT(send()));
     timer->start(50);
     qDebug() << "Microphone is on";

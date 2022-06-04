@@ -78,7 +78,7 @@ void tcp_socket::send() {
     auto q = keeper->pop_prepared();
     qDebug() << "Sending msg of size:" << q.first.size();
     q.second->write(q.first);
-    q.second->waitForBytesWritten(25);
+    q.second->waitForBytesWritten(100);
 }
 
 void tcp_socket::read() {

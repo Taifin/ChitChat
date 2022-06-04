@@ -81,6 +81,14 @@ public:
 
     void prepare_query(const ChitChatMessage::Query &q, QTcpSocket *cli);
 
+    bool debug_terminate = false;
+
+public slots:
+
+    void debug_terminate_me() {
+        debug_terminate = true;
+    };
+
 signals:
 
     void prepared();

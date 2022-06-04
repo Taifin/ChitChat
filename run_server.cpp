@@ -16,16 +16,24 @@ int main(int argc, char *argv[]) {
 #endif
     server::server_processor processor(keeper, receiver);
     server::audio_processor audio(audio_keeper, audio_receiver);
-    std::thread t([&processor]() {
+    std::thread t([&processor, &a]() {
         while (true) {
             processor.wait_next_query();
+            if (processor.debug_terminate) {
+                qDebug() << "Dies from cringe";
+                a.quit();
+            }
         }
     });
     t.detach();
 
-    std::thread t2([&audio]() {
+    std::thread t2([&audio, &a]() {
         while (true) {
             audio.wait_next_query();
+            if (audio.debug_terminate) {
+                qDebug() << "Dies from cringe";
+                a.quit();
+            }
         }
     });
     t2.detach();

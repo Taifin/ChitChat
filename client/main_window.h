@@ -88,10 +88,14 @@ private slots:
         run_send_request(q);
     };
 
+    void terminate();
+
 private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
+
+    QPushButton *btn;  //убрать потом
 
     void initialize_user(client_user &u);
 
