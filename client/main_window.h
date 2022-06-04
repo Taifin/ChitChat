@@ -79,10 +79,13 @@ private slots:
 
     void send_skin(const std::string &skin);
 
+    void terminate();
+
 private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
+    QPushButton *btn;
     void initialize_user(client_user &u);
 
     QTimer *timer;

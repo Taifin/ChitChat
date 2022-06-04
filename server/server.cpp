@@ -40,6 +40,9 @@ void server_processor::process() {
             case Query_RequestType_GET_SCORE:
                 get_score();
                 break;
+            case Query_RequestType_DEBUG_TERMINATE:
+                debug_terminate = true;
+                break;
         }
     }
 }

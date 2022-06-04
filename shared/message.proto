@@ -21,6 +21,7 @@ message Query {
     CHANGE_SCORE = 7;
     GET_SKIN = 8;
     GET_SCORE = 9;
+    DEBUG_TERMINATE = 10;
   }
 
   enum FeedbackType {
