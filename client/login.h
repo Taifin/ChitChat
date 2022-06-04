@@ -2,7 +2,6 @@
 #define LOGIN_H
 #include <QDialog>
 #include <QObject>
-#include "client_socket.h"
 #include "model.h"
 #include "registration.h"
 

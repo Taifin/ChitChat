@@ -29,6 +29,7 @@ view::view() {
             &current_session.audio_processor, SLOT(input_audio_on()));
     connect(&main_process, SIGNAL(turn_mic_off()),
             &current_session.audio_processor, SLOT(input_audio_off()));
+
     connect(&main_process, SIGNAL(turn_head_on()),
             &current_session.audio_processor, SLOT(output_audio_on()));
     connect(&main_process, SIGNAL(turn_head_off()),

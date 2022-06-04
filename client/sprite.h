@@ -1,12 +1,21 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
+#include <QGraphicsEffect>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
+#include <QGraphicsScene>
+#include <QKeyEvent>
 #include <QObject>
 #include <QtGui>
 #include <unordered_map>
 #include "message.pb.h"
+
+#define BORDER_X 525
+#define BORDER_Y 475
+
+#define SPRITE_SIZE_X 70
+#define SPRITE_SIZE_Y 80
 
 static int STEP_SIZE = 5;
 
@@ -56,9 +65,7 @@ public:
     std::string type_of_object;
     QGraphicsTextItem *text;
 
-    void set_text(const std::string &message) {
-        text = new QGraphicsTextItem(message.c_str());
-    }
+    void set_text(const std::string &message);
 };
 
 #endif  // SPRITE_H

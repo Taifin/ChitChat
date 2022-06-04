@@ -12,7 +12,7 @@ public:
     client_user(const std::string &uname, const std::string &upwd);
     client_user(const std::string &uname,
                 const std::string &upwd,
-                const std::string &skin = "miku");
+                const std::string &skin);
     client_user(const std::string &uname,
                 const std::string &upwd,
                 const std::string &skin,
@@ -21,7 +21,6 @@ public:
 
     void set_user_sprite();
     sprite *user_sprite;
-    ~client_user() override;
 
 public slots:
     void change_skin(const std::string &skin);
