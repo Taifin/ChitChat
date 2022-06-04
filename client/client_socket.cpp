@@ -49,6 +49,7 @@ void client_processor::process() {
             emit run_change_skin(query.user().skin());
             break;
         case ChitChatMessage::Query_FeedbackType_SCORE_CHANGED:
+            // emit run_score_changed(query.)
             // TODO
             break;
         case ChitChatMessage::Query_FeedbackType_DATABASE_ERROR:

@@ -29,12 +29,16 @@ private slots:
 
     void start_game(const std::string &name);
 
-    void show_game_rating() {
-        //апгрейднуть рейтинг;
+    void show_game_rating();
+
+    void send_score(int score, std::string game_name) {
+        emit run_send_score(score, game_name);
     }
 
 signals:
     void game_chosen(const std::string &name);
+
+    void run_send_score(int, std::string);
 
 private:
     Ui::game_selection *ui;

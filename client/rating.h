@@ -21,10 +21,14 @@ public:
 
 private slots:
 
+    void initilize_users(std::vector<std::string> &users);
+
     void on_back_to_room_button_clicked();
 
 private:
     Ui::rating *ui;
+
+    std::vector<std::string> current_users;
     std::vector<std::pair<int, std::string>> hangman_rating;
     std::vector<std::pair<int, std::string>> arkanoid_rating;
 };

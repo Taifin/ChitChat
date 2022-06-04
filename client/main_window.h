@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QMainWindow>
 #include <QTimer>
+#include "./ui_main_window.h"
 #include "game_selection.h"
 #include "login.h"
 #include "message.pb.h"
@@ -79,13 +80,23 @@ private slots:
 
     void send_skin(const std::string &skin);
 
+    void send_score(int score, std::string game_name) {
+        auto q = current_user.serialize(
+            ChitChatMessage::Query_RequestType_GET_SCORE);
+        q.set_game_name(game_name);
+        q.set_score(score);
+        run_send_request(q);
+    };
+
     void terminate();
 
 private:
     Ui::main_window *ui;
     room *scene;
     QGraphicsView *view;
-    QPushButton *btn;
+
+    QPushButton *btn;  //убрать потом
+
     void initialize_user(client_user &u);
 
     QTimer *timer;

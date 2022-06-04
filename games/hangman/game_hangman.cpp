@@ -116,6 +116,7 @@ void game_hangman::win() {
     score += 10;
     std::string score_str = "Score: " + std::to_string(score);
     ui->score->setText(score_str.c_str());
+    get_score();
     std::string theme_str = "Theme: " + theme;
     ui->theme->setText(theme_str.c_str());
 }

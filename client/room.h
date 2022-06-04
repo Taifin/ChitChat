@@ -23,13 +23,13 @@ public:
     void dont_let_to_move();
 
     QGraphicsTextItem *text = new QGraphicsTextItem();
+    game_selection choose_game;
 
 public slots:
     void let_to_move();
 
 private:
     sprite *current_user_sprite;
-    game_selection choose_game;
     bool can_move = true;
 
     QTimer *timer;

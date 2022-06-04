@@ -35,6 +35,9 @@ main_window::main_window(QWidget *parent)
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(remove_message()));
 
+    connect(&scene->choose_game, SIGNAL(run_send_score(int, std::string)), this,
+            SLOT(send_score(int, std::string)));
+
     pen.setStyle(Qt::SolidLine);
     pen.setWidth(1);
     pen.setBrush(QColor(117, 5, 48));
