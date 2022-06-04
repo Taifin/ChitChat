@@ -17,7 +17,7 @@ public:
     explicit rating(QWidget *parent = nullptr);
     void update_rating();
 
-    ~rating();
+    ~rating() override;
 
 private slots:
 

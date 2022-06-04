@@ -74,4 +74,4 @@ void login::error() {
 
 void login::remove_message() {
     ui->information_label->clear();
-};
+}

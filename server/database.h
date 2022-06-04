@@ -31,15 +31,6 @@ public:
                            const std::string &user);
     /// Connector to establish full remote connection.
 
-    static void debug_create_db();
-    /// Use this method if you need to create database "ChitChat" locally (and
-    /// ensure that your default postgres user in $PGUSER has all rights).
-
-    static void debug_create_table();
-    /// Use this method if you need to create table "users" in "ChitChat"
-    /// database locally (and ensure that your default postgres user in $PGUSER
-    /// has all rights).
-
     static bool create_user(const user &new_user);
     /// true if user is created, false if duplicate
 

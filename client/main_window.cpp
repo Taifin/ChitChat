@@ -3,7 +3,6 @@
 #include <chrono>
 #include <map>
 #include <thread>
-#include "./ui_main_window.h"
 #include "client_user.h"
 #include "room.h"
 #include "sprite.h"
@@ -97,7 +96,7 @@ void main_window::already_connected() {
 
 void main_window::set_sprite_name(sprite *sprite) {
     QFontMetrics fm(font);
-    int wide = fm.width(sprite->name_display->text());
+    int wide = fm.horizontalAdvance(sprite->name_display->text());
     qDebug() << (wide) << sprite->x();
     sprite->name_display->setPos(sprite->x() + 36 - (wide / 2),
                                  sprite->y() - NAME_INDENT);

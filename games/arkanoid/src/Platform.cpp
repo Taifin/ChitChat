@@ -6,12 +6,6 @@ void Plank::change_pos(int step, int direction) {
 
 void Plank::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-        case Qt::Key_Up:
-            //            this->setPos(this->x(), this->y() - 10);
-            break;
-        case Qt::Key_Down:
-            //            this->setPos(x(), y() + 10);
-            break;
         case Qt::Key_Left:
             if (this->x() - 10 >= -250)
                 change_pos(10, -1);

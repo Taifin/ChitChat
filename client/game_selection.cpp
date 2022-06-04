@@ -1,6 +1,5 @@
 #include "game_selection.h"
 #include <QScreen>
-#include "QDebug"
 #include "ui_game_selection.h"
 
 game_selection::game_selection(QWidget *parent)
@@ -55,7 +54,7 @@ void game_selection::start_game(const std::string &name) {
     }
 }
 
-void game_selection::send_score(int score, std::string game_name) {
+void game_selection::send_score(int score, const std::string& game_name) {
     emit run_send_score(score, game_name);
 }
 

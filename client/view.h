@@ -19,7 +19,7 @@ public:
 
     void start();
 
-    ~view() = default;
+    ~view() override = default;
 };
 
 #endif  // VIEW_H
