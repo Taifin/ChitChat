@@ -59,8 +59,6 @@ public:
     void set_text(const std::string &message) {
         text = new QGraphicsTextItem(message.c_str());
     }
-
-    ~sprite_of_object();
 };
 
 #endif  // SPRITE_H

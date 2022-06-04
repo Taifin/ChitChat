@@ -126,7 +126,3 @@ sprite_of_object::sprite_of_object(const std::string &object)
           QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;
 }
-
-sprite_of_object::~sprite_of_object() {
-    delete text;
-}

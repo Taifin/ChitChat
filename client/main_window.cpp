@@ -31,7 +31,7 @@ main_window::main_window(QWidget *parent)
 
     pen.setStyle(Qt::SolidLine);
     pen.setWidth(1);
-    pen.setBrush(Qt::blue);
+    pen.setBrush(QColor(117, 5, 48));
     brush.setColor(Qt::white);
     brush.setStyle(Qt::SolidPattern);
 

@@ -6,9 +6,6 @@
 #include "Platform.h"
 #include "abstract_game.h"
 
-// TODO: memory leaks
-// TODO: remove unnecessary class members from Game
-
 class Q_DECL_EXPORT Game : ChitChat_game {
     Q_OBJECT
 

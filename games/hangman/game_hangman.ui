@@ -97,6 +97,19 @@
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="start_button">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>40</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Start New Game</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

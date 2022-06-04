@@ -1,9 +1,16 @@
 #ifndef GAME_HANGMAN_H
 #define GAME_HANGMAN_H
 
+#include <QDebug>
+#include <QGridLayout>
+#include <QLineEdit>
 #include <QPainter>
+#include <QScreen>
 #include <QToolButton>
 #include <QWidget>
+#include <map>
+#include <random>
+#include <vector>
 #include "abstract_game.h"
 
 namespace Ui {
@@ -18,9 +25,9 @@ public:
     explicit game_hangman();
     void start() override;
     ~game_hangman() override;
-
-private:
     Ui::game_hangman *ui;
+
+private:   
     int mistakes;
     std::string used_letters;
     std::string word;
@@ -28,6 +35,11 @@ private:
     bool game_status;
     int score;
     std::string theme;
+    std::vector<std::string> themes{"PROGRAMMING", "MATH", "ALGORITHMS"};
+    std::map<std::string, std::vector<std::string>> words{
+        {"PROGRAMMING", {"templates", "struct", "pointers", "overload"}},
+        {"MATH", {"integral", "limit", "graph", "basis"}},
+        {"ALGORITHMS", {"tree", "sort", "queue", "binsearch"}}};
 
 protected:
     void paintEvent(QPaintEvent *) override;

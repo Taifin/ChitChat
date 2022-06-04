@@ -1,10 +1,4 @@
 #include "game_hangman.h"
-#include <QDebug>
-#include <QGridLayout>
-#include <QLineEdit>
-#include <QScreen>
-#include <random>
-#include <vector>
 #include "ui_game_hangman.h"
 
 game_hangman::game_hangman() : ui(new Ui::game_hangman) {
@@ -12,11 +6,8 @@ game_hangman::game_hangman() : ui(new Ui::game_hangman) {
     setWindowTitle("HangMan");
 
     score = 0;
-    game_start();
 
     this->setFixedSize(640, 420);
-
-    // ui->letters->setSizeConstraint(QLayout::SetMinimumSize);
 
     for (int i = 0; i < 26; ++i) {
         letters[i] = new QToolButton(this);
@@ -34,10 +25,9 @@ game_hangman::game_hangman() : ui(new Ui::game_hangman) {
 
     std::string score_str = "Score: " + std::to_string(score);
     ui->score->setText(score_str.c_str());
+    theme = themes[rand() % 3];
     std::string theme_str = "Theme: " + theme;
     ui->theme->setText(theme_str.c_str());
-    // QPixmap bkgnd(":/image/background.png");
-    // bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
     palette.setBrush(QPalette::Background, QColor(197, 240, 250));
     this->setPalette(palette);
@@ -45,8 +35,7 @@ game_hangman::game_hangman() : ui(new Ui::game_hangman) {
     move(QGuiApplication::screens().at(0)->geometry().center() -
          frameGeometry().center());
 
-    // start_button = new QToolButton(this);
-    // exit_button = new QToolButton(this);
+    game_start();
 }
 
 game_hangman::~game_hangman() {
@@ -84,8 +73,6 @@ void game_hangman::draw_man(int step) {
         }
         painter.drawLine(parts[i][0], parts[i][1], parts[i][2], parts[i][3]);
     }
-
-    // painter.eraseRect(430,150, 470, 270);
 }
 
 void game_hangman::game_start() {
@@ -130,7 +117,7 @@ void game_hangman::win() {
     std::string score_str = "Score: " + std::to_string(score);
     ui->score->setText(score_str.c_str());
     std::string theme_str = "Theme: " + theme;
-    ui->score->setText(theme_str.c_str());
+    ui->theme->setText(theme_str.c_str());
 }
 
 void game_hangman::lose() {
@@ -164,11 +151,10 @@ void game_hangman::letter_clicked() {
 }
 
 std::string game_hangman::random_word() {
-    std::vector<std::string> words{"aboba", "calculus", "algorithm", "hangman",
-                                   "mem"};
     std::mt19937 mt(time(nullptr));
-    return words[mt() % words.size()];
+    return words[theme][mt() % words[theme].size()];
 }
+
 void game_hangman::start() {
     this->show();
 }

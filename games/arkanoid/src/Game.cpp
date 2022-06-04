@@ -1,6 +1,6 @@
 #include "include/Game.h"
-
-// TODO: stop game after window is closed
+#include <QDesktopWidget>
+#include <QScreen>
 
 Game::Game() {
     prepare_menu_scene();
@@ -9,6 +9,9 @@ Game::Game() {
     game_view->setScene(start_scene);
     game_view->setFixedSize(Config::FIELD_WIDTH + 50,
                             Config::FIELD_HEIGHT + 50);
+    move(QGuiApplication::screens().at(0)->geometry().center() -
+         frameGeometry().center());
+    game_view->setBackgroundBrush(QColor(197, 240, 250));
 }
 
 Game::~Game() {
@@ -126,13 +129,9 @@ void Game::show_menu() {
 }
 
 void Game::start() {
-    QPalette palette;
-    palette.setBrush(QPalette::Background, QColor(197, 240, 250));
-    this->setPalette(palette);
-
-    move(QGuiApplication::screens().at(0)->geometry().center() -
-         frameGeometry().center());
     game_view->show();
+    this->move(QApplication::desktop()->availableGeometry().center() -
+               this->rect().center());
 }
 
 extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {
