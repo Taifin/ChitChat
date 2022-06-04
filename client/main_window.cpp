@@ -32,9 +32,6 @@ main_window::main_window(QWidget *parent)
     pen.setStyle(Qt::SolidLine);
     pen.setWidth(1);
     pen.setBrush(Qt::blue);
-    // pen.setCapStyle(Qt::RoundCap);
-    // pen.setJoinStyle(Qt::RoundJoin);
-    // pen.setColor(Qt::green);
     brush.setColor(Qt::white);
     brush.setStyle(Qt::SolidPattern);
 

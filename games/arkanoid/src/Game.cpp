@@ -126,6 +126,12 @@ void Game::show_menu() {
 }
 
 void Game::start() {
+    QPalette palette;
+    palette.setBrush(QPalette::Background, QColor(197, 240, 250));
+    this->setPalette(palette);
+
+    move(QGuiApplication::screens().at(0)->geometry().center() -
+         frameGeometry().center());
     game_view->show();
 }
 

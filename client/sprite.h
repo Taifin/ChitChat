@@ -42,7 +42,6 @@ public:
     explicit sprite_for_choice(const std::string &skin);
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     std::string skin;
-    // current_user_sprite;
 
 signals:
     void add_curren_sprite();
@@ -55,6 +54,13 @@ class sprite_of_object : public QObject, public QGraphicsPixmapItem {
 public:
     explicit sprite_of_object(const std::string &object);
     std::string type_of_object;
+    QGraphicsTextItem *text;
+
+    void set_text(const std::string &message) {
+        text = new QGraphicsTextItem(message.c_str());
+    }
+
+    ~sprite_of_object();
 };
 
 #endif  // SPRITE_H

@@ -56,11 +56,6 @@ void sprite::change_skin(const std::string &skin) {
 }
 
 bool sprite::is_colliding() {
-    auto *text = new QGraphicsTextItem("Press CTRL+G to start a game");
-    auto timer = new QTimer;
-
-    connect(timer, SIGNAL(timeout()), text, SLOT(hide()));
-
     QGraphicsScene *scene = this->scene();
     QList<QGraphicsItem *> colliding_items = this->collidingItems();
     for (auto &colliding_item : colliding_items) {
@@ -68,19 +63,23 @@ bool sprite::is_colliding() {
             auto *effect = new QGraphicsColorizeEffect();
             effect->setColor(Qt::black);
             colliding_item->setGraphicsEffect(effect);
-            scene->addItem(text);
-            timer->start(2000);
+
+            (dynamic_cast<sprite_of_object *>(colliding_item))
+                ->set_text("Press CTRL+G to start a game");
+            scene->addItem(
+                (dynamic_cast<sprite_of_object *>(colliding_item))->text);
             return true;
         } else {
             colliding_item->setGraphicsEffect(nullptr);
         }
     }
     QList<QGraphicsItem *> items = scene->items();
-    for (auto x : items) {
+    for (auto &x : items) {
         x->setGraphicsEffect(nullptr);
+        if (typeid(*x) == typeid(QGraphicsTextItem)) {
+            scene->removeItem(x);
+        }
     }
-    scene->addItem(text);
-    scene->removeItem(text);
     return false;
 }
 
@@ -119,7 +118,6 @@ sprite_for_choice::sprite_for_choice(const std::string &skin) : skin(skin) {
 
 void sprite_for_choice::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     emit run_send_skin(skin);
-    //Здесь нужно отправить датаграмму на изменение скина;-
     emit this->add_curren_sprite();
 }
 
@@ -127,4 +125,8 @@ sprite_of_object::sprite_of_object(const std::string &object)
     : QGraphicsPixmapItem(
           QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;
+}
+
+sprite_of_object::~sprite_of_object() {
+    delete text;
 }

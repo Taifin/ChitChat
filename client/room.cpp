@@ -2,6 +2,8 @@
 
 room::room() : QGraphicsScene() {
     timer = new QTimer();
+    this->addItem(text);
+    text->hide();
     connect(timer, SIGNAL(timeout()), this, SLOT(let_to_move()));
 }
 
