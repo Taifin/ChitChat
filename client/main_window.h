@@ -78,13 +78,8 @@ private slots:
 
     void send_skin(const std::string &skin);
 
-    void send_score(int score, std::string game_name) {
-        auto q = current_user.serialize(
-            ChitChatMessage::Query_RequestType_GET_SCORE);
-        q.set_game_name(game_name);
-        q.set_score(score);
-        run_send_request(q);
-    };
+    void send_score(int score, std::string game_name);
+    ;
 
     void terminate();
 

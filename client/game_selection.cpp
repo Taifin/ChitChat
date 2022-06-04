@@ -55,6 +55,10 @@ void game_selection::start_game(const std::string &name) {
     }
 }
 
+void game_selection::send_score(int score, std::string game_name) {
+    emit run_send_score(score, game_name);
+}
+
 void game_selection::on_rating_button_clicked() {
     games_rating.update_rating();
     games_rating.show();
