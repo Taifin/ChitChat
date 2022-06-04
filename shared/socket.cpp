@@ -13,7 +13,6 @@ void queries_keeper::push_parsed(const QByteArray &data, QTcpSocket *sender) {
 }
 
 void queries_keeper::push_prepared(const QByteArray &q, QTcpSocket *cli) {
-    //    std::unique_lock lock(queries_mutex);
     prepared_queries.push({q, cli});
 }
 
@@ -22,14 +21,12 @@ std::pair<QByteArray, QTcpSocket *> queries_keeper::front_parsed() {
 }
 
 std::pair<QByteArray, QTcpSocket *> queries_keeper::pop_parsed() {
-    //    std::unique_lock lock(queries_mutex);
     auto q = parsed_queries.front();
     parsed_queries.pop();
     return q;
 }
 
 std::pair<QByteArray, QTcpSocket *> queries_keeper::pop_prepared() {
-    std::unique_lock lock(queries_mutex);
     auto q = prepared_queries.front();
     prepared_queries.pop();
     return q;
@@ -78,7 +75,6 @@ void tcp_socket::send() {
     auto q = keeper->pop_prepared();
     qDebug() << "Sending msg of size:" << q.first.size();
     q.second->write(q.first);
-    q.second->waitForBytesWritten(100);
 }
 
 void tcp_socket::read() {
