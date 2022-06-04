@@ -84,15 +84,17 @@ void tcp_socket::send() {
 void tcp_socket::read() {
     auto *sender = dynamic_cast<QTcpSocket *>(QObject::sender());
     qDebug() << sender->localPort() << "reading new message...";
-    while (sender->bytesAvailable() > 0) {
-        auto msg_size = *reinterpret_cast<quint32 *>(sender->read(4).data());
-        qDebug() << "New message of size:" << msg_size;
-        auto msg = sender->read(msg_size);
-        ChitChatMessage::Query q;
-        qDebug() << "Bytes available after reading whole msg:"
-                 << sender->bytesAvailable();
-        keeper->push_parsed(msg, sender);
+    while (sender->bytesAvailable() < 4) {
+        sender->waitForBytesWritten(30);
+        qDebug() << "Waiting for size arrival";
     }
+    auto msg_size = *reinterpret_cast<quint32 *>(sender->read(4).data());
+    while (sender->bytesAvailable() < msg_size) {
+        sender->waitForBytesWritten(30);
+        qDebug() << "Waiting for message arrival";
+    }
+    auto msg = sender->read(msg_size);
+    keeper->push_parsed(msg, sender);
 }
 
 query_processor::query_processor(queries_keeper *keeper, tcp_socket &socket)
