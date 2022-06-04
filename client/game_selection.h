@@ -17,6 +17,7 @@ class Q_DECL_IMPORT game_selection : public QWidget {
 
 public:
     explicit game_selection(QWidget *parent = nullptr);
+    rating games_rating;
 
     ~game_selection() override;
 
@@ -30,13 +31,7 @@ private slots:
 
     void start_game(const std::string &name);
 
-<<<<<<< HEAD
     void send_score(int score, std::string game_name);
-=======
-    void send_score(int score, std::string game_name) {
-        emit run_send_score(score, game_name);
-    }
->>>>>>> 5403007bbcd7f989db28212db7060cae62b4e951
 
 signals:
     void game_chosen(const std::string &name);
@@ -46,7 +41,6 @@ signals:
 private:
     Ui::game_selection *ui;
     QLibrary *game = nullptr;
-    rating games_rating;
 };
 
 #endif  // GAME_SELECTION_H

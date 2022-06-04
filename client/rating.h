@@ -1,8 +1,10 @@
 #ifndef RATING_H
 #define RATING_H
 
+#include <client_user.h>
 #include <QWidget>
 #include <algorithm>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -17,20 +19,29 @@ public:
     explicit rating(QWidget *parent = nullptr);
     void update_rating();
 
+    std::vector<std::pair<int, std::string>> hangman_rating;
+    std::vector<std::pair<int, std::string>> arkanoid_rating;
+
     ~rating();
 
 private slots:
 
-    void initilize_users(std::vector<std::string> &users);
-
     void on_back_to_room_button_clicked();
+
+    void change_score(const std::string &name,
+                      int score,
+                      const std::string &game) {
+        qDebug() << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << game.c_str();
+        if (game == "hangman") {
+            hangman_rating.push_back({score, name});
+        }
+        if (game == "arkanoid") {
+            arkanoid_rating.push_back({score, name});
+        }
+    };
 
 private:
     Ui::rating *ui;
-
-    std::vector<std::string> current_users;
-    std::vector<std::pair<int, std::string>> hangman_rating;
-    std::vector<std::pair<int, std::string>> arkanoid_rating;
 };
 
 #endif  // RATING_H

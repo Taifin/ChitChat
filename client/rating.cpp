@@ -3,17 +3,13 @@
 
 rating::rating(QWidget *parent) : QWidget(parent), ui(new Ui::rating) {
     ui->setupUi(this);
+    this->setWindowTitle("ChitChat");
+    move(QGuiApplication::screens().at(0)->geometry().center() -
+         frameGeometry().center());
 }
 
 rating::~rating() {
     delete ui;
-}
-
-void rating::initilize_users(std::vector<std::string> &users) {
-    current_users.clear();
-    for (auto &x : users) {
-        current_users.push_back(x);
-    }
 }
 
 void rating::on_back_to_room_button_clicked() {
@@ -21,10 +17,9 @@ void rating::on_back_to_room_button_clicked() {
 }
 
 void rating::update_rating() {
-    hangman_rating.clear();
-    arkanoid_rating.clear();
     sort(hangman_rating.begin(), hangman_rating.end());
     sort(arkanoid_rating.begin(), arkanoid_rating.end());
+
     std::string hangman_names = "";
     std::string hangman_scores = "";
     std::string arkanoid_names = "";

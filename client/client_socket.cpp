@@ -49,8 +49,7 @@ void client_processor::process() {
             emit run_change_skin(query.user().skin());
             break;
         case ChitChatMessage::Query_FeedbackType_SCORE_CHANGED:
-            // emit run_score_changed(query.)
-            // TODO
+            // e
             break;
         case ChitChatMessage::Query_FeedbackType_DATABASE_ERROR:
             emit run_error();
@@ -60,5 +59,8 @@ void client_processor::process() {
         case ChitChatMessage::Query_FeedbackType_NEW_USER_CONNECTED:
             emit run_connect_roommate(query);
             break;
+        case ChitChatMessage::Query_FeedbackType_SCORE:
+            emit run_change_score(query.user().name(), query.score(),
+                                  query.game_name());
     }
 }

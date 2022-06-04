@@ -36,6 +36,7 @@ public:
     model *current_session = nullptr;
 
     void set_user_sprite();
+    room *scene;
 
     ~main_window() override;
 
@@ -81,16 +82,17 @@ private slots:
     void send_skin(const std::string &skin);
 
     void send_score(int score, std::string game_name);
-    ;
+
+    void update_rating();
 
     void terminate();
 
 private:
     Ui::main_window *ui;
-    room *scene;
+
     QGraphicsView *view;
 
-    QPushButton *btn;  //убрать потом
+    QPushButton *btn;
 
     void initialize_user(client_user &u);
 
@@ -100,4 +102,5 @@ private:
     QPen pen;
     QBrush brush;
 };
+
 #endif  // MAIN_WINDOW_H

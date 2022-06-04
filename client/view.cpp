@@ -69,8 +69,10 @@ view::view() {
     connect(&current_session.processor, SIGNAL(run_change_skin(std::string)),
             &main_process.current_user, SLOT(change_skin(std::string)));
 
-    connect(&current_session.processor, SIGNAL(run_change_skin(std::string)),
-            &main_process.current_user, SLOT(change_skin(std::string)));
+    connect(&current_session.processor,
+            SIGNAL(run_change_score(std::string, int, std::string)),
+            &main_process.scene->choose_game.games_rating,
+            SLOT(change_score(std::string, int, std::string)));
 }
 
 void view::start() {
