@@ -87,12 +87,10 @@ void tcp_socket::read() {
     while (sender->bytesAvailable() > 0) {
         auto msg_size = *reinterpret_cast<quint32 *>(sender->read(4).data());
         qDebug() << "New message of size:" << msg_size;
-        //        qDebug() << "Bytes available after reading size:"
-        //                 << sender->bytesAvailable();
         auto msg = sender->read(msg_size);
         ChitChatMessage::Query q;
-        //        qDebug() << "Bytes available after reading whole msg:"
-        //                 << sender->bytesAvailable();
+        qDebug() << "Bytes available after reading whole msg:"
+                 << sender->bytesAvailable();
         keeper->push_parsed(msg, sender);
     }
 }

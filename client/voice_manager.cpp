@@ -5,7 +5,7 @@ client::processor::processor(network::queries_keeper *keeper1,
                              network::tcp_socket &socket1,
                              QTcpSocket *tcpSocket)
     : query_processor(keeper1, socket1), audio_socket(tcpSocket) {
-    format.setSampleRate(16000);
+    format.setSampleRate(64000);
     format.setChannelCount(1);
     format.setSampleSize(16);
     format.setCodec("audio/pcm");
@@ -29,14 +29,16 @@ void client::processor::process() {
         if (!muted) {
             outDevice->write(keeper->front_parsed().first.data(),
                              keeper->front_parsed().first.size());
+            outDevice->waitForBytesWritten(1000);
         }
         keeper->pop_parsed();
     }
 }
 void client::processor::input_audio_on() {
     inDevice = audioInput->start();
+    connect(inDevice, SIGNAL(readyRead()), this, SLOT(send()));
     connect(timer, SIGNAL(timeout()), this, SLOT(send()));
-    timer->start(1000);
+    timer->start(50);
     qDebug() << "Microphone is on";
 }
 
