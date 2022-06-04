@@ -2,6 +2,7 @@
 #define RATING_H
 
 #include <QWidget>
+#include <QScreen>
 #include <algorithm>
 #include <string>
 #include <vector>

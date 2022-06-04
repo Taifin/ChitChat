@@ -17,6 +17,7 @@ class Q_DECL_IMPORT game_selection : public QWidget {
 
 public:
     explicit game_selection(QWidget *parent = nullptr);
+    rating games_rating;
 
     ~game_selection() override;
 
@@ -40,7 +41,6 @@ signals:
 private:
     Ui::game_selection *ui;
     QLibrary *game = nullptr;
-    rating games_rating;
 };
 
 #endif  // GAME_SELECTION_H
