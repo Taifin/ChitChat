@@ -86,6 +86,7 @@ public:
 public slots:
 
     void debug_terminate_me() {
+        qDebug() << "Aboba";
         debug_terminate = true;
     };
 

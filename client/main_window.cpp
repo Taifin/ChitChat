@@ -19,6 +19,9 @@ main_window::main_window(QWidget *parent)
     scene = new room();
     ui->setupUi(this);
     this->setWindowTitle("ChitChat");
+    btn = new QPushButton("Terminate\n server");
+    ui->verticalLayout_2->addWidget(btn);
+    connect(btn, SIGNAL(pressed()), this, SLOT(terminate()));
     ui->microphone_check->hide();
     ui->headphones_check->hide();
     move(QGuiApplication::screens().at(0)->geometry().center() -
@@ -68,9 +71,6 @@ void main_window::on_connect_button_clicked() {
     if (ui->connect_button->text() == "connect") {
         run_send_request(
             current_user.serialize(ChitChatMessage::Query_RequestType_CONNECT));
-        btn = new QPushButton("Terminate");
-        ui->verticalLayout_2->addWidget(btn);
-        connect(btn, SIGNAL(pressed()), this, SLOT(terminate()));
         ui->change_avatar_button->hide();
         ui->connect_button->setText("disconnect");
         ui->microphone_check->show();

@@ -26,7 +26,6 @@ private:
     QIODevice *outDevice;
     QIODevice *inDevice;
     QTcpSocket *audio_socket;
-    QTimer *timer;
     bool muted;
 
 public slots:

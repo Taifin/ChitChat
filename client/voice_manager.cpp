@@ -20,7 +20,6 @@ client::processor::processor(network::queries_keeper *keeper1,
         format = info.nearestFormat(format);
     audioOutput = new QAudioOutput(format, this);
     outDevice = audioOutput->start();
-//    timer = new QTimer(this);
 }
 
 void client::processor::process() {
@@ -37,14 +36,10 @@ void client::processor::process() {
 void client::processor::input_audio_on() {
     inDevice = audioInput->start();
     connect(inDevice, SIGNAL(readyRead()), this, SLOT(send()));
-//    connect(timer, SIGNAL(timeout()), this, SLOT(send()));
-//    timer->start(50);
     qDebug() << "Microphone is on";
 }
 
 void client::processor::input_audio_off() {
-//    disconnect(timer, SIGNAL(timeout()), this, SLOT(send()));
-//    timer->stop();
     audioInput->stop();
     qDebug() << "Microphone is muted";
 }
