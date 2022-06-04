@@ -53,6 +53,8 @@ signals:
     void run_connect_roommate(ChitChatMessage::Query);
 
     void run_change_skin(const std::string &);
+
+    void run_change_score(const std::string, int, const std::string);
 };
 
 #endif  // CLIENT_SOCKET_H

@@ -138,6 +138,7 @@ void main_window::connect_with_room(const ChitChatMessage::Query &data) {
 
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
     current_user.user_sprite->setFocus();
+    update_rating();
 }
 
 void main_window::user_changed_position(const std::string &name, int x, int y) {
@@ -150,6 +151,7 @@ void main_window::roommate_disconnect(const std::string &roommate_name) {
         users_in_the_room[roommate_name].user_sprite->name_display);
     scene->removeItem(users_in_the_room[roommate_name].user_sprite);
     users_in_the_room.erase(roommate_name);
+    update_rating();
 }
 
 void main_window::roommate_connect(
@@ -160,6 +162,7 @@ void main_window::roommate_connect(
     users_in_the_room.insert({u.get_name(), u});
     scene->addItem(u.user_sprite);
     scene->addItem(u.user_sprite->name_display);
+    update_rating();
 }
 
 void main_window::show_current_sprite() {
@@ -188,11 +191,35 @@ void main_window::send_skin(const std::string &skin) {
 }
 
 void main_window::send_score(int score, std::string game_name) {
-    auto q = current_user.serialize(
-        ChitChatMessage::Query_RequestType_GET_SCORE);
+    auto q =
+        current_user.serialize(ChitChatMessage::Query_RequestType_GET_SCORE);
     q.set_game_name(game_name);
     q.set_score(score);
     run_send_request(q);
+    update_rating();
+}
+
+void main_window::update_rating() {
+    scene->choose_game.games_rating.arkanoid_rating.clear();
+    scene->choose_game.games_rating.hangman_rating.clear();
+
+    for (auto &x : users_in_the_room) {
+        auto q = x.second.serialize(ChitChatMessage::Query::RequestType::
+                                    Query_RequestType_GET_SCORE);
+        q.set_game_name("hangman");
+        emit run_send_request(q);
+        q.set_game_name("arkanoid");
+        emit run_send_request(q);
+    }
+
+    auto q = current_user.serialize(
+        ChitChatMessage::Query::RequestType::Query_RequestType_GET_SCORE);
+    q.set_game_name("hangman");
+    emit run_send_request(q);
+    q.set_game_name("arkanoid");
+    emit run_send_request(q);
+
+    scene->choose_game.games_rating.update_rating();
 }
 
 void main_window::set_user_skin(const std::string &skin) {
@@ -223,8 +250,8 @@ void main_window::on_change_avatar_button_clicked() {
     text->setPen(avatar_pen);
 
     std::vector<std::string> characters = {
-        "finn",  "gambol",        "miku",   "mushroom", "rafael",
-        "sonic", "stormtroopers", "kermit", "pikachu"};
+                                           "finn",  "gambol",        "miku",   "mushroom", "rafael",
+                                           "sonic", "stormtroopers", "kermit", "pikachu"};
     for (int i = 0; i < 9; i++) {
         auto *skin = new sprite_for_choice(characters[i]);
         connect(skin, SIGNAL(add_curren_sprite()), this,
@@ -270,5 +297,6 @@ void main_window::initialize_user(client_user &u) {
     u.user_sprite->change_skin(u.get_skin());
 }
 void main_window::terminate() {
-    emit run_send_request(current_user.serialize(ChitChatMessage::Query_RequestType_DEBUG_TERMINATE));
+    emit run_send_request(current_user.serialize(
+        ChitChatMessage::Query_RequestType_DEBUG_TERMINATE));
 }
