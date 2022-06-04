@@ -13,7 +13,6 @@ public:
     view();
 
     model current_session;
-
     main_window main_process;
     registration registration_process;
     login login_process;

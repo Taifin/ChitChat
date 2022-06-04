@@ -8,6 +8,10 @@
 #include "room.h"
 #include "sprite.h"
 
+#define WIDTH 600
+#define HEIGHT 550
+#define NAME_INDENT 20
+
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::main_window),
@@ -18,7 +22,7 @@ main_window::main_window(QWidget *parent)
     move(QGuiApplication::screens().at(0)->geometry().center() -
          frameGeometry().center());
     view = ui->room_view;
-    view->setFixedSize(600, 550);
+    view->setFixedSize(WIDTH, HEIGHT);
     qDebug() << view->y() << " " << view->x() << " " << view->width() << " "
              << view->height();
     scene->setSceneRect(scene->itemsBoundingRect());
@@ -82,7 +86,7 @@ void main_window::set_sprite_name(sprite *sprite) {
     int wide = fm.width(sprite->name_display->text());
     qDebug() << (wide) << sprite->x();
     sprite->name_display->setPos(sprite->x() + 36 - (wide / 2),
-                                 sprite->y() - 20);
+                                 sprite->y() - NAME_INDENT);
     sprite->name_display->setPen(pen);
     sprite->name_display->setBrush(brush);
     sprite->name_display->setFont(font);
@@ -113,22 +117,19 @@ void main_window::connect_with_room(const ChitChatMessage::Query &data) {
 
     current_user.user_sprite->name_display->setText(
         QString(current_user.get_name().c_str()));
-    current_user.user_sprite->name_display->setPos(0, -20);
+    current_user.user_sprite->name_display->setPos(0, -NAME_INDENT);
     set_sprite_name(current_user.user_sprite);
 
     scene->addItem(current_user.user_sprite);
     scene->addItem(current_user.user_sprite->name_display);
 
     current_user.user_sprite->setFlag(QGraphicsItem::ItemIsFocusable);
-
-    // current_user.user_sprite->setFocusPolicy(QT::StrongFocus);
     current_user.user_sprite->setFocus();
 }
 
 void main_window::user_changed_position(const std::string &name, int x, int y) {
     users_in_the_room[name].user_sprite->setPos(x, y);
     set_sprite_name(users_in_the_room[name].user_sprite);
-    // users_in_the_room[name].user_sprite->name_display->setPos(x, y - 20);
 }
 
 void main_window::roommate_disconnect(const std::string &roommate_name) {
@@ -245,7 +246,7 @@ void main_window::initialize_user(client_user &u) {
     u.set_user_sprite();
     u.user_sprite->setPos(u.get_x(), u.get_y());
     u.user_sprite->name_display->setText(u.get_name().c_str());
-    u.user_sprite->name_display->setPos(u.get_x(), u.get_y() - 20);
+    u.user_sprite->name_display->setPos(u.get_x(), u.get_y() - NAME_INDENT);
     set_sprite_name(u.user_sprite);
     u.user_sprite->change_skin(u.get_skin());
 }

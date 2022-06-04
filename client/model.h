@@ -15,7 +15,6 @@ class model : public QObject {
 
 public:
     model();
-    // TODO: aboba
     QTcpSocket *data_socket = new QTcpSocket(this);
     QTcpSocket *audio_socket = new QTcpSocket(this);
     network::queries_keeper *keeper = new network::queries_keeper;

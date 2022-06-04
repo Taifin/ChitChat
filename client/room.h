@@ -18,9 +18,7 @@ public:
     void set_curren_user_sprite(sprite *spr);
     sprite_of_object *game_machine;
 
-    void set_game_machine() {
-        game_machine = new sprite_of_object("game_machine");
-    }
+    void set_game_machine();
 
     void dont_let_to_move();
 

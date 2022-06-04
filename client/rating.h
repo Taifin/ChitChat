@@ -25,11 +25,8 @@ private slots:
 
 private:
     Ui::rating *ui;
-    std::vector<std::pair<int, std::string>> hangman_rating{{2, "anin"},
-                                                            {1, "sfed"},
-                                                            {5, "fsdsd"}};
-    std::vector<std::pair<int, std::string>> arkanoid_rating{{154, "werw"},
-                                                             {4, "efree"}};
+    std::vector<std::pair<int, std::string>> hangman_rating;
+    std::vector<std::pair<int, std::string>> arkanoid_rating;
 };
 
 #endif  // RATING_H

@@ -32,7 +32,7 @@ void room::keyPressEvent(QKeyEvent *event) {
             }
             break;
         case Qt::Key_Down:
-            if (can_move && this->current_user_sprite->pos().y() < 475) {
+            if (can_move && this->current_user_sprite->pos().y() < BORDER_Y) {
                 dont_let_to_move();
                 change_position(STEP_SIZE, this->current_user_sprite,
                                 directions::DOWN);
@@ -46,7 +46,7 @@ void room::keyPressEvent(QKeyEvent *event) {
             }
             break;
         case Qt::Key_Right:
-            if (can_move && this->current_user_sprite->pos().x() < 525) {
+            if (can_move && this->current_user_sprite->pos().x() < BORDER_X) {
                 dont_let_to_move();
                 change_position(STEP_SIZE, this->current_user_sprite,
                                 directions::RIGHT);
@@ -57,6 +57,10 @@ void room::keyPressEvent(QKeyEvent *event) {
 
 void room::set_curren_user_sprite(sprite *spr) {
     current_user_sprite = spr;
+}
+
+void room::set_game_machine() {
+    game_machine = new sprite_of_object("game_machine");
 }
 
 void room::dont_let_to_move() {

@@ -1,7 +1,4 @@
 #include "sprite.h"
-#include <QGraphicsEffect>
-#include <QGraphicsScene>
-#include <QKeyEvent>
 #include "client_socket.h"
 #include "view.h"
 
@@ -18,7 +15,7 @@ sprite::sprite(const std::string &name, const std::string &skin) : name(name) {
 
     QFont font("Source Code Pro", 12);
     name_display->setFont(font);
-    name_display->setPos(70, 80);
+    name_display->setPos(SPRITE_SIZE_X, SPRITE_SIZE_Y);
     name_display->setPen(pen);
 }
 
@@ -30,7 +27,7 @@ void sprite::keyPressEvent(QKeyEvent *event) {
             }
             break;
         case Qt::Key_Down:
-            if (pos().y() < 475) {
+            if (pos().y() < BORDER_Y) {
                 change_position(STEP_SIZE, this, directions::DOWN);
             }
             break;
@@ -40,7 +37,7 @@ void sprite::keyPressEvent(QKeyEvent *event) {
             }
             break;
         case Qt::Key_Right:
-            if (pos().x() < 525) {
+            if (pos().x() < BORDER_X) {
                 change_position(STEP_SIZE, this, directions::RIGHT);
             }
             break;
@@ -125,4 +122,8 @@ sprite_of_object::sprite_of_object(const std::string &object)
     : QGraphicsPixmapItem(
           QPixmap(":/images/" + QString(object.c_str()) + ".png")) {
     type_of_object = object;
+}
+
+void sprite_of_object::set_text(const std::string &message) {
+    text = new QGraphicsTextItem(message.c_str());
 }

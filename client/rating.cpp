@@ -14,7 +14,6 @@ void rating::on_back_to_room_button_clicked() {
 }
 
 void rating::update_rating() {
-    //получить новые значения
     sort(hangman_rating.begin(), hangman_rating.end());
     sort(arkanoid_rating.begin(), arkanoid_rating.end());
     std::string hangman_names = "";
