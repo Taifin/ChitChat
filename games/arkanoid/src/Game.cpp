@@ -37,7 +37,7 @@ void Game::start_game() {
         item->setVisible(true);
     }
     score = 0;
-    lives = 0;
+    lives = 3;
     score_widget->setNum(0);
     score_widget->adjustSize();
     game_view->setScene(game_scene);
@@ -132,6 +132,9 @@ void Game::start() {
     game_view->show();
     this->move(QApplication::desktop()->availableGeometry().center() -
                this->rect().center());
+}
+void Game::get_score() {
+    emit score_sender(score);
 }
 
 extern "C" Q_DECL_EXPORT ChitChat_game *get_game() {

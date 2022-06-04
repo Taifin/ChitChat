@@ -73,6 +73,8 @@ public:
     static void change_values(const std::string &username,
                               const std::string &column_name,
                               const std::string &new_value);
+    static int get_user_score(const std::string &username,
+                       const std::string &gamename);
 };
 }  // namespace model
 #endif  // CHITCHAT_DATABASE_H

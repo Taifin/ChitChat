@@ -14,6 +14,11 @@ class Q_DECL_EXPORT ChitChat_game : public QMainWindow {
 
 public:
     virtual void start() = 0;
+
+    virtual void get_score() = 0;
+
+signals:
+    void score_sender(int);
 };
 
 #endif  // CHITCHAT_ABSTRACT_GAME_H

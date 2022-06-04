@@ -79,6 +79,8 @@ public:
 
     void get_sprite();
 
+    void get_score();
+
     void change_skin();
 
     void change_score();

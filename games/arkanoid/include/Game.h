@@ -20,6 +20,8 @@ public:
 
     void start() override;
 
+    void get_score() override;
+
     ~Game() override;
 
 public slots:
