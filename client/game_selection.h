@@ -30,7 +30,13 @@ private slots:
 
     void start_game(const std::string &name);
 
+<<<<<<< HEAD
     void send_score(int score, std::string game_name);
+=======
+    void send_score(int score, std::string game_name) {
+        emit run_send_score(score, game_name);
+    }
+>>>>>>> 5403007bbcd7f989db28212db7060cae62b4e951
 
 signals:
     void game_chosen(const std::string &name);
