@@ -214,7 +214,7 @@ void server_processor::change_score() {
 }
 
 void server_processor::get_score() {
-    auto score = model::database::get_user_score(user_in_process.get_name(), query.game_name());
+    auto score = model::database::get_user_score(user_in_process.get_name(), query.game_name() + "_score");
     auto q = user_in_process.serialize(Query_FeedbackType_SCORE);
     q.set_score(score);
     prepare_query(q, to);
