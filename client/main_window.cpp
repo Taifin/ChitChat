@@ -188,6 +188,14 @@ void main_window::send_skin(const std::string &skin) {
         current_user.serialize(ChitChatMessage::Query_RequestType_CHANGE_SKIN));
 }
 
+void main_window::send_score(int score, std::string game_name) {
+    auto q = current_user.serialize(
+        ChitChatMessage::Query_RequestType_GET_SCORE);
+    q.set_game_name(game_name);
+    q.set_score(score);
+    run_send_request(q);
+}
+
 void main_window::set_user_skin(const std::string &skin) {
     current_user.set_skin(skin);
 }

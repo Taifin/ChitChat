@@ -1,6 +1,7 @@
 #ifndef GAME_SELECTION_H
 #define GAME_SELECTION_H
 
+#include <QDebug>
 #include <QWidget>
 #include "QFileInfo"
 #include "QLibrary"
@@ -29,11 +30,7 @@ private slots:
 
     void start_game(const std::string &name);
 
-    void show_game_rating();
-
-    void send_score(int score, std::string game_name) {
-        emit run_send_score(score, game_name);
-    }
+    void send_score(int score, std::string game_name);
 
 signals:
     void game_chosen(const std::string &name);
