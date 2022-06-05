@@ -18,13 +18,15 @@ ChitChat comes with three major parts, that have to be built and used separately
 
 * `postgresql` 15 - PostgreSQL database.
 * `libpqxx` 7.1.1 - official C++ PostgreSQL library.
-* `Qt` 5 with modules `Widgets` and `Network` - GUI and network.
+* `Qt` 5 with modules 'Widgets', 'Multimedia' and 'Network' - GUI, voice module and network.
+* `protobuf` 3.21.1 - serialization for client-server interaction.
 
 ##### Client:
 
-* `Qt` 5 with modules 'Widgets' and 'Network' - GUI and network.
+* `Qt` 5 with modules 'Widgets', 'Multimedia' and 'Network' - GUI, voice module and network.
 * `Arkanoid` shared library.
 * `Hangman` shared library.
+* `protobuf` 3.21.1 - serialization for client-server interaction.
 
 ##### Games:
 
