@@ -8,9 +8,9 @@ ChitChat is a QT-based C++ application, that allows people to visit virtual room
 
 ChitChat comes with three major parts, that have to be built and used separately: server-side application, client-side application and games in form of shared libraries.
 
-* **Server:** `cmake --build $DIR --target=ChitChatServer`, compile with `-DLOCAL` flag to run server on localhost. 
-* **Client:** `cmake --build $DIR --target=ChitChatClient`, compile with `-DLOCAL` flag to connect to server on localhost.
-* **Games:** `cmake --build $DIR -- target="name"`.
+* **Server:** `cmake --build $DIR --target ChitChatServer`, compile with `-DLOCAL` flag to run server on localhost. 
+* **Client:** `cmake --build $DIR --target ChitChatClient`, compile with `-DLOCAL` flag to connect to server on localhost.
+* **Games:** `cmake --build $DIR -- target "name"`.
 
 ### Dependencies:
 
